@@ -621,7 +621,9 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1024),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -1271,7 +1273,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $StockTable stock = $StockTable(this);
   Selectable<String> getParentCategoryNames(int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(p) AS (SELECT parent FROM category WHERE id = ?1 UNION ALL SELECT parent FROM category,ParentCategory WHERE ParentCategory.p = category.id) SELECT name FROM category',
+        'WITH RECURSIVE ParentCategory(p, n) AS (SELECT parent, name FROM category WHERE id = ?1 UNION ALL SELECT parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory',
         variables: [
           Variable<int>(var1)
         ],
@@ -1282,7 +1284,7 @@ abstract class _$Database extends GeneratedDatabase {
 
   Selectable<CategoryData> getParentCategories(int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(p) AS (SELECT parent FROM category WHERE id = ?1 UNION ALL SELECT parent FROM category,ParentCategory WHERE ParentCategory.p = category.id) SELECT * FROM category',
+        'WITH RECURSIVE ParentCategory(i, p, n, d, k) AS (SELECT id, parent, name, description, keywords FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name, description, keywords FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory',
         variables: [
           Variable<int>(var1)
         ],

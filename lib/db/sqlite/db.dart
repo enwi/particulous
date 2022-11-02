@@ -20,20 +20,22 @@ part 'stock.dart';
     Stock,
   ],
   queries: {
-    'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(p) AS ('
-        'SELECT parent FROM category WHERE id = ? '
+    'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(p, n) AS ('
+        'SELECT parent, name FROM category WHERE id = ? '
         'UNION ALL '
-        'SELECT parent FROM category, ParentCategory '
-        'WHERE ParentCategory.p=category.id'
+        'SELECT parent, name FROM category '
+        'JOIN ParentCategory '
+        'ON ParentCategory.p=category.id '
         ')'
-        'SELECT name FROM category;',
-    'getParentCategories': 'WITH RECURSIVE ParentCategory(p) AS ('
-        'SELECT parent FROM category WHERE id = ? '
+        'SELECT n AS name FROM ParentCategory;',
+    'getParentCategories': 'WITH RECURSIVE ParentCategory(i, p, n, d, k) AS ('
+        'SELECT id, parent, name, description, keywords FROM category WHERE id = ? '
         'UNION ALL '
-        'SELECT parent FROM category, ParentCategory '
-        'WHERE ParentCategory.p=category.id'
+        'SELECT id, parent, name, description, keywords FROM category '
+        'JOIN ParentCategory '
+        'ON ParentCategory.p=category.id '
         ')'
-        'SELECT * FROM category;',
+        'SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory;',
   },
 )
 class Database extends _$Database {
