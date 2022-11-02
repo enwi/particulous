@@ -54,15 +54,9 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
           ),
           TextFormField(
             decoration: const InputDecoration(
-                // border: OutlineInputBorder(),
-                hintText: 'resistor 0805 SMD ...',
-                label: Text('Keywords')),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Category must have a name';
-              }
-              return null;
-            },
+              hintText: 'resistor 0805 SMD ...',
+              label: Text('Keywords'),
+            ),
             onSaved: (newValue) => _categoryKeywords = newValue,
           ),
           CategoryDropdown(
@@ -81,7 +75,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                       name: _categoryName!,
                       description: _categoryDescription!,
                       keywords: _categoryKeywords,
-                      parent: _categoryParent?.parent))
+                      parent: _categoryParent?.identifier))
                   .then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content:
