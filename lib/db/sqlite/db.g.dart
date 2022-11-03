@@ -772,12 +772,12 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   }
 }
 
-class PartBOMData extends DataClass implements Insertable<PartBOMData> {
+class PartBomData extends DataClass implements Insertable<PartBomData> {
   final int parent;
   final int part;
   final int amount;
   final bool optional;
-  const PartBOMData(
+  const PartBomData(
       {required this.parent,
       required this.part,
       required this.amount,
@@ -792,8 +792,8 @@ class PartBOMData extends DataClass implements Insertable<PartBOMData> {
     return map;
   }
 
-  PartBOMCompanion toCompanion(bool nullToAbsent) {
-    return PartBOMCompanion(
+  PartBomCompanion toCompanion(bool nullToAbsent) {
+    return PartBomCompanion(
       parent: Value(parent),
       part: Value(part),
       amount: Value(amount),
@@ -801,10 +801,10 @@ class PartBOMData extends DataClass implements Insertable<PartBOMData> {
     );
   }
 
-  factory PartBOMData.fromJson(Map<String, dynamic> json,
+  factory PartBomData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PartBOMData(
+    return PartBomData(
       parent: serializer.fromJson<int>(json['parent']),
       part: serializer.fromJson<int>(json['part']),
       amount: serializer.fromJson<int>(json['amount']),
@@ -822,8 +822,8 @@ class PartBOMData extends DataClass implements Insertable<PartBOMData> {
     };
   }
 
-  PartBOMData copyWith({int? parent, int? part, int? amount, bool? optional}) =>
-      PartBOMData(
+  PartBomData copyWith({int? parent, int? part, int? amount, bool? optional}) =>
+      PartBomData(
         parent: parent ?? this.parent,
         part: part ?? this.part,
         amount: amount ?? this.amount,
@@ -831,7 +831,7 @@ class PartBOMData extends DataClass implements Insertable<PartBOMData> {
       );
   @override
   String toString() {
-    return (StringBuffer('PartBOMData(')
+    return (StringBuffer('PartBomData(')
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
@@ -845,25 +845,25 @@ class PartBOMData extends DataClass implements Insertable<PartBOMData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PartBOMData &&
+      (other is PartBomData &&
           other.parent == this.parent &&
           other.part == this.part &&
           other.amount == this.amount &&
           other.optional == this.optional);
 }
 
-class PartBOMCompanion extends UpdateCompanion<PartBOMData> {
+class PartBomCompanion extends UpdateCompanion<PartBomData> {
   final Value<int> parent;
   final Value<int> part;
   final Value<int> amount;
   final Value<bool> optional;
-  const PartBOMCompanion({
+  const PartBomCompanion({
     this.parent = const Value.absent(),
     this.part = const Value.absent(),
     this.amount = const Value.absent(),
     this.optional = const Value.absent(),
   });
-  PartBOMCompanion.insert({
+  PartBomCompanion.insert({
     required int parent,
     required int part,
     required int amount,
@@ -871,7 +871,7 @@ class PartBOMCompanion extends UpdateCompanion<PartBOMData> {
   })  : parent = Value(parent),
         part = Value(part),
         amount = Value(amount);
-  static Insertable<PartBOMData> custom({
+  static Insertable<PartBomData> custom({
     Expression<int>? parent,
     Expression<int>? part,
     Expression<int>? amount,
@@ -885,12 +885,12 @@ class PartBOMCompanion extends UpdateCompanion<PartBOMData> {
     });
   }
 
-  PartBOMCompanion copyWith(
+  PartBomCompanion copyWith(
       {Value<int>? parent,
       Value<int>? part,
       Value<int>? amount,
       Value<bool>? optional}) {
-    return PartBOMCompanion(
+    return PartBomCompanion(
       parent: parent ?? this.parent,
       part: part ?? this.part,
       amount: amount ?? this.amount,
@@ -918,7 +918,7 @@ class PartBOMCompanion extends UpdateCompanion<PartBOMData> {
 
   @override
   String toString() {
-    return (StringBuffer('PartBOMCompanion(')
+    return (StringBuffer('PartBomCompanion(')
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
@@ -928,11 +928,11 @@ class PartBOMCompanion extends UpdateCompanion<PartBOMData> {
   }
 }
 
-class $PartBOMTable extends PartBOM with TableInfo<$PartBOMTable, PartBOMData> {
+class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $PartBOMTable(this.attachedDatabase, [this._alias]);
+  $PartBomTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
@@ -963,11 +963,11 @@ class $PartBOMTable extends PartBOM with TableInfo<$PartBOMTable, PartBOMData> {
   @override
   List<GeneratedColumn> get $columns => [parent, part, amount, optional];
   @override
-  String get aliasedName => _alias ?? 'part_b_o_m';
+  String get aliasedName => _alias ?? 'part_bom';
   @override
-  String get actualTableName => 'part_b_o_m';
+  String get actualTableName => 'part_bom';
   @override
-  VerificationContext validateIntegrity(Insertable<PartBOMData> instance,
+  VerificationContext validateIntegrity(Insertable<PartBomData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1003,9 +1003,9 @@ class $PartBOMTable extends PartBOM with TableInfo<$PartBOMTable, PartBOMData> {
         {parent, part},
       ];
   @override
-  PartBOMData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PartBomData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PartBOMData(
+    return PartBomData(
       parent: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}parent'])!,
       part: attachedDatabase.options.types
@@ -1018,8 +1018,8 @@ class $PartBOMTable extends PartBOM with TableInfo<$PartBOMTable, PartBOMData> {
   }
 
   @override
-  $PartBOMTable createAlias(String alias) {
-    return $PartBOMTable(attachedDatabase, alias);
+  $PartBomTable createAlias(String alias) {
+    return $PartBomTable(attachedDatabase, alias);
   }
 }
 
@@ -1269,11 +1269,11 @@ abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   late final $CategoryTable category = $CategoryTable(this);
   late final $PartTable part = $PartTable(this);
-  late final $PartBOMTable partBOM = $PartBOMTable(this);
+  late final $PartBomTable partBom = $PartBomTable(this);
   late final $StockTable stock = $StockTable(this);
   Selectable<String> getParentCategoryNames(int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(p, n) AS (SELECT parent, name FROM category WHERE id = ?1 UNION ALL SELECT parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory',
+        'WITH RECURSIVE ParentCategory(i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory ORDER BY p',
         variables: [
           Variable<int>(var1)
         ],
@@ -1284,7 +1284,7 @@ abstract class _$Database extends GeneratedDatabase {
 
   Selectable<CategoryData> getParentCategories(int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(i, p, n, d, k) AS (SELECT id, parent, name, description, keywords FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name, description, keywords FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory',
+        'WITH RECURSIVE ParentCategory(i, p, n, d, k) AS (SELECT id, parent, name, description, keywords FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name, description, keywords FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory ORDER BY p',
         variables: [
           Variable<int>(var1)
         ],
@@ -1293,10 +1293,76 @@ abstract class _$Database extends GeneratedDatabase {
         }).asyncMap(category.mapFromRow);
   }
 
+  Selectable<GetPartsOfChildCategoriesResult> getPartsOfChildCategories(
+      int var1) {
+    return customSelect(
+        'WITH RECURSIVE ParentCategory(i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.i = category.parent) SELECT p.*, c.id AS cId, c.parent AS cParent, c.name AS cName, c.description AS cDescription, c.keywords AS cKeywords FROM part AS p JOIN category AS c ON p.category = c.id WHERE p.category IN (SELECT i FROM ParentCategory) ORDER BY p.category',
+        variables: [
+          Variable<int>(var1)
+        ],
+        readsFrom: {
+          category,
+          part,
+        }).map((QueryRow row) {
+      return GetPartsOfChildCategoriesResult(
+        id: row.read<int>('id'),
+        ipn: row.readNullable<String>('ipn'),
+        name: row.read<String>('name'),
+        description: row.readNullable<String>('description'),
+        category: row.read<int>('category'),
+        image: row.readNullable<String>('image'),
+        variant: row.readNullable<int>('variant'),
+        template: row.read<bool>('template'),
+        sku: row.readNullable<String>('sku'),
+        mpn: row.readNullable<String>('mpn'),
+        cId: row.read<int>('cId'),
+        cParent: row.readNullable<int>('cParent'),
+        cName: row.read<String>('cName'),
+        cDescription: row.read<String>('cDescription'),
+        cKeywords: row.readNullable<String>('cKeywords'),
+      );
+    });
+  }
+
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [category, part, partBOM, stock];
+      [category, part, partBom, stock];
+}
+
+class GetPartsOfChildCategoriesResult {
+  final int id;
+  final String? ipn;
+  final String name;
+  final String? description;
+  final int category;
+  final String? image;
+  final int? variant;
+  final bool template;
+  final String? sku;
+  final String? mpn;
+  final int cId;
+  final int? cParent;
+  final String cName;
+  final String cDescription;
+  final String? cKeywords;
+  GetPartsOfChildCategoriesResult({
+    required this.id,
+    this.ipn,
+    required this.name,
+    this.description,
+    required this.category,
+    this.image,
+    this.variant,
+    required this.template,
+    this.sku,
+    this.mpn,
+    required this.cId,
+    this.cParent,
+    required this.cName,
+    required this.cDescription,
+    this.cKeywords,
+  });
 }

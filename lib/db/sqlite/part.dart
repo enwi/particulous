@@ -18,7 +18,7 @@ class Part extends Table {
   // IntColumn get manufacturer => integer().references(manufacturer, #id)();
 }
 
-class PartBOM extends Table {
+class PartBom extends Table {
   IntColumn get parent => integer().references(Part, #id)();
   IntColumn get part => integer().references(Part, #id)();
   IntColumn get amount => integer()();

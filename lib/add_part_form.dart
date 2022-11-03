@@ -1,13 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:particulous/data/category.dart';
+import 'package:particulous/util/check_box_form_field.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 import 'category_dropdown.dart';
 import 'data/part.dart';
 import 'db/db_handler.dart';
+import 'main.dart';
 
 class AddPartForm extends StatefulWidget {
   final DBHandler dbHandler;
-  const AddPartForm({super.key, required this.dbHandler});
+  final String? name;
+  final String? description;
+  final List<PlatformFile> images;
+  const AddPartForm({
+    super.key,
+    required this.dbHandler,
+    this.name,
+    this.description,
+    this.images = const [],
+  });
 
   @override
   State<AddPartForm> createState() => _AddPartFormState();
@@ -16,8 +32,12 @@ class AddPartForm extends StatefulWidget {
 class _AddPartFormState extends State<AddPartForm> {
   final _formKey = GlobalKey<FormState>();
 
+  String? _partIpn;
   String? _partName;
+  String? _partDescription;
   Category? _partCategory;
+  PlatformFile? _partImage;
+  bool? _partTemplate;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +46,7 @@ class _AddPartFormState extends State<AddPartForm> {
       child: Column(
         children: [
           TextFormField(
+            initialValue: widget.name,
             decoration: const InputDecoration(label: Text('Part name')),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -38,6 +59,16 @@ class _AddPartFormState extends State<AddPartForm> {
             },
             onSaved: (newValue) => _partName = newValue,
           ),
+          TextFormField(
+            decoration: const InputDecoration(
+                label: Text('Internal Product Number (IPN)')),
+            onSaved: (newValue) => _partIpn = newValue,
+          ),
+          TextFormField(
+            initialValue: widget.description,
+            decoration: const InputDecoration(label: Text('Description')),
+            onSaved: (newValue) => _partDescription = newValue,
+          ),
           CategoryDropdown(
             dbHandler: widget.dbHandler,
             onSaved: (newValue) => _partCategory = newValue,
@@ -48,18 +79,64 @@ class _AddPartFormState extends State<AddPartForm> {
               return null;
             },
           ),
+          FormBuilderFilePicker(
+            initialValue: widget.images,
+            name: 'image',
+            allowMultiple: false,
+            maxFiles: 1,
+            onSaved: (newValue) => _partImage = newValue?.first,
+            typeSelectors: [
+              TypeSelector(
+                type: FileType.image,
+                selector: Row(
+                  children: const [
+                    Icon(Icons.add_circle),
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text("Add image"),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          CheckboxFormField(
+            title: const Text('Template part'),
+            initialValue: false,
+            onSaved: (newValue) => _partTemplate = newValue,
+          ),
           ElevatedButton(
             onPressed: () {
               if (!_formKey.currentState!.validate()) {
                 return;
               }
               _formKey.currentState!.save();
+              final internalImage = _partImage == null
+                  ? null
+                  : '${_partName.hashCode}.${(_partImage!.extension ?? 'png')}';
               widget.dbHandler
                   .insertPart(Part(
-                      identifier: -1,
-                      name: _partName!,
-                      category: _partCategory!))
+                identifier: -1,
+                ipn: _partIpn,
+                name: _partName!,
+                description: _partDescription,
+                category: _partCategory!,
+                image: internalImage,
+                // variant: ,
+                template: _partTemplate!,
+                // sku: ,
+                // mpn: ,
+              ))
                   .then((value) {
+                if (internalImage != null) {
+                  final dirs = Provider.of<ApplicationDirectories>(context,
+                      listen: false);
+                  File(join(dirs.imageDir.path, internalImage)).writeAsBytes(
+                      _partImage!.bytes ??
+                          File(_partImage!.path!).readAsBytesSync());
+                }
+                return value;
+              }).then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content:
                         Text('Successfully created new part with ID $value')));

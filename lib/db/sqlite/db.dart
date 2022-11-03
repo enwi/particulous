@@ -16,26 +16,38 @@ part 'stock.dart';
   tables: [
     Part,
     Category,
-    PartBOM,
+    PartBom,
     Stock,
   ],
   queries: {
-    'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(p, n) AS ('
-        'SELECT parent, name FROM category WHERE id = ? '
+    'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(i,p,n) AS ('
+        'SELECT id, parent, name FROM category WHERE id = ? '
         'UNION ALL '
-        'SELECT parent, name FROM category '
+        'SELECT id, parent, name FROM category '
         'JOIN ParentCategory '
         'ON ParentCategory.p=category.id '
         ')'
-        'SELECT n AS name FROM ParentCategory;',
-    'getParentCategories': 'WITH RECURSIVE ParentCategory(i, p, n, d, k) AS ('
+        'SELECT n AS name FROM ParentCategory ORDER BY p;',
+    'getParentCategories': 'WITH RECURSIVE ParentCategory(i,p,n,d,k) AS ('
         'SELECT id, parent, name, description, keywords FROM category WHERE id = ? '
         'UNION ALL '
         'SELECT id, parent, name, description, keywords FROM category '
         'JOIN ParentCategory '
         'ON ParentCategory.p=category.id '
         ')'
-        'SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory;',
+        'SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory ORDER BY p;',
+    'getPartsOfChildCategories': 'WITH RECURSIVE ParentCategory(i, p, n) AS ('
+        'SELECT id, parent, name FROM category WHERE id = ? '
+        'UNION ALL '
+        'SELECT id, parent, name FROM category '
+        'JOIN ParentCategory '
+        'ON ParentCategory.i=category.parent '
+        ')'
+        'SELECT p.*, c.id AS cId, c.parent AS cParent, c.name AS cName, c.description AS cDescription, c.keywords AS cKeywords '
+        'FROM part p '
+        'JOIN category c ON p.category=c.id '
+        'WHERE p.category IN (SELECT i FROM ParentCategory)'
+        'ORDER BY p.category;',
   },
 )
 class Database extends _$Database {
