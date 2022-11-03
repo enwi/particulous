@@ -36,18 +36,31 @@ class CategoryScreen extends StatelessWidget {
               title:
                   Text('${snapshot.data!.name} (${snapshot.data!.identifier})'),
             ),
-            body: StreamBuilder(
-              stream: dbh.watchPartsOfCategory(snapshot.data!.identifier),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) =>
-                        PartWidget(dbh: dbh, part: snapshot.data![index]),
-                  );
-                }
-                return const LinearProgressIndicator();
-              },
+            body: Column(
+              children: [
+                Column(
+                  children: [
+                    Text('Description: ${snapshot.data!.description}'),
+                    Text('Keywords: ${snapshot.data!.keywords}'),
+                  ],
+                ),
+                const Divider(),
+                Expanded(
+                  child: StreamBuilder(
+                    stream: dbh.watchPartsOfCategory(snapshot.data!.identifier),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) =>
+                              PartWidget(dbh: dbh, part: snapshot.data![index]),
+                        );
+                      }
+                      return const LinearProgressIndicator();
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         }
