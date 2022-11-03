@@ -15,11 +15,12 @@ class PartWidget extends StatefulWidget {
   final Part part;
   final bool clickableCategories;
 
-  const PartWidget(
-      {super.key,
-      required this.dbh,
-      required this.part,
-      this.clickableCategories = false});
+  const PartWidget({
+    super.key,
+    required this.dbh,
+    required this.part,
+    this.clickableCategories = false,
+  });
 
   @override
   State<PartWidget> createState() => _PartWidgetState();
@@ -85,7 +86,7 @@ class _PartWidgetState extends State<PartWidget>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: size.width * 0.5,
+                width: size.width - 20 - 150.0 * _animation.value,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                   child: Text(
@@ -98,7 +99,7 @@ class _PartWidgetState extends State<PartWidget>
                 ),
               ),
               SizedBox(
-                width: size.width * 0.5,
+                width: size.width - 20 - 150.0 * _animation.value,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                   child: Text(
@@ -111,7 +112,7 @@ class _PartWidgetState extends State<PartWidget>
                 ),
               ),
               SizedBox(
-                width: size.width * 0.5,
+                width: size.width - 20 - 150.0 * _animation.value,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
                   child: FutureBuilder<List<Category>>(
@@ -134,19 +135,19 @@ class _PartWidgetState extends State<PartWidget>
               ),
             ],
           ),
-          Column(
-            children: const [
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 40, 0, 0),
-                child: Text(
-                  '\$ 24.00',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Column(
+          //   children: const [
+          //     Padding(
+          //       padding: EdgeInsets.fromLTRB(5, 40, 0, 0),
+          //       child: Text(
+          //         '\$ 24.00',
+          //         style: TextStyle(
+          //           fontSize: 14,
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
