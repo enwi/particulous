@@ -38,4 +38,5 @@ abstract class DBStrategy {
   Stream<List<Stock>> watchStockOfPart(final int part);
 
   Future<int> alterStock(final AlterStock? alter);
+  Future<List<String>> fetchSearchSuggestions(final String query);
 }

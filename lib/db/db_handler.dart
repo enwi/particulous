@@ -50,4 +50,7 @@ class DBHandler {
       strategy.watchStockOfPart(part);
 
   Future<int> alterStock(final AlterStock? alter) => strategy.alterStock(alter);
+
+  Future<List<String>> fetchSearchSuggestions(final String query) =>
+      strategy.fetchSearchSuggestions(query);
 }

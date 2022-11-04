@@ -15,11 +15,16 @@ class PartWidget extends StatefulWidget {
   final Part part;
   final bool clickableCategories;
 
+  /// Callback for tapping on the part,
+  /// if not specified this will push a new PartDetailScreen using Navigator.push
+  final GestureTapCallback? onTap;
+
   const PartWidget({
     super.key,
     required this.dbh,
     required this.part,
     this.clickableCategories = false,
+    this.onTap,
   });
 
   @override
@@ -50,13 +55,14 @@ class _PartWidgetState extends State<PartWidget>
     final size = MediaQuery.of(context).size;
     final imageDir = Provider.of<ApplicationDirectories>(context).imageDir.path;
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              PartDetailScreen(dbh: widget.dbh, part: widget.part),
-        ),
-      ),
+      onTap: widget.onTap ??
+          () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      PartDetailScreen(dbh: widget.dbh, part: widget.part),
+                ),
+              ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Row(

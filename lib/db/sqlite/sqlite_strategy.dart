@@ -106,12 +106,6 @@ class SQLiteStrategy implements DBStrategy {
 
   @override
   Stream<List<Part>> watchPartsOfCategory(final int category) {
-    // return (_db.select(_db.part)..where((tbl) => tbl.category.equals(category)))
-    //     .join([
-    //       innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id))
-    //     ])
-    //     .watch()
-    //     .map((results) => results.map(SQLitePart.fromResult).toList());
     return _db
         .getPartsOfChildCategories(category)
         .watch()
@@ -223,5 +217,30 @@ class SQLiteStrategy implements DBStrategy {
       ));
       return newStockTracking.id;
     });
+  }
+
+  @override
+  Future<List<String>> fetchSearchSuggestions(final String query) {
+    return (_db.selectOnly(_db.part)
+          ..addColumns([_db.part.name])
+          ..join([
+            innerJoin(
+                _db.category, _db.part.category.equalsExp(_db.category.id))
+          ])
+          ..where(query
+              .split(' ')
+              .map(generateSearch)
+              .reduce((value, element) => value & element))
+          // ..orderBy(terms)
+          ..limit(25))
+        .get()
+        .then((result) =>
+            result.map((e) => e.rawData.read<String>('part.name')).toList());
+  }
+
+  Expression<bool> generateSearch(String query) {
+    return _db.category.keywords.contains(query) |
+        _db.category.name.contains(query) |
+        _db.part.name.contains(query);
   }
 }

@@ -5,6 +5,7 @@ import 'package:particulous/part_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'db/db_handler.dart';
+import 'part_detail_screen.dart';
 
 class CategoryScreenArgs {
   final int categoryId;
@@ -52,8 +53,10 @@ class CategoryScreen extends StatelessWidget {
                       if (snapshot.hasData) {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) =>
-                              PartWidget(dbh: dbh, part: snapshot.data![index]),
+                          itemBuilder: (context, index) => PartWidget(
+                            dbh: dbh,
+                            part: snapshot.data![index],
+                          ),
                         );
                       }
                       return const LinearProgressIndicator();
