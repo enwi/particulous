@@ -5,7 +5,6 @@ import 'package:particulous/part_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'db/db_handler.dart';
-import 'part_detail_screen.dart';
 
 class CategoryScreenArgs {
   final int categoryId;

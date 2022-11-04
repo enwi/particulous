@@ -39,4 +39,6 @@ abstract class DBStrategy {
 
   Future<int> alterStock(final AlterStock? alter);
   Future<List<String>> fetchSearchSuggestions(final String query);
+
+  Future<int> insertStock(final Stock stock);
 }

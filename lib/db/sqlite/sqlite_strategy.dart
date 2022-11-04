@@ -243,4 +243,13 @@ class SQLiteStrategy implements DBStrategy {
         _db.category.name.contains(query) |
         _db.part.name.contains(query);
   }
+
+  @override
+  Future<int> insertStock(Stock stock) {
+    return _db
+        .into(_db.stock)
+        .insertReturning(
+            db.StockCompanion.insert(part: stock.part, amount: stock.amount))
+        .then((value) => value.id);
+  }
 }

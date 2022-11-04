@@ -53,4 +53,6 @@ class DBHandler {
 
   Future<List<String>> fetchSearchSuggestions(final String query) =>
       strategy.fetchSearchSuggestions(query);
+
+  Future<int> insertStock(final Stock stock) => strategy.insertStock(stock);
 }
