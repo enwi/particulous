@@ -6,10 +6,16 @@ import 'db/db_handler.dart';
 
 class CategoryDropdown extends StatefulWidget {
   final DBHandler dbHandler;
+  final String? labelText;
   final FormFieldSetter<Category>? onSaved;
   final FormFieldValidator<Category>? validator;
-  const CategoryDropdown(
-      {super.key, required this.dbHandler, this.onSaved, this.validator});
+  const CategoryDropdown({
+    super.key,
+    required this.dbHandler,
+    this.labelText,
+    this.onSaved,
+    this.validator,
+  });
 
   @override
   State<CategoryDropdown> createState() => _CategoryDropdownState();
@@ -67,9 +73,9 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
       asyncItems: (text) => _categories,
       itemAsString: (item) => '${item.name} (${item.identifier})',
       onSaved: widget.onSaved,
-      dropdownDecoratorProps: const DropDownDecoratorProps(
+      dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
-          labelText: 'Parent category (optional)',
+          labelText: widget.labelText,
         ),
       ),
       validator: widget.validator,

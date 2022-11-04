@@ -71,6 +71,7 @@ class _AddPartFormState extends State<AddPartForm> {
           ),
           CategoryDropdown(
             dbHandler: widget.dbHandler,
+            labelText: 'Category',
             onSaved: (newValue) => _partCategory = newValue,
             validator: (value) {
               if (value == null) {

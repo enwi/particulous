@@ -61,6 +61,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
           ),
           CategoryDropdown(
             dbHandler: widget.dbHandler,
+            labelText: 'Parent category (optional)',
             onSaved: (newValue) => _categoryParent = newValue,
           ),
           ElevatedButton(
