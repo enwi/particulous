@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:particulous/add_stock_form.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part_stock_table.dart';
+import 'package:particulous/util/add_utils.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
@@ -108,24 +108,10 @@ class PartDetailScreen extends StatelessWidget {
                                 child: IconButton(
                                   icon: const Icon(Icons.add),
                                   splashRadius: 20,
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Scaffold(
-                                        appBar: AppBar(
-                                          title: const Text('New Stock'),
-                                        ),
-                                        body: Center(
-                                          child: SizedBox(
-                                            width: 500,
-                                            child: AddStockForm(
-                                              dbHandler: dbh,
-                                              initialPart: part,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  onPressed: () => AddUtils.addStock(
+                                    context: context,
+                                    dbh: dbh,
+                                    part: part,
                                   ),
                                 ),
                               ),
