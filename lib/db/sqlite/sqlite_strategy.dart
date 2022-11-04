@@ -1,9 +1,11 @@
 import 'package:drift/drift.dart';
+import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_strategy.dart';
 import 'package:particulous/db/sqlite/db.dart' as db;
 
 import '../../data/category.dart';
+import '../../data/stock.dart';
 
 extension SQLitePart on Part {
   static Part fromResult(final TypedResult result) {
@@ -58,6 +60,17 @@ extension SQLiteCategory on Category {
       description: data.description,
       keywords: data.keywords,
       parent: data.parent,
+    );
+  }
+}
+
+extension SQLiteStock on Stock {
+  static Stock fromStockData(final db.StockData data) {
+    return Stock(
+      id: data.id,
+      part: data.part,
+      amount: data.amount,
+      modified: data.modified,
     );
   }
 }
@@ -160,5 +173,55 @@ class SQLiteStrategy implements DBStrategy {
           mpn: Value(part.mpn),
         ))
         .then((value) => value.id);
+  }
+
+  @override
+  Future<int> fetchStockCountOfPart(final int part) {
+    final sum = _db.stock.amount.sum();
+    return (_db.selectOnly(_db.stock)
+          ..addColumns([sum])
+          ..where(_db.stock.part.equals(part)))
+        .map((row) => row.read(sum))
+        .getSingle()
+        .then((value) => value ?? 0);
+  }
+
+  @override
+  Stream<int> watchStockCountOfPart(final int part) {
+    final sum = _db.stock.amount.sum();
+    return (_db.selectOnly(_db.stock)
+          ..addColumns([sum])
+          ..where(_db.stock.part.equals(part)))
+        .map((row) => row.read(sum))
+        .watchSingle()
+        .map((value) => value ?? 0);
+  }
+
+  @override
+  Stream<List<Stock>> watchStockOfPart(final int part) {
+    return (_db.select(_db.stock)
+          ..where((tbl) => tbl.part.equals(part))
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.amount)]))
+        .watch()
+        .map((result) => result.map(SQLiteStock.fromStockData).toList());
+  }
+
+  @override
+  Future<int> alterStock(AlterStock? alter) {
+    if (alter == null) {
+      return Future.error(Exception('AlterStock cannot be null'));
+    }
+    return _db.transaction<int>(() async {
+      final newStockTracking = await _db
+          .into(_db.stockTracking)
+          .insertReturning(db.StockTrackingCompanion.insert(
+              notes: alter.notes, amount: alter.amount, stock: alter.stock));
+      await (_db.update(_db.stock)..where((tbl) => tbl.id.equals(alter.stock)))
+          .write(db.StockCompanion.custom(
+        amount: _db.stock.amount + Variable(alter.amount),
+        modified: Variable(newStockTracking.date),
+      ));
+      return newStockTracking.id;
+    });
   }
 }

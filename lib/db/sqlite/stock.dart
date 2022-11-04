@@ -10,3 +10,12 @@ class Stock extends Table {
   // TODO price
   // TODO order
 }
+
+class StockTracking extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get notes => text()();
+  DateTimeColumn get date => dateTime().withDefault(currentDateAndTime)();
+  IntColumn get amount => integer()();
+  IntColumn get stock => integer().references(Stock, #id)();
+  // TODO user
+}

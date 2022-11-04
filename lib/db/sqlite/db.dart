@@ -18,6 +18,7 @@ part 'stock.dart';
     Category,
     PartBom,
     Stock,
+    StockTracking,
   ],
   queries: {
     'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(i,p,n) AS ('

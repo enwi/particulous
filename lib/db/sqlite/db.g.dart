@@ -299,8 +299,8 @@ class $CategoryTable extends Category
 
 class PartData extends DataClass implements Insertable<PartData> {
   final int id;
-  final String? ipn;
   final String name;
+  final String? ipn;
   final String? description;
   final int category;
   final String? image;
@@ -310,8 +310,8 @@ class PartData extends DataClass implements Insertable<PartData> {
   final String? mpn;
   const PartData(
       {required this.id,
-      this.ipn,
       required this.name,
+      this.ipn,
       this.description,
       required this.category,
       this.image,
@@ -323,10 +323,10 @@ class PartData extends DataClass implements Insertable<PartData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
     if (!nullToAbsent || ipn != null) {
       map['ipn'] = Variable<String>(ipn);
     }
-    map['name'] = Variable<String>(name);
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
@@ -350,8 +350,8 @@ class PartData extends DataClass implements Insertable<PartData> {
   PartCompanion toCompanion(bool nullToAbsent) {
     return PartCompanion(
       id: Value(id),
-      ipn: ipn == null && nullToAbsent ? const Value.absent() : Value(ipn),
       name: Value(name),
+      ipn: ipn == null && nullToAbsent ? const Value.absent() : Value(ipn),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
@@ -372,8 +372,8 @@ class PartData extends DataClass implements Insertable<PartData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PartData(
       id: serializer.fromJson<int>(json['id']),
-      ipn: serializer.fromJson<String?>(json['ipn']),
       name: serializer.fromJson<String>(json['name']),
+      ipn: serializer.fromJson<String?>(json['ipn']),
       description: serializer.fromJson<String?>(json['description']),
       category: serializer.fromJson<int>(json['category']),
       image: serializer.fromJson<String?>(json['image']),
@@ -388,8 +388,8 @@ class PartData extends DataClass implements Insertable<PartData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'ipn': serializer.toJson<String?>(ipn),
       'name': serializer.toJson<String>(name),
+      'ipn': serializer.toJson<String?>(ipn),
       'description': serializer.toJson<String?>(description),
       'category': serializer.toJson<int>(category),
       'image': serializer.toJson<String?>(image),
@@ -402,8 +402,8 @@ class PartData extends DataClass implements Insertable<PartData> {
 
   PartData copyWith(
           {int? id,
-          Value<String?> ipn = const Value.absent(),
           String? name,
+          Value<String?> ipn = const Value.absent(),
           Value<String?> description = const Value.absent(),
           int? category,
           Value<String?> image = const Value.absent(),
@@ -413,8 +413,8 @@ class PartData extends DataClass implements Insertable<PartData> {
           Value<String?> mpn = const Value.absent()}) =>
       PartData(
         id: id ?? this.id,
-        ipn: ipn.present ? ipn.value : this.ipn,
         name: name ?? this.name,
+        ipn: ipn.present ? ipn.value : this.ipn,
         description: description.present ? description.value : this.description,
         category: category ?? this.category,
         image: image.present ? image.value : this.image,
@@ -427,8 +427,8 @@ class PartData extends DataClass implements Insertable<PartData> {
   String toString() {
     return (StringBuffer('PartData(')
           ..write('id: $id, ')
-          ..write('ipn: $ipn, ')
           ..write('name: $name, ')
+          ..write('ipn: $ipn, ')
           ..write('description: $description, ')
           ..write('category: $category, ')
           ..write('image: $image, ')
@@ -442,14 +442,14 @@ class PartData extends DataClass implements Insertable<PartData> {
 
   @override
   int get hashCode => Object.hash(
-      id, ipn, name, description, category, image, variant, template, sku, mpn);
+      id, name, ipn, description, category, image, variant, template, sku, mpn);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PartData &&
           other.id == this.id &&
-          other.ipn == this.ipn &&
           other.name == this.name &&
+          other.ipn == this.ipn &&
           other.description == this.description &&
           other.category == this.category &&
           other.image == this.image &&
@@ -461,8 +461,8 @@ class PartData extends DataClass implements Insertable<PartData> {
 
 class PartCompanion extends UpdateCompanion<PartData> {
   final Value<int> id;
-  final Value<String?> ipn;
   final Value<String> name;
+  final Value<String?> ipn;
   final Value<String?> description;
   final Value<int> category;
   final Value<String?> image;
@@ -472,8 +472,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   final Value<String?> mpn;
   const PartCompanion({
     this.id = const Value.absent(),
-    this.ipn = const Value.absent(),
     this.name = const Value.absent(),
+    this.ipn = const Value.absent(),
     this.description = const Value.absent(),
     this.category = const Value.absent(),
     this.image = const Value.absent(),
@@ -484,8 +484,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   });
   PartCompanion.insert({
     this.id = const Value.absent(),
-    this.ipn = const Value.absent(),
     required String name,
+    this.ipn = const Value.absent(),
     this.description = const Value.absent(),
     required int category,
     this.image = const Value.absent(),
@@ -497,8 +497,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
         category = Value(category);
   static Insertable<PartData> custom({
     Expression<int>? id,
-    Expression<String>? ipn,
     Expression<String>? name,
+    Expression<String>? ipn,
     Expression<String>? description,
     Expression<int>? category,
     Expression<String>? image,
@@ -509,8 +509,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (ipn != null) 'ipn': ipn,
       if (name != null) 'name': name,
+      if (ipn != null) 'ipn': ipn,
       if (description != null) 'description': description,
       if (category != null) 'category': category,
       if (image != null) 'image': image,
@@ -523,8 +523,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
 
   PartCompanion copyWith(
       {Value<int>? id,
-      Value<String?>? ipn,
       Value<String>? name,
+      Value<String?>? ipn,
       Value<String?>? description,
       Value<int>? category,
       Value<String?>? image,
@@ -534,8 +534,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
       Value<String?>? mpn}) {
     return PartCompanion(
       id: id ?? this.id,
-      ipn: ipn ?? this.ipn,
       name: name ?? this.name,
+      ipn: ipn ?? this.ipn,
       description: description ?? this.description,
       category: category ?? this.category,
       image: image ?? this.image,
@@ -552,11 +552,11 @@ class PartCompanion extends UpdateCompanion<PartData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (ipn.present) {
-      map['ipn'] = Variable<String>(ipn.value);
-    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
+    }
+    if (ipn.present) {
+      map['ipn'] = Variable<String>(ipn.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -586,8 +586,8 @@ class PartCompanion extends UpdateCompanion<PartData> {
   String toString() {
     return (StringBuffer('PartCompanion(')
           ..write('id: $id, ')
-          ..write('ipn: $ipn, ')
           ..write('name: $name, ')
+          ..write('ipn: $ipn, ')
           ..write('description: $description, ')
           ..write('category: $category, ')
           ..write('image: $image, ')
@@ -612,11 +612,6 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _ipnMeta = const VerificationMeta('ipn');
-  @override
-  late final GeneratedColumn<String> ipn = GeneratedColumn<String>(
-      'ipn', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -624,6 +619,11 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1024),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
+  final VerificationMeta _ipnMeta = const VerificationMeta('ipn');
+  @override
+  late final GeneratedColumn<String> ipn = GeneratedColumn<String>(
+      'ipn', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -670,8 +670,8 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        ipn,
         name,
+        ipn,
         description,
         category,
         image,
@@ -692,15 +692,15 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('ipn')) {
-      context.handle(
-          _ipnMeta, ipn.isAcceptableOrUnknown(data['ipn']!, _ipnMeta));
-    }
     if (data.containsKey('name')) {
       context.handle(
           _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
+    }
+    if (data.containsKey('ipn')) {
+      context.handle(
+          _ipnMeta, ipn.isAcceptableOrUnknown(data['ipn']!, _ipnMeta));
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -745,10 +745,10 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
     return PartData(
       id: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      ipn: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}ipn']),
       name: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      ipn: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}ipn']),
       description: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
       category: attachedDatabase.options.types
@@ -1265,12 +1265,292 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   }
 }
 
+class StockTrackingData extends DataClass
+    implements Insertable<StockTrackingData> {
+  final int id;
+  final String notes;
+  final DateTime date;
+  final int amount;
+  final int stock;
+  const StockTrackingData(
+      {required this.id,
+      required this.notes,
+      required this.date,
+      required this.amount,
+      required this.stock});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['notes'] = Variable<String>(notes);
+    map['date'] = Variable<DateTime>(date);
+    map['amount'] = Variable<int>(amount);
+    map['stock'] = Variable<int>(stock);
+    return map;
+  }
+
+  StockTrackingCompanion toCompanion(bool nullToAbsent) {
+    return StockTrackingCompanion(
+      id: Value(id),
+      notes: Value(notes),
+      date: Value(date),
+      amount: Value(amount),
+      stock: Value(stock),
+    );
+  }
+
+  factory StockTrackingData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockTrackingData(
+      id: serializer.fromJson<int>(json['id']),
+      notes: serializer.fromJson<String>(json['notes']),
+      date: serializer.fromJson<DateTime>(json['date']),
+      amount: serializer.fromJson<int>(json['amount']),
+      stock: serializer.fromJson<int>(json['stock']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'notes': serializer.toJson<String>(notes),
+      'date': serializer.toJson<DateTime>(date),
+      'amount': serializer.toJson<int>(amount),
+      'stock': serializer.toJson<int>(stock),
+    };
+  }
+
+  StockTrackingData copyWith(
+          {int? id, String? notes, DateTime? date, int? amount, int? stock}) =>
+      StockTrackingData(
+        id: id ?? this.id,
+        notes: notes ?? this.notes,
+        date: date ?? this.date,
+        amount: amount ?? this.amount,
+        stock: stock ?? this.stock,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StockTrackingData(')
+          ..write('id: $id, ')
+          ..write('notes: $notes, ')
+          ..write('date: $date, ')
+          ..write('amount: $amount, ')
+          ..write('stock: $stock')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, notes, date, amount, stock);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockTrackingData &&
+          other.id == this.id &&
+          other.notes == this.notes &&
+          other.date == this.date &&
+          other.amount == this.amount &&
+          other.stock == this.stock);
+}
+
+class StockTrackingCompanion extends UpdateCompanion<StockTrackingData> {
+  final Value<int> id;
+  final Value<String> notes;
+  final Value<DateTime> date;
+  final Value<int> amount;
+  final Value<int> stock;
+  const StockTrackingCompanion({
+    this.id = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.date = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.stock = const Value.absent(),
+  });
+  StockTrackingCompanion.insert({
+    this.id = const Value.absent(),
+    required String notes,
+    this.date = const Value.absent(),
+    required int amount,
+    required int stock,
+  })  : notes = Value(notes),
+        amount = Value(amount),
+        stock = Value(stock);
+  static Insertable<StockTrackingData> custom({
+    Expression<int>? id,
+    Expression<String>? notes,
+    Expression<DateTime>? date,
+    Expression<int>? amount,
+    Expression<int>? stock,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (notes != null) 'notes': notes,
+      if (date != null) 'date': date,
+      if (amount != null) 'amount': amount,
+      if (stock != null) 'stock': stock,
+    });
+  }
+
+  StockTrackingCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? notes,
+      Value<DateTime>? date,
+      Value<int>? amount,
+      Value<int>? stock}) {
+    return StockTrackingCompanion(
+      id: id ?? this.id,
+      notes: notes ?? this.notes,
+      date: date ?? this.date,
+      amount: amount ?? this.amount,
+      stock: stock ?? this.stock,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
+    }
+    if (stock.present) {
+      map['stock'] = Variable<int>(stock.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockTrackingCompanion(')
+          ..write('id: $id, ')
+          ..write('notes: $notes, ')
+          ..write('date: $date, ')
+          ..write('amount: $amount, ')
+          ..write('stock: $stock')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StockTrackingTable extends StockTracking
+    with TableInfo<$StockTrackingTable, StockTrackingData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StockTrackingTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+      'date', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _stockMeta = const VerificationMeta('stock');
+  @override
+  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
+      'stock', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES "stock" ("id")');
+  @override
+  List<GeneratedColumn> get $columns => [id, notes, date, amount, stock];
+  @override
+  String get aliasedName => _alias ?? 'stock_tracking';
+  @override
+  String get actualTableName => 'stock_tracking';
+  @override
+  VerificationContext validateIntegrity(Insertable<StockTrackingData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    } else if (isInserting) {
+      context.missing(_notesMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('stock')) {
+      context.handle(
+          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
+    } else if (isInserting) {
+      context.missing(_stockMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  StockTrackingData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockTrackingData(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      notes: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}notes'])!,
+      date: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
+      amount: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
+      stock: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}stock'])!,
+    );
+  }
+
+  @override
+  $StockTrackingTable createAlias(String alias) {
+    return $StockTrackingTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   late final $CategoryTable category = $CategoryTable(this);
   late final $PartTable part = $PartTable(this);
   late final $PartBomTable partBom = $PartBomTable(this);
   late final $StockTable stock = $StockTable(this);
+  late final $StockTrackingTable stockTracking = $StockTrackingTable(this);
   Selectable<String> getParentCategoryNames(int var1) {
     return customSelect(
         'WITH RECURSIVE ParentCategory(i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory ORDER BY p',
@@ -1306,8 +1586,8 @@ abstract class _$Database extends GeneratedDatabase {
         }).map((QueryRow row) {
       return GetPartsOfChildCategoriesResult(
         id: row.read<int>('id'),
-        ipn: row.readNullable<String>('ipn'),
         name: row.read<String>('name'),
+        ipn: row.readNullable<String>('ipn'),
         description: row.readNullable<String>('description'),
         category: row.read<int>('category'),
         image: row.readNullable<String>('image'),
@@ -1329,13 +1609,16 @@ abstract class _$Database extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [category, part, partBom, stock];
+      [category, part, partBom, stock, stockTracking];
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
 
 class GetPartsOfChildCategoriesResult {
   final int id;
-  final String? ipn;
   final String name;
+  final String? ipn;
   final String? description;
   final int category;
   final String? image;
@@ -1350,8 +1633,8 @@ class GetPartsOfChildCategoriesResult {
   final String? cKeywords;
   GetPartsOfChildCategoriesResult({
     required this.id,
-    this.ipn,
     required this.name,
+    this.ipn,
     this.description,
     required this.category,
     this.image,

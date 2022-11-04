@@ -1,7 +1,9 @@
+import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/db/db_strategy.dart';
 
 import '../data/category.dart';
 import '../data/part.dart';
+import '../data/stock.dart';
 
 class DBHandler {
   final DBStrategy strategy;
@@ -37,4 +39,15 @@ class DBHandler {
 
   Future<Category> fetchCategory(final int category) =>
       strategy.fetchCategory(category);
+
+  Future<int> fetchStockCountOfPart(final int part) =>
+      strategy.fetchStockCountOfPart(part);
+
+  Stream<int> watchStockCountOfPart(final int part) =>
+      strategy.watchStockCountOfPart(part);
+
+  Stream<List<Stock>> watchStockOfPart(final int part) =>
+      strategy.watchStockOfPart(part);
+
+  Future<int> alterStock(final AlterStock? alter) => strategy.alterStock(alter);
 }

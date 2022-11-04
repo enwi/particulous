@@ -1,5 +1,7 @@
+import '../data/alter_stock.dart';
 import '../data/category.dart';
 import '../data/part.dart';
+import '../data/stock.dart';
 
 abstract class DBStrategy {
   /// Close all connections and db
@@ -30,4 +32,10 @@ abstract class DBStrategy {
   Future<int> insertPart(final Part part);
 
   Future<Category> fetchCategory(final int category);
+
+  Future<int> fetchStockCountOfPart(final int part);
+  Stream<int> watchStockCountOfPart(final int part);
+  Stream<List<Stock>> watchStockOfPart(final int part);
+
+  Future<int> alterStock(final AlterStock? alter);
 }
