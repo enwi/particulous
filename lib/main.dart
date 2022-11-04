@@ -136,13 +136,15 @@ class MyWidget extends StatelessWidget {
                           queryParameters: {'product_code': product},
                         )))
                     .then((response) => jsonDecode(response.body))
-                    .then((json) => Future.wait([
-                          Future.value(json),
-                          fetchImage(json['productImages'])
-                        ]))
-                    .then((values) {
+                    .then((json) {
+                  final images = json['productImages'];
+                  return Future.wait([
+                    Future.value(json),
+                    images == null ? Future.value(null) : fetchImage(images)
+                  ]);
+                }).then((values) {
                   final json = values[0] as dynamic;
-                  if (json is List<dynamic>) {
+                  if (json == null || json is List<dynamic>) {
                     log('Part not found');
                     return;
                   }
