@@ -254,7 +254,8 @@ class SQLiteStrategy implements DBStrategy {
   Expression<bool> generateSearch(String query) {
     return _db.category.keywords.contains(query) |
         _db.category.name.contains(query) |
-        _db.part.name.contains(query);
+        _db.part.name.contains(query) |
+        _db.part.description.contains(query);
   }
 
   @override
