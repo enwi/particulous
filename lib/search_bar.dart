@@ -140,9 +140,11 @@ class DataSearch extends SearchDelegate<String> {
     // show some result based on the selection
     final suggestionList = query.isEmpty
         ? parts
-        : parts
-            .where((p) => p.name.contains(RegExp(query, caseSensitive: false)))
-            .toList();
+        : parts.where((p) {
+            final regExp = RegExp(query, caseSensitive: false);
+            return p.name.contains(regExp) ||
+                (p.category.keywords?.contains(regExp) ?? false);
+          }).toList();
 
     return ListView.builder(
       itemBuilder: (context, index) => PartWidget(
