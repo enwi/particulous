@@ -68,88 +68,73 @@ class _PartWidgetState extends State<PartWidget>
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: MouseRegion(
-                onEnter: (value) {
-                  setState(() {
-                    _controller.forward();
-                  });
-                },
-                onExit: (value) {
-                  setState(() {
-                    _controller.reverse();
-                  });
-                },
-                child: SizedBox(
-                  width: 150.0 * _animation.value,
-                  height: 150.0 * _animation.value,
-                  child: widget.part.image == null
-                      ? null
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.file(
-                            File(join(imageDir, widget.part.image!)),
-                            fit: BoxFit.fill,
-                          ),
+            MouseRegion(
+              onEnter: (value) {
+                setState(() {
+                  _controller.forward();
+                });
+              },
+              onExit: (value) {
+                setState(() {
+                  _controller.reverse();
+                });
+              },
+              child: SizedBox(
+                width: 150.0 * _animation.value,
+                height: 150.0 * _animation.value,
+                child: widget.part.image == null
+                    ? null
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(2.0),
+                        child: Image.file(
+                          File(join(imageDir, widget.part.image!)),
+                          fit: BoxFit.fill,
                         ),
-                ),
+                      ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: size.width - 20 - 150.0 * _animation.value,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                    child: Text(
-                      widget.part.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+            Container(
+              width: size.width - 20 - 150.0 * _animation.value,
+              padding: const EdgeInsets.only(left: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 2),
+                  Text(
+                    widget.part.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: size.width - 20 - 150.0 * _animation.value,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                    child: Text(
-                      widget.part.description ?? 'No description',
-                      style: const TextStyle(
-                        // fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                  StreamBuilder(
+                    stream: widget.dbh
+                        .watchStockCountOfPart(widget.part.identifier),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text('${snapshot.data} in Stock');
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.part.description ?? 'No description',
+                    style: const TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: size.width - 20 - 150.0 * _animation.value,
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
-                      child: PartCategoryWidget(
-                        dbh: widget.dbh,
-                        part: widget.part,
-                        clickableCategories: widget.clickableCategories,
-                      )),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  PartCategoryWidget(
+                    dbh: widget.dbh,
+                    part: widget.part,
+                    clickableCategories: widget.clickableCategories,
+                  ),
+                ],
+              ),
             ),
-            // Column(
-            //   children: const [
-            //     Padding(
-            //       padding: EdgeInsets.fromLTRB(5, 40, 0, 0),
-            //       child: Text(
-            //         '\$ 24.00',
-            //         style: TextStyle(
-            //           fontSize: 14,
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),
