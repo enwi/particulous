@@ -75,6 +75,6 @@ class PartCategoryWidget extends StatelessWidget {
       hash = text.codeUnitAt(i) + ((hash << 5) - hash);
       // hash = hash & hash;
     }
-    return HSVColor.fromAHSV(1.0, hash % 360, 0.8, 0.8).toColor();
+    return HSVColor.fromAHSV(1.0, (hash / 10.0) % 360.0, 0.8, 0.8).toColor();
   }
 }
