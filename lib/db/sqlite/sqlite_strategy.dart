@@ -238,6 +238,19 @@ class SQLiteStrategy implements DBStrategy {
             result.map((e) => e.rawData.read<String>('part.name')).toList());
   }
 
+  @override
+  Future<List<Part>> fetchSearchParts(final String query) {
+    return (_db.select(_db.part).join([
+      innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id))
+    ])
+          ..where(query
+              .split(' ')
+              .map(generateSearch)
+              .reduce((value, element) => value & element)))
+        .get()
+        .then((result) => result.map(SQLitePart.fromResult).toList());
+  }
+
   Expression<bool> generateSearch(String query) {
     return _db.category.keywords.contains(query) |
         _db.category.name.contains(query) |

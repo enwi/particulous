@@ -136,31 +136,29 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   @override
-  Widget buildResults(BuildContext context) {
-    // show some result based on the selection
-    final suggestionList = query.isEmpty
-        ? parts
-        : parts.where((p) {
-            final regExp = RegExp(query, caseSensitive: false);
-            return p.name.contains(regExp) ||
-                (p.category.keywords?.contains(regExp) ?? false);
-          }).toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) => PartWidget(
-        dbh: dbh,
-        part: suggestionList[index],
-        onTap: () => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                PartDetailScreen(dbh: dbh, part: suggestionList[index]),
-          ),
-        ),
-      ),
-      itemCount: suggestionList.length,
-    );
-  }
+  Widget buildResults(BuildContext context) => FutureBuilder(
+        future: dbh.fetchSearchParts(query),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final parts = snapshot.data!;
+            return ListView.builder(
+              itemCount: parts.length,
+              itemBuilder: (context, index) => PartWidget(
+                dbh: dbh,
+                part: parts[index],
+                onTap: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        PartDetailScreen(dbh: dbh, part: parts[index]),
+                  ),
+                ),
+              ),
+            );
+          }
+          return const LinearProgressIndicator();
+        },
+      );
 
   @override
   Widget buildSuggestions(BuildContext context) => FutureBuilder(
