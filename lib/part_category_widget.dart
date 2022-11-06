@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:particulous/db/db_handler.dart';
+import 'package:particulous/util/color_util.dart';
 
 import 'category_screen.dart';
 import 'data/category.dart';
@@ -54,7 +55,7 @@ class PartCategoryWidget extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      backgroundColor: colorFor(category.name),
+      backgroundColor: ColorUtil.colorFor(category.name),
       elevation: 2.0,
       onPressed: clickableCategories
           ? () => Navigator.pushNamed(
@@ -67,14 +68,5 @@ class PartCategoryWidget extends StatelessWidget {
               )
           : () => {},
     );
-  }
-
-  Color colorFor(final String text) {
-    var hash = 0;
-    for (var i = 0; i < text.length; ++i) {
-      hash = text.codeUnitAt(i) + ((hash << 5) - hash);
-      // hash = hash & hash;
-    }
-    return HSVColor.fromAHSV(1.0, (hash / 10.0) % 360.0, 0.8, 0.8).toColor();
   }
 }

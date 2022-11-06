@@ -16,6 +16,9 @@ class DBHandler {
   /// Fetch all parts from the database
   Future<List<Part>> fetchParts() => strategy.fetchParts();
 
+  /// Fetch all parts from the database that are a template
+  Future<List<Part>> fetchTemplateParts() => strategy.fetchTemplateParts();
+
   /// Watch all parts from the database.
   /// Like [fetchParts], but observes and notifies changes
   Stream<List<Part>> watchParts() => strategy.watchParts();
@@ -57,4 +60,13 @@ class DBHandler {
       strategy.fetchSearchParts(query);
 
   Future<int> insertStock(final Stock stock) => strategy.insertStock(stock);
+
+  Future<void> insertBomPart(final BomPart partBom) =>
+      strategy.insertPartBom(partBom);
+
+  Stream<List<BomPart>> watchBOMOfPart(final int part) =>
+      strategy.watchBOMOfPart(part);
+
+  Future<void> updateImageOfPart(final String image, final int part) =>
+      strategy.updateImageOfPart(image, part);
 }

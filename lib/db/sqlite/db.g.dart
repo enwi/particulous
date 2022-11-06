@@ -306,6 +306,7 @@ class PartData extends DataClass implements Insertable<PartData> {
   final String? image;
   final int? variant;
   final bool template;
+  final bool assembly;
   final String? sku;
   final String? mpn;
   const PartData(
@@ -317,6 +318,7 @@ class PartData extends DataClass implements Insertable<PartData> {
       this.image,
       this.variant,
       required this.template,
+      required this.assembly,
       this.sku,
       this.mpn});
   @override
@@ -338,6 +340,7 @@ class PartData extends DataClass implements Insertable<PartData> {
       map['variant'] = Variable<int>(variant);
     }
     map['template'] = Variable<bool>(template);
+    map['assembly'] = Variable<bool>(assembly);
     if (!nullToAbsent || sku != null) {
       map['sku'] = Variable<String>(sku);
     }
@@ -362,6 +365,7 @@ class PartData extends DataClass implements Insertable<PartData> {
           ? const Value.absent()
           : Value(variant),
       template: Value(template),
+      assembly: Value(assembly),
       sku: sku == null && nullToAbsent ? const Value.absent() : Value(sku),
       mpn: mpn == null && nullToAbsent ? const Value.absent() : Value(mpn),
     );
@@ -379,6 +383,7 @@ class PartData extends DataClass implements Insertable<PartData> {
       image: serializer.fromJson<String?>(json['image']),
       variant: serializer.fromJson<int?>(json['variant']),
       template: serializer.fromJson<bool>(json['template']),
+      assembly: serializer.fromJson<bool>(json['assembly']),
       sku: serializer.fromJson<String?>(json['sku']),
       mpn: serializer.fromJson<String?>(json['mpn']),
     );
@@ -395,6 +400,7 @@ class PartData extends DataClass implements Insertable<PartData> {
       'image': serializer.toJson<String?>(image),
       'variant': serializer.toJson<int?>(variant),
       'template': serializer.toJson<bool>(template),
+      'assembly': serializer.toJson<bool>(assembly),
       'sku': serializer.toJson<String?>(sku),
       'mpn': serializer.toJson<String?>(mpn),
     };
@@ -409,6 +415,7 @@ class PartData extends DataClass implements Insertable<PartData> {
           Value<String?> image = const Value.absent(),
           Value<int?> variant = const Value.absent(),
           bool? template,
+          bool? assembly,
           Value<String?> sku = const Value.absent(),
           Value<String?> mpn = const Value.absent()}) =>
       PartData(
@@ -420,6 +427,7 @@ class PartData extends DataClass implements Insertable<PartData> {
         image: image.present ? image.value : this.image,
         variant: variant.present ? variant.value : this.variant,
         template: template ?? this.template,
+        assembly: assembly ?? this.assembly,
         sku: sku.present ? sku.value : this.sku,
         mpn: mpn.present ? mpn.value : this.mpn,
       );
@@ -434,6 +442,7 @@ class PartData extends DataClass implements Insertable<PartData> {
           ..write('image: $image, ')
           ..write('variant: $variant, ')
           ..write('template: $template, ')
+          ..write('assembly: $assembly, ')
           ..write('sku: $sku, ')
           ..write('mpn: $mpn')
           ..write(')'))
@@ -441,8 +450,8 @@ class PartData extends DataClass implements Insertable<PartData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, name, ipn, description, category, image, variant, template, sku, mpn);
+  int get hashCode => Object.hash(id, name, ipn, description, category, image,
+      variant, template, assembly, sku, mpn);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -455,6 +464,7 @@ class PartData extends DataClass implements Insertable<PartData> {
           other.image == this.image &&
           other.variant == this.variant &&
           other.template == this.template &&
+          other.assembly == this.assembly &&
           other.sku == this.sku &&
           other.mpn == this.mpn);
 }
@@ -468,6 +478,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
   final Value<String?> image;
   final Value<int?> variant;
   final Value<bool> template;
+  final Value<bool> assembly;
   final Value<String?> sku;
   final Value<String?> mpn;
   const PartCompanion({
@@ -479,6 +490,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
     this.image = const Value.absent(),
     this.variant = const Value.absent(),
     this.template = const Value.absent(),
+    this.assembly = const Value.absent(),
     this.sku = const Value.absent(),
     this.mpn = const Value.absent(),
   });
@@ -491,6 +503,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
     this.image = const Value.absent(),
     this.variant = const Value.absent(),
     this.template = const Value.absent(),
+    this.assembly = const Value.absent(),
     this.sku = const Value.absent(),
     this.mpn = const Value.absent(),
   })  : name = Value(name),
@@ -504,6 +517,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
     Expression<String>? image,
     Expression<int>? variant,
     Expression<bool>? template,
+    Expression<bool>? assembly,
     Expression<String>? sku,
     Expression<String>? mpn,
   }) {
@@ -516,6 +530,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
       if (image != null) 'image': image,
       if (variant != null) 'variant': variant,
       if (template != null) 'template': template,
+      if (assembly != null) 'assembly': assembly,
       if (sku != null) 'sku': sku,
       if (mpn != null) 'mpn': mpn,
     });
@@ -530,6 +545,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
       Value<String?>? image,
       Value<int?>? variant,
       Value<bool>? template,
+      Value<bool>? assembly,
       Value<String?>? sku,
       Value<String?>? mpn}) {
     return PartCompanion(
@@ -541,6 +557,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
       image: image ?? this.image,
       variant: variant ?? this.variant,
       template: template ?? this.template,
+      assembly: assembly ?? this.assembly,
       sku: sku ?? this.sku,
       mpn: mpn ?? this.mpn,
     );
@@ -573,6 +590,9 @@ class PartCompanion extends UpdateCompanion<PartData> {
     if (template.present) {
       map['template'] = Variable<bool>(template.value);
     }
+    if (assembly.present) {
+      map['assembly'] = Variable<bool>(assembly.value);
+    }
     if (sku.present) {
       map['sku'] = Variable<String>(sku.value);
     }
@@ -593,6 +613,7 @@ class PartCompanion extends UpdateCompanion<PartData> {
           ..write('image: $image, ')
           ..write('variant: $variant, ')
           ..write('template: $template, ')
+          ..write('assembly: $assembly, ')
           ..write('sku: $sku, ')
           ..write('mpn: $mpn')
           ..write(')'))
@@ -657,6 +678,14 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK ("template" IN (0, 1))',
       defaultValue: const Constant(false));
+  final VerificationMeta _assemblyMeta = const VerificationMeta('assembly');
+  @override
+  late final GeneratedColumn<bool> assembly = GeneratedColumn<bool>(
+      'assembly', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK ("assembly" IN (0, 1))',
+      defaultValue: const Constant(false));
   final VerificationMeta _skuMeta = const VerificationMeta('sku');
   @override
   late final GeneratedColumn<String> sku = GeneratedColumn<String>(
@@ -677,6 +706,7 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
         image,
         variant,
         template,
+        assembly,
         sku,
         mpn
       ];
@@ -726,6 +756,10 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       context.handle(_templateMeta,
           template.isAcceptableOrUnknown(data['template']!, _templateMeta));
     }
+    if (data.containsKey('assembly')) {
+      context.handle(_assemblyMeta,
+          assembly.isAcceptableOrUnknown(data['assembly']!, _assemblyMeta));
+    }
     if (data.containsKey('sku')) {
       context.handle(
           _skuMeta, sku.isAcceptableOrUnknown(data['sku']!, _skuMeta));
@@ -759,6 +793,8 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
           .read(DriftSqlType.int, data['${effectivePrefix}variant']),
       template: attachedDatabase.options.types
           .read(DriftSqlType.bool, data['${effectivePrefix}template'])!,
+      assembly: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}assembly'])!,
       sku: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}sku']),
       mpn: attachedDatabase.options.types
@@ -777,11 +813,13 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
   final int part;
   final int amount;
   final bool optional;
+  final String? reference;
   const PartBomData(
       {required this.parent,
       required this.part,
       required this.amount,
-      required this.optional});
+      required this.optional,
+      this.reference});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -789,6 +827,9 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
     map['part'] = Variable<int>(part);
     map['amount'] = Variable<int>(amount);
     map['optional'] = Variable<bool>(optional);
+    if (!nullToAbsent || reference != null) {
+      map['reference'] = Variable<String>(reference);
+    }
     return map;
   }
 
@@ -798,6 +839,9 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       part: Value(part),
       amount: Value(amount),
       optional: Value(optional),
+      reference: reference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reference),
     );
   }
 
@@ -809,6 +853,7 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       part: serializer.fromJson<int>(json['part']),
       amount: serializer.fromJson<int>(json['amount']),
       optional: serializer.fromJson<bool>(json['optional']),
+      reference: serializer.fromJson<String?>(json['reference']),
     );
   }
   @override
@@ -819,15 +864,22 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       'part': serializer.toJson<int>(part),
       'amount': serializer.toJson<int>(amount),
       'optional': serializer.toJson<bool>(optional),
+      'reference': serializer.toJson<String?>(reference),
     };
   }
 
-  PartBomData copyWith({int? parent, int? part, int? amount, bool? optional}) =>
+  PartBomData copyWith(
+          {int? parent,
+          int? part,
+          int? amount,
+          bool? optional,
+          Value<String?> reference = const Value.absent()}) =>
       PartBomData(
         parent: parent ?? this.parent,
         part: part ?? this.part,
         amount: amount ?? this.amount,
         optional: optional ?? this.optional,
+        reference: reference.present ? reference.value : this.reference,
       );
   @override
   String toString() {
@@ -835,13 +887,14 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
-          ..write('optional: $optional')
+          ..write('optional: $optional, ')
+          ..write('reference: $reference')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(parent, part, amount, optional);
+  int get hashCode => Object.hash(parent, part, amount, optional, reference);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -849,7 +902,8 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
           other.parent == this.parent &&
           other.part == this.part &&
           other.amount == this.amount &&
-          other.optional == this.optional);
+          other.optional == this.optional &&
+          other.reference == this.reference);
 }
 
 class PartBomCompanion extends UpdateCompanion<PartBomData> {
@@ -857,17 +911,20 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
   final Value<int> part;
   final Value<int> amount;
   final Value<bool> optional;
+  final Value<String?> reference;
   const PartBomCompanion({
     this.parent = const Value.absent(),
     this.part = const Value.absent(),
     this.amount = const Value.absent(),
     this.optional = const Value.absent(),
+    this.reference = const Value.absent(),
   });
   PartBomCompanion.insert({
     required int parent,
     required int part,
     required int amount,
     this.optional = const Value.absent(),
+    this.reference = const Value.absent(),
   })  : parent = Value(parent),
         part = Value(part),
         amount = Value(amount);
@@ -876,12 +933,14 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
     Expression<int>? part,
     Expression<int>? amount,
     Expression<bool>? optional,
+    Expression<String>? reference,
   }) {
     return RawValuesInsertable({
       if (parent != null) 'parent': parent,
       if (part != null) 'part': part,
       if (amount != null) 'amount': amount,
       if (optional != null) 'optional': optional,
+      if (reference != null) 'reference': reference,
     });
   }
 
@@ -889,12 +948,14 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
       {Value<int>? parent,
       Value<int>? part,
       Value<int>? amount,
-      Value<bool>? optional}) {
+      Value<bool>? optional,
+      Value<String?>? reference}) {
     return PartBomCompanion(
       parent: parent ?? this.parent,
       part: part ?? this.part,
       amount: amount ?? this.amount,
       optional: optional ?? this.optional,
+      reference: reference ?? this.reference,
     );
   }
 
@@ -913,6 +974,9 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
     if (optional.present) {
       map['optional'] = Variable<bool>(optional.value);
     }
+    if (reference.present) {
+      map['reference'] = Variable<String>(reference.value);
+    }
     return map;
   }
 
@@ -922,7 +986,8 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
-          ..write('optional: $optional')
+          ..write('optional: $optional, ')
+          ..write('reference: $reference')
           ..write(')'))
         .toString();
   }
@@ -960,8 +1025,14 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK ("optional" IN (0, 1))',
       defaultValue: const Constant(false));
+  final VerificationMeta _referenceMeta = const VerificationMeta('reference');
   @override
-  List<GeneratedColumn> get $columns => [parent, part, amount, optional];
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+      'reference', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [parent, part, amount, optional, reference];
   @override
   String get aliasedName => _alias ?? 'part_bom';
   @override
@@ -993,6 +1064,10 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
       context.handle(_optionalMeta,
           optional.isAcceptableOrUnknown(data['optional']!, _optionalMeta));
     }
+    if (data.containsKey('reference')) {
+      context.handle(_referenceMeta,
+          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
+    }
     return context;
   }
 
@@ -1014,6 +1089,8 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
           .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
       optional: attachedDatabase.options.types
           .read(DriftSqlType.bool, data['${effectivePrefix}optional'])!,
+      reference: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}reference']),
     );
   }
 
@@ -1593,6 +1670,7 @@ abstract class _$Database extends GeneratedDatabase {
         image: row.readNullable<String>('image'),
         variant: row.readNullable<int>('variant'),
         template: row.read<bool>('template'),
+        assembly: row.read<bool>('assembly'),
         sku: row.readNullable<String>('sku'),
         mpn: row.readNullable<String>('mpn'),
         cId: row.read<int>('cId'),
@@ -1624,6 +1702,7 @@ class GetPartsOfChildCategoriesResult {
   final String? image;
   final int? variant;
   final bool template;
+  final bool assembly;
   final String? sku;
   final String? mpn;
   final int cId;
@@ -1640,6 +1719,7 @@ class GetPartsOfChildCategoriesResult {
     this.image,
     this.variant,
     required this.template,
+    required this.assembly,
     this.sku,
     this.mpn,
     required this.cId,

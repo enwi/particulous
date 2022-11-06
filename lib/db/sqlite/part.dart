@@ -11,6 +11,7 @@ class Part extends Table {
   IntColumn get variant => integer().nullable().references(Part, #id)();
 
   BoolColumn get template => boolean().withDefault(const Constant(false))();
+  BoolColumn get assembly => boolean().withDefault(const Constant(false))();
 
   TextColumn get sku => text().nullable()(); // stock keeping unit
   // IntColumn get supplier => integer().references(supplier, #id)();
@@ -23,6 +24,7 @@ class PartBom extends Table {
   IntColumn get part => integer().references(Part, #id)();
   IntColumn get amount => integer()();
   BoolColumn get optional => boolean().withDefault(const Constant(false))();
+  TextColumn get reference => text().nullable()();
   // BoolColumn get variants => boolean().withDefault(const Constant(false))();
 
   @override

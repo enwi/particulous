@@ -25,6 +25,7 @@ extension SQLitePart on Part {
       image: rawData.read('part.image'),
       variant: rawData.read('part.variant'),
       template: rawData.read('part.template'),
+      assembly: rawData.read('part.assembly'),
       sku: rawData.read('part.sku'),
       mpn: rawData.read('part.mpn'),
     );
@@ -46,6 +47,7 @@ extension SQLitePart on Part {
       image: result.image,
       variant: result.variant,
       template: result.template,
+      assembly: result.assembly,
       sku: result.sku,
       mpn: result.mpn,
     );
@@ -75,6 +77,19 @@ extension SQLiteStock on Stock {
   }
 }
 
+extension SQLitePartBom on BomPart {
+  static BomPart fromTypedResult(final TypedResult result) {
+    final rawData = result.rawData;
+    return BomPart(
+      parent: rawData.read('part_bom.parent'),
+      part: SQLitePart.fromResult(result),
+      amount: rawData.read('part_bom.amount'),
+      optional: rawData.read('part_bom.optional'),
+      reference: rawData.read('part_bom.reference'),
+    );
+  }
+}
+
 class SQLiteStrategy implements DBStrategy {
   final _db = db.Database();
 
@@ -87,6 +102,16 @@ class SQLiteStrategy implements DBStrategy {
   Future<List<Part>> fetchParts() {
     return _db
         .select(_db.part)
+        .join([
+          innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id))
+        ])
+        .get()
+        .then((results) => results.map(SQLitePart.fromResult).toList());
+  }
+
+  @override
+  Future<List<Part>> fetchTemplateParts() {
+    return (_db.select(_db.part)..where((tbl) => tbl.template.equals(true)))
         .join([
           innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id))
         ])
@@ -163,6 +188,7 @@ class SQLiteStrategy implements DBStrategy {
           image: Value(part.image),
           variant: Value(part.variant),
           template: Value(part.template),
+          assembly: Value(part.assembly),
           sku: Value(part.sku),
           mpn: Value(part.mpn),
         ))
@@ -229,7 +255,7 @@ class SQLiteStrategy implements DBStrategy {
           ])
           ..where(query
               .split(' ')
-              .map(generateSearch)
+              .map(generatePartSearch)
               .reduce((value, element) => value & element))
           // ..orderBy(terms)
           ..limit(25))
@@ -245,13 +271,13 @@ class SQLiteStrategy implements DBStrategy {
     ])
           ..where(query
               .split(' ')
-              .map(generateSearch)
+              .map(generatePartSearch)
               .reduce((value, element) => value & element)))
         .get()
         .then((result) => result.map(SQLitePart.fromResult).toList());
   }
 
-  Expression<bool> generateSearch(String query) {
+  Expression<bool> generatePartSearch(String query) {
     return _db.category.keywords.contains(query) |
         _db.category.name.contains(query) |
         _db.part.name.contains(query) |
@@ -265,5 +291,36 @@ class SQLiteStrategy implements DBStrategy {
         .insertReturning(
             db.StockCompanion.insert(part: stock.part, amount: stock.amount))
         .then((value) => value.id);
+  }
+
+  @override
+  Future<void> insertPartBom(final BomPart partBom) {
+    return _db
+        .into(_db.partBom)
+        .insertReturning(db.PartBomCompanion.insert(
+          parent: partBom.parent,
+          part: partBom.part.identifier,
+          amount: partBom.amount,
+          optional: Value(partBom.optional),
+          reference: Value(partBom.reference),
+        ))
+        .then((value) => null);
+  }
+
+  @override
+  Stream<List<BomPart>> watchBOMOfPart(final int part) {
+    return (_db.select(_db.partBom)..where((tbl) => tbl.parent.equals(part)))
+        .join([
+          innerJoin(_db.part, _db.part.id.equalsExp(_db.partBom.part)),
+          innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id)),
+        ])
+        .watch()
+        .map((result) => result.map(SQLitePartBom.fromTypedResult).toList());
+  }
+
+  @override
+  Future<void> updateImageOfPart(final String image, final int part) {
+    return (_db.update(_db.part)..where((tbl) => tbl.id.equals(part)))
+        .writeReturning(db.PartCompanion.custom(image: Variable(image)));
   }
 }

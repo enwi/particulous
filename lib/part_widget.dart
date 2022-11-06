@@ -88,14 +88,14 @@ class _PartWidgetState extends State<PartWidget>
                         borderRadius: BorderRadius.circular(2.0),
                         child: Image.file(
                           File(join(imageDir, widget.part.image!)),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                       ),
               ),
             ),
             Container(
               width: size.width - 20 - 150.0 * _animation.value,
-              padding: const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 8, bottom: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

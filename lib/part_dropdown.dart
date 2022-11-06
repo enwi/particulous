@@ -5,7 +5,8 @@ import 'package:particulous/data/part.dart';
 import 'db/db_handler.dart';
 
 class PartDropdown extends StatefulWidget {
-  final DBHandler dbHandler;
+  final DBHandler? dbHandler;
+  final Future<List<Part>> Function()? fetchParts;
   final String? labelText;
   final FormFieldSetter<Part>? onSaved;
   final FormFieldValidator<Part>? validator;
@@ -13,12 +14,14 @@ class PartDropdown extends StatefulWidget {
 
   const PartDropdown({
     super.key,
-    required this.dbHandler,
+    this.dbHandler,
+    this.fetchParts,
     this.labelText,
     this.onSaved,
     this.validator,
     this.initialPart,
-  });
+  }) : assert(dbHandler != null || fetchParts != null,
+            'dbHandler or fetchParts required');
 
   @override
   State<PartDropdown> createState() => _PartDropdownState();
@@ -31,7 +34,7 @@ class _PartDropdownState extends State<PartDropdown> {
 
   @override
   void initState() {
-    _parts = widget.dbHandler.fetchParts();
+    _parts = widget.dbHandler?.fetchParts() ?? widget.fetchParts!();
     super.initState();
   }
 

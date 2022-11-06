@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:path/path.dart';
+
 import 'category.dart';
 
 class Part {
@@ -16,7 +20,7 @@ class Part {
   /// Part category
   Category category;
 
-  /// Path to image file
+  /// Name of image file
   String? image;
 
   /// Part identifier of part this part is variant of
@@ -24,6 +28,9 @@ class Part {
 
   /// Is this part a template part
   bool template;
+
+  /// Can this part be assembled from other parts
+  bool assembly;
 
   /// Stock keeping unit
   String? sku;
@@ -40,7 +47,37 @@ class Part {
     this.image,
     this.variant,
     required this.template,
+    required this.assembly,
     this.sku,
     this.mpn,
+  });
+
+  File? getImageFile(final String imageDir) {
+    return image != null ? File(join(imageDir, image!)) : null;
+  }
+}
+
+class BomPart {
+  /// Parent part identifier
+  int parent;
+
+  /// Part identifier
+  Part part;
+
+  /// Amount of [part]s needed to build [parent]
+  int amount;
+
+  /// Is this [part] optional to build [parent]
+  bool optional;
+
+  /// Reference
+  String? reference;
+
+  BomPart({
+    required this.parent,
+    required this.part,
+    required this.amount,
+    required this.optional,
+    this.reference,
   });
 }

@@ -36,6 +36,8 @@ dependencies:
   form_builder_file_picker: ^2.3.0
   http: ^0.13.5
   flutter_spinbox: ^0.10.0
+  settings_ui: ^2.0.2
+  file_picker: ^4.6.1
   # file_picker: ^5.2.2
 
 dependency_overrides:

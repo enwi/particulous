@@ -10,6 +10,9 @@ abstract class DBStrategy {
   /// Get a future list of all parts
   Future<List<Part>> fetchParts();
 
+  /// Get a future list of all parts that are marked as template
+  Future<List<Part>> fetchTemplateParts();
+
   /// Observe and get a stream list of all parts
   Stream<List<Part>> watchParts();
 
@@ -42,4 +45,9 @@ abstract class DBStrategy {
   Future<List<Part>> fetchSearchParts(final String query);
 
   Future<int> insertStock(final Stock stock);
+
+  Future<void> insertPartBom(BomPart partBom);
+  Stream<List<BomPart>> watchBOMOfPart(final int part);
+
+  Future<void> updateImageOfPart(final String image, final int part);
 }

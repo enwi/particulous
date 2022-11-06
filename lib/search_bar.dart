@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:particulous/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'data/part.dart';
@@ -37,6 +38,14 @@ class _SearchBarState extends State<SearchBar> {
                       dbh: dbh,
                       parts: parts,
                     ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsScreen()),
                   ),
                 ),
               ],

@@ -8,6 +8,7 @@ import 'package:particulous/db/db_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
+import '../add_bom_part_form.dart';
 import '../add_category_form.dart';
 import '../add_part_form.dart';
 import '../add_stock_form.dart';
@@ -187,4 +188,28 @@ abstract class AddUtils {
       path: image,
     );
   }
+
+  static void addBOMItem(
+          {required BuildContext context,
+          required DBHandler dbh,
+          required Part? part}) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Add BOM item'),
+            ),
+            body: Center(
+              child: SizedBox(
+                width: 500,
+                child: AddBOMPartForm(
+                  dbHandler: dbh,
+                  initialParent: part,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
 }

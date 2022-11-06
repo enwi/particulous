@@ -33,6 +33,7 @@ class _AddStockFormState extends State<AddStockForm> {
             labelText: 'Part',
             onSaved: (newValue) => _stockPart = newValue,
           ),
+          // TODO add note and also insert into StockTracking
           SpinBox(
             min: 0.0,
             max: double.maxFinite,

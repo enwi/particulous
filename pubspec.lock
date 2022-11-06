@@ -188,7 +188,7 @@ packages:
     description:
       path: drift
       ref: develop
-      resolved-ref: b776c672c2de5fa70acb8f146f309028a632f2a5
+      resolved-ref: "0f06640ddedcf78233363b9d7eb17efc1e6bb4d7"
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "2.3.0-dev"
@@ -197,7 +197,7 @@ packages:
     description:
       path: drift_dev
       ref: develop
-      resolved-ref: b776c672c2de5fa70acb8f146f309028a632f2a5
+      resolved-ref: "0f06640ddedcf78233363b9d7eb17efc1e6bb4d7"
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "2.3.0-dev"
@@ -230,7 +230,7 @@ packages:
     source: hosted
     version: "6.1.4"
   file_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: file_picker
       url: "https://pub.dartlang.org"
@@ -573,6 +573,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.0"
+  settings_ui:
+    dependency: "direct main"
+    description:
+      name: settings_ui
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   shelf:
     dependency: transitive
     description:
@@ -586,7 +593,7 @@ packages:
       name: shelf_web_socket
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -625,7 +632,7 @@ packages:
     description:
       path: sqlparser
       ref: develop
-      resolved-ref: b776c672c2de5fa70acb8f146f309028a632f2a5
+      resolved-ref: "0f06640ddedcf78233363b9d7eb17efc1e6bb4d7"
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "0.23.3"
@@ -649,7 +656,7 @@ packages:
       name: stream_transform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
   string_scanner:
     dependency: transitive
     description:

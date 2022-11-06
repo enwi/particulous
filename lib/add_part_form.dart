@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:particulous/data/category.dart';
+import 'package:particulous/part_dropdown.dart';
 import 'package:particulous/util/check_box_form_field.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,9 @@ class _AddPartFormState extends State<AddPartForm> {
   String? _partDescription;
   Category? _partCategory;
   PlatformFile? _partImage;
+  Part? _partVariant;
   bool? _partTemplate;
+  bool? _partAssembly;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +88,8 @@ class _AddPartFormState extends State<AddPartForm> {
             name: 'image',
             allowMultiple: false,
             maxFiles: 1,
-            onSaved: (newValue) => _partImage = newValue?.first,
+            onSaved: (newValue) => _partImage =
+                newValue?.isNotEmpty ?? false ? newValue?.first : null,
             typeSelectors: [
               TypeSelector(
                 type: FileType.image,
@@ -101,10 +105,20 @@ class _AddPartFormState extends State<AddPartForm> {
               )
             ],
           ),
+          PartDropdown(
+            fetchParts: () => widget.dbHandler.fetchTemplateParts(),
+            labelText: 'Variant of',
+            onSaved: (newValue) => _partVariant = newValue,
+          ),
           CheckboxFormField(
             title: const Text('Template part'),
             initialValue: false,
             onSaved: (newValue) => _partTemplate = newValue,
+          ),
+          CheckboxFormField(
+            title: const Text('Can this part be assembled from other parts?'),
+            initialValue: false,
+            onSaved: (newValue) => _partAssembly = newValue,
           ),
           ElevatedButton(
             onPressed: () {
@@ -123,8 +137,9 @@ class _AddPartFormState extends State<AddPartForm> {
                 description: _partDescription,
                 category: _partCategory!,
                 image: internalImage,
-                // variant: ,
+                variant: _partVariant?.identifier,
                 template: _partTemplate!,
+                assembly: _partAssembly!,
                 // sku: ,
                 // mpn: ,
               ))

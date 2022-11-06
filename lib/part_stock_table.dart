@@ -29,7 +29,7 @@ class _PartStockTableState extends State<PartStockTable> {
       stream: widget.dbh.watchStockOfPart(widget.part.identifier),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          var stocks = snapshot.data!;
+          final stocks = snapshot.data!;
           return Padding(
             padding: const EdgeInsets.all(8),
             child: StockTable(
