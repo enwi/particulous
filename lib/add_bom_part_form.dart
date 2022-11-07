@@ -25,6 +25,7 @@ class _AddBOMPartFormState extends State<AddBOMPartForm> {
   int _bomAmount = 0;
   String? _bomReference;
   bool? _bomOptional = false;
+  bool? _bomVariants = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +65,14 @@ class _AddBOMPartFormState extends State<AddBOMPartForm> {
             onSaved: (newValue) => _bomReference = newValue,
           ),
           CheckboxFormField(
-            title: const Text('Optional'),
+            title: const Text('Optional part?'),
             initialValue: false,
             onSaved: (newValue) => _bomOptional = newValue,
+          ),
+          CheckboxFormField(
+            title: const Text('Allow variant parts?'),
+            initialValue: false,
+            onSaved: (newValue) => _bomVariants = newValue,
           ),
           ElevatedButton(
             onPressed: () {
@@ -80,8 +86,9 @@ class _AddBOMPartFormState extends State<AddBOMPartForm> {
                 parent: _bomParent!.identifier,
                 part: _bomPart!,
                 amount: _bomAmount,
-                optional: _bomOptional!,
                 reference: _bomReference,
+                optional: _bomOptional!,
+                variants: _bomVariants!,
               ))
                   .then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

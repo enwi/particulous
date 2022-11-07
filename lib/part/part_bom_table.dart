@@ -60,6 +60,14 @@ class _BomTableState extends State<BomTable> {
   int _sortColumnIndex = 1;
   bool _sortAsc = false;
   late List<BomPart> _parts = widget.parts;
+  final Map<int, double> _partHasCanBuild = {};
+
+  @override
+  void initState() {
+    _parts.sort((a, b) => a.amount.compareTo(b.amount));
+    _parts = _parts.reversed.toList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,20 +84,38 @@ class _BomTableState extends State<BomTable> {
           numeric: true,
           onSort: (columnIndex, ascending) {
             setState(() {
-              if (columnIndex == _sortColumnIndex) {
-                _sortAsc = ascending;
-              } else {
+              if (columnIndex != _sortColumnIndex) {
                 _sortColumnIndex = columnIndex;
-                _sortAsc = false;
+              } else {
+                _sortAsc = !_sortAsc;
               }
               _parts.sort((a, b) => a.amount.compareTo(b.amount));
-              if (!ascending) {
+              if (!_sortAsc) {
                 _parts = _parts.reversed.toList();
               }
             });
           },
         ),
+        const DataColumn(label: Text('Reference')),
         const DataColumn(label: Text('Optional')),
+        const DataColumn(label: Text('Variants')),
+        DataColumn(
+          label: const Text('Can build'),
+          onSort: (columnIndex, ascending) {
+            setState(() {
+              if (columnIndex != _sortColumnIndex) {
+                _sortColumnIndex = columnIndex;
+              } else {
+                _sortAsc = !_sortAsc;
+              }
+              _parts.sort((a, b) => (_partHasCanBuild[a.part.identifier] ?? 0)
+                  .compareTo((_partHasCanBuild[b.part.identifier]) ?? 0));
+              if (!_sortAsc) {
+                _parts = _parts.reversed.toList();
+              }
+            });
+          },
+        ),
       ],
       rows: _parts.map((part) {
         return DataRow(cells: [
@@ -121,7 +147,20 @@ class _BomTableState extends State<BomTable> {
           DataCell(
             Text('${part.amount}'),
           ),
-          DataCell(Text('${part.optional}')),
+          DataCell(Text(part.reference ?? '-')),
+          DataCell(Text(part.optional ? 'yes' : 'no')),
+          DataCell(Text(part.variants ? 'yes' : 'no')),
+          DataCell(StreamBuilder(
+            stream: widget.dbh.watchStockCountOfPart(part.part.identifier),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final canBuild = snapshot.data! / part.amount;
+                _partHasCanBuild[part.part.identifier] = canBuild;
+                return Text('$canBuild');
+              }
+              return const CircularProgressIndicator();
+            },
+          )),
         ]);
       }).toList(),
     );

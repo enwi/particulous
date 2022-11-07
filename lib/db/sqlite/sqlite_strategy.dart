@@ -83,8 +83,9 @@ extension SQLitePartBom on BomPart {
       parent: rawData.read('part_bom.parent'),
       part: SQLitePart.fromResult(result),
       amount: rawData.read('part_bom.amount'),
-      optional: rawData.read('part_bom.optional'),
       reference: rawData.read('part_bom.reference'),
+      optional: rawData.read('part_bom.optional'),
+      variants: rawData.read('part_bom.variants'),
     );
   }
 }
@@ -300,8 +301,9 @@ class SQLiteStrategy implements DBStrategy {
           parent: partBom.parent,
           part: partBom.part.identifier,
           amount: partBom.amount,
-          optional: Value(partBom.optional),
           reference: Value(partBom.reference),
+          optional: Value(partBom.optional),
+          variants: Value(partBom.variants),
         ))
         .then((value) => null);
   }

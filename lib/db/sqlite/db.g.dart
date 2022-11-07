@@ -812,24 +812,27 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
   final int parent;
   final int part;
   final int amount;
-  final bool optional;
   final String? reference;
+  final bool optional;
+  final bool variants;
   const PartBomData(
       {required this.parent,
       required this.part,
       required this.amount,
+      this.reference,
       required this.optional,
-      this.reference});
+      required this.variants});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['parent'] = Variable<int>(parent);
     map['part'] = Variable<int>(part);
     map['amount'] = Variable<int>(amount);
-    map['optional'] = Variable<bool>(optional);
     if (!nullToAbsent || reference != null) {
       map['reference'] = Variable<String>(reference);
     }
+    map['optional'] = Variable<bool>(optional);
+    map['variants'] = Variable<bool>(variants);
     return map;
   }
 
@@ -838,10 +841,11 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       parent: Value(parent),
       part: Value(part),
       amount: Value(amount),
-      optional: Value(optional),
       reference: reference == null && nullToAbsent
           ? const Value.absent()
           : Value(reference),
+      optional: Value(optional),
+      variants: Value(variants),
     );
   }
 
@@ -852,8 +856,9 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       parent: serializer.fromJson<int>(json['parent']),
       part: serializer.fromJson<int>(json['part']),
       amount: serializer.fromJson<int>(json['amount']),
-      optional: serializer.fromJson<bool>(json['optional']),
       reference: serializer.fromJson<String?>(json['reference']),
+      optional: serializer.fromJson<bool>(json['optional']),
+      variants: serializer.fromJson<bool>(json['variants']),
     );
   }
   @override
@@ -863,8 +868,9 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       'parent': serializer.toJson<int>(parent),
       'part': serializer.toJson<int>(part),
       'amount': serializer.toJson<int>(amount),
-      'optional': serializer.toJson<bool>(optional),
       'reference': serializer.toJson<String?>(reference),
+      'optional': serializer.toJson<bool>(optional),
+      'variants': serializer.toJson<bool>(variants),
     };
   }
 
@@ -872,14 +878,16 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
           {int? parent,
           int? part,
           int? amount,
+          Value<String?> reference = const Value.absent(),
           bool? optional,
-          Value<String?> reference = const Value.absent()}) =>
+          bool? variants}) =>
       PartBomData(
         parent: parent ?? this.parent,
         part: part ?? this.part,
         amount: amount ?? this.amount,
-        optional: optional ?? this.optional,
         reference: reference.present ? reference.value : this.reference,
+        optional: optional ?? this.optional,
+        variants: variants ?? this.variants,
       );
   @override
   String toString() {
@@ -887,14 +895,16 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
+          ..write('reference: $reference, ')
           ..write('optional: $optional, ')
-          ..write('reference: $reference')
+          ..write('variants: $variants')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(parent, part, amount, optional, reference);
+  int get hashCode =>
+      Object.hash(parent, part, amount, reference, optional, variants);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -902,29 +912,33 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
           other.parent == this.parent &&
           other.part == this.part &&
           other.amount == this.amount &&
+          other.reference == this.reference &&
           other.optional == this.optional &&
-          other.reference == this.reference);
+          other.variants == this.variants);
 }
 
 class PartBomCompanion extends UpdateCompanion<PartBomData> {
   final Value<int> parent;
   final Value<int> part;
   final Value<int> amount;
-  final Value<bool> optional;
   final Value<String?> reference;
+  final Value<bool> optional;
+  final Value<bool> variants;
   const PartBomCompanion({
     this.parent = const Value.absent(),
     this.part = const Value.absent(),
     this.amount = const Value.absent(),
-    this.optional = const Value.absent(),
     this.reference = const Value.absent(),
+    this.optional = const Value.absent(),
+    this.variants = const Value.absent(),
   });
   PartBomCompanion.insert({
     required int parent,
     required int part,
     required int amount,
-    this.optional = const Value.absent(),
     this.reference = const Value.absent(),
+    this.optional = const Value.absent(),
+    this.variants = const Value.absent(),
   })  : parent = Value(parent),
         part = Value(part),
         amount = Value(amount);
@@ -932,15 +946,17 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
     Expression<int>? parent,
     Expression<int>? part,
     Expression<int>? amount,
-    Expression<bool>? optional,
     Expression<String>? reference,
+    Expression<bool>? optional,
+    Expression<bool>? variants,
   }) {
     return RawValuesInsertable({
       if (parent != null) 'parent': parent,
       if (part != null) 'part': part,
       if (amount != null) 'amount': amount,
-      if (optional != null) 'optional': optional,
       if (reference != null) 'reference': reference,
+      if (optional != null) 'optional': optional,
+      if (variants != null) 'variants': variants,
     });
   }
 
@@ -948,14 +964,16 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
       {Value<int>? parent,
       Value<int>? part,
       Value<int>? amount,
+      Value<String?>? reference,
       Value<bool>? optional,
-      Value<String?>? reference}) {
+      Value<bool>? variants}) {
     return PartBomCompanion(
       parent: parent ?? this.parent,
       part: part ?? this.part,
       amount: amount ?? this.amount,
-      optional: optional ?? this.optional,
       reference: reference ?? this.reference,
+      optional: optional ?? this.optional,
+      variants: variants ?? this.variants,
     );
   }
 
@@ -971,11 +989,14 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
     if (amount.present) {
       map['amount'] = Variable<int>(amount.value);
     }
+    if (reference.present) {
+      map['reference'] = Variable<String>(reference.value);
+    }
     if (optional.present) {
       map['optional'] = Variable<bool>(optional.value);
     }
-    if (reference.present) {
-      map['reference'] = Variable<String>(reference.value);
+    if (variants.present) {
+      map['variants'] = Variable<bool>(variants.value);
     }
     return map;
   }
@@ -986,8 +1007,9 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
+          ..write('reference: $reference, ')
           ..write('optional: $optional, ')
-          ..write('reference: $reference')
+          ..write('variants: $variants')
           ..write(')'))
         .toString();
   }
@@ -1017,6 +1039,11 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _referenceMeta = const VerificationMeta('reference');
+  @override
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+      'reference', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _optionalMeta = const VerificationMeta('optional');
   @override
   late final GeneratedColumn<bool> optional = GeneratedColumn<bool>(
@@ -1025,14 +1052,17 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK ("optional" IN (0, 1))',
       defaultValue: const Constant(false));
-  final VerificationMeta _referenceMeta = const VerificationMeta('reference');
+  final VerificationMeta _variantsMeta = const VerificationMeta('variants');
   @override
-  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
-      'reference', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumn<bool> variants = GeneratedColumn<bool>(
+      'variants', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK ("variants" IN (0, 1))',
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
-      [parent, part, amount, optional, reference];
+      [parent, part, amount, reference, optional, variants];
   @override
   String get aliasedName => _alias ?? 'part_bom';
   @override
@@ -1060,13 +1090,17 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
     } else if (isInserting) {
       context.missing(_amountMeta);
     }
+    if (data.containsKey('reference')) {
+      context.handle(_referenceMeta,
+          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
+    }
     if (data.containsKey('optional')) {
       context.handle(_optionalMeta,
           optional.isAcceptableOrUnknown(data['optional']!, _optionalMeta));
     }
-    if (data.containsKey('reference')) {
-      context.handle(_referenceMeta,
-          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
+    if (data.containsKey('variants')) {
+      context.handle(_variantsMeta,
+          variants.isAcceptableOrUnknown(data['variants']!, _variantsMeta));
     }
     return context;
   }
@@ -1087,10 +1121,12 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
           .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
       amount: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-      optional: attachedDatabase.options.types
-          .read(DriftSqlType.bool, data['${effectivePrefix}optional'])!,
       reference: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}reference']),
+      optional: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}optional'])!,
+      variants: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}variants'])!,
     );
   }
 

@@ -23,9 +23,9 @@ class PartBom extends Table {
   IntColumn get parent => integer().references(Part, #id)();
   IntColumn get part => integer().references(Part, #id)();
   IntColumn get amount => integer()();
-  BoolColumn get optional => boolean().withDefault(const Constant(false))();
   TextColumn get reference => text().nullable()();
-  // BoolColumn get variants => boolean().withDefault(const Constant(false))();
+  BoolColumn get optional => boolean().withDefault(const Constant(false))();
+  BoolColumn get variants => boolean().withDefault(const Constant(false))();
 
   @override
   List<Set<Column>> get uniqueKeys => [

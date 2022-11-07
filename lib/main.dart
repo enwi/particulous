@@ -30,7 +30,6 @@ Future<void> main() async {
 class Particoulus extends StatelessWidget {
   const Particoulus({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
