@@ -1,8 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:particulous/data/part.dart';
-
-import 'db/db_handler.dart';
+import 'package:particulous/db/db_handler.dart';
 
 class PartDropdown extends StatefulWidget {
   final DBHandler? dbHandler;

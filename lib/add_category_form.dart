@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:particulous/category_dropdown.dart';
 import 'package:particulous/data/category.dart';
-
-import 'category_dropdown.dart';
-import 'db/db_handler.dart';
+import 'package:particulous/db/db_handler.dart';
 
 class AddCategoryForm extends StatefulWidget {
   final DBHandler dbHandler;

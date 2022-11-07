@@ -1,11 +1,10 @@
 import 'package:drift/drift.dart';
 import 'package:particulous/data/alter_stock.dart';
+import 'package:particulous/data/category.dart';
 import 'package:particulous/data/part.dart';
+import 'package:particulous/data/stock.dart';
 import 'package:particulous/db/db_strategy.dart';
 import 'package:particulous/db/sqlite/db.dart' as db;
-
-import '../../data/category.dart';
-import '../../data/stock.dart';
 
 extension SQLitePart on Part {
   static Part fromResult(final TypedResult result) {

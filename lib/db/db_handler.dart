@@ -1,9 +1,8 @@
 import 'package:particulous/data/alter_stock.dart';
+import 'package:particulous/data/category.dart';
+import 'package:particulous/data/part.dart';
+import 'package:particulous/data/stock.dart';
 import 'package:particulous/db/db_strategy.dart';
-
-import '../data/category.dart';
-import '../data/part.dart';
-import '../data/stock.dart';
 
 class DBHandler {
   final DBStrategy strategy;

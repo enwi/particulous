@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:particulous/data/application_directories.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:provider/provider.dart';
-
-import 'main.dart';
 
 class PartBOMTable extends StatefulWidget {
   final DBHandler dbh;

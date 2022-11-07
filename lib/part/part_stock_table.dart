@@ -2,12 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/part.dart';
+import 'package:particulous/data/stock.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/util/string_util.dart';
-
-import 'data/alter_stock.dart';
-import 'data/stock.dart';
 
 class PartStockTable extends StatefulWidget {
   final DBHandler dbh;

@@ -4,17 +4,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
+import 'package:particulous/add_bom_part_form.dart';
+import 'package:particulous/add_category_form.dart';
+import 'package:particulous/add_part_form.dart';
+import 'package:particulous/add_stock_form.dart';
+import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:particulous/util/loading_overlay.dart';
+import 'package:particulous/util/string_util.dart';
 import 'package:path/path.dart';
-
-import '../add_bom_part_form.dart';
-import '../add_category_form.dart';
-import '../add_part_form.dart';
-import '../add_stock_form.dart';
-import '../data/part.dart';
-import 'loading_overlay.dart';
-import 'string_util.dart';
 
 abstract class AddUtils {
   static void addPart({

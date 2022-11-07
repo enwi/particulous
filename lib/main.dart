@@ -1,22 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:particulous/category_screen.dart';
+import 'package:particulous/data/application_directories.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/db/sqlite/sqlite_strategy.dart';
 import 'package:particulous/search_bar.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-
-class ApplicationDirectories {
-  final Directory documentsDir;
-  final Directory imageDir;
-  ApplicationDirectories(this.documentsDir)
-      : imageDir = Directory(join(documentsDir.path, 'particulous', 'image')) {
-    imageDir.create(recursive: true);
-  }
-}
 
 Future<void> main() async {
   final directories =

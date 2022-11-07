@@ -1,8 +1,7 @@
 import 'dart:io';
 
+import 'package:particulous/data/category.dart';
 import 'package:path/path.dart';
-
-import 'category.dart';
 
 class Part {
   /// Database identifier

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:particulous/data/category.dart';
+import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/error_widget.dart' as err;
-import 'package:particulous/part_widget.dart';
+import 'package:particulous/part/part_widget.dart';
 import 'package:provider/provider.dart';
-
-import 'db/db_handler.dart';
 
 class CategoryScreenArgs {
   final int categoryId;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:particulous/main.dart';
+import 'package:particulous/data/application_directories.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';

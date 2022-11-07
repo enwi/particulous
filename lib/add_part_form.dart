@@ -2,16 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
+import 'package:particulous/category_dropdown.dart';
+import 'package:particulous/data/application_directories.dart';
 import 'package:particulous/data/category.dart';
-import 'package:particulous/part_dropdown.dart';
+import 'package:particulous/data/part.dart';
+import 'package:particulous/db/db_handler.dart';
+import 'package:particulous/part/part_dropdown.dart';
 import 'package:particulous/util/check_box_form_field.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-
-import 'category_dropdown.dart';
-import 'data/part.dart';
-import 'db/db_handler.dart';
-import 'main.dart';
 
 class AddPartForm extends StatefulWidget {
   final DBHandler dbHandler;

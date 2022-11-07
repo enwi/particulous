@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:particulous/data/part.dart';
 import 'package:particulous/data/stock.dart';
-
-import 'data/part.dart';
-import 'db/db_handler.dart';
-import 'part_dropdown.dart';
+import 'package:particulous/db/db_handler.dart';
+import 'package:particulous/part/part_dropdown.dart';
 
 class AddStockForm extends StatefulWidget {
   final DBHandler dbHandler;

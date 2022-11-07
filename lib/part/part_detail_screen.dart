@@ -3,16 +3,15 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:particulous/data/application_directories.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
-import 'package:particulous/part_bom_table.dart';
-import 'package:particulous/part_stock_table.dart';
+import 'package:particulous/part/part_bom_table.dart';
+import 'package:particulous/part/part_category_widget.dart';
+import 'package:particulous/part/part_stock_table.dart';
 import 'package:particulous/util/add_utils.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-
-import 'main.dart';
-import 'part_category_widget.dart';
 
 const imageSize = 200.0;
 

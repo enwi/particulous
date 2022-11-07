@@ -1,7 +1,7 @@
-import '../data/alter_stock.dart';
-import '../data/category.dart';
-import '../data/part.dart';
-import '../data/stock.dart';
+import 'package:particulous/data/alter_stock.dart';
+import 'package:particulous/data/category.dart';
+import 'package:particulous/data/part.dart';
+import 'package:particulous/data/stock.dart';
 
 abstract class DBStrategy {
   /// Close all connections and db

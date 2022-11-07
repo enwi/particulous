@@ -1,8 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-
-import 'data/category.dart';
-import 'db/db_handler.dart';
+import 'package:particulous/data/category.dart';
+import 'package:particulous/db/db_handler.dart';
 
 class CategoryDropdown extends StatefulWidget {
   final DBHandler dbHandler;

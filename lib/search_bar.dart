@@ -1,14 +1,13 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:particulous/data/part.dart';
+import 'package:particulous/db/db_handler.dart';
+import 'package:particulous/part/part_detail_screen.dart';
+import 'package:particulous/part/part_widget.dart';
 import 'package:particulous/settings_screen.dart';
+import 'package:particulous/util/add_utils.dart';
 import 'package:provider/provider.dart';
-
-import 'data/part.dart';
-import 'db/db_handler.dart';
-import 'part_detail_screen.dart';
-import 'part_widget.dart';
-import 'util/add_utils.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({super.key});

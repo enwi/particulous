@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:particulous/category_screen.dart';
+import 'package:particulous/data/category.dart';
+import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/util/color_util.dart';
-
-import 'category_screen.dart';
-import 'data/category.dart';
-import 'data/part.dart';
 
 class PartCategoryWidget extends StatelessWidget {
   final DBHandler dbh;

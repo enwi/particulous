@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
-
-import 'stock_widget.dart';
+import 'package:particulous/stock_widget.dart';
 
 class PartStockWidget extends StatelessWidget {
   final DBHandler dbh;
