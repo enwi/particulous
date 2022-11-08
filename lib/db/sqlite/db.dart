@@ -11,6 +11,7 @@ part 'db.g.dart';
 part 'category.dart';
 part 'part.dart';
 part 'stock.dart';
+part 'location.dart';
 
 @DriftDatabase(
   tables: [
@@ -19,6 +20,7 @@ part 'stock.dart';
     PartBom,
     Stock,
     StockTracking,
+    Location,
   ],
   queries: {
     'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(i,p,n) AS ('

@@ -84,14 +84,31 @@ class _StockTableState extends State<StockTable> {
           numeric: true,
           onSort: (columnIndex, ascending) {
             setState(() {
-              if (columnIndex == _sortColumnIndex) {
-                _sortAsc = ascending;
-              } else {
+              if (columnIndex != _sortColumnIndex) {
                 _sortColumnIndex = columnIndex;
-                _sortAsc = false;
+              } else {
+                _sortAsc = !_sortAsc;
               }
               _stocks.sort((a, b) => a.amount.compareTo(b.amount));
-              if (!ascending) {
+              if (!_sortAsc) {
+                _stocks = _stocks.reversed.toList();
+              }
+            });
+          },
+        ),
+        DataColumn(
+          label: const Text('Price'),
+          numeric: true,
+          onSort: (columnIndex, ascending) {
+            setState(() {
+              if (columnIndex != _sortColumnIndex) {
+                _sortColumnIndex = columnIndex;
+              } else {
+                _sortAsc = !_sortAsc;
+              }
+              _stocks
+                  .sort((a, b) => (a.price ?? 0.0).compareTo(b.price ?? 0.0));
+              if (!_sortAsc) {
                 _stocks = _stocks.reversed.toList();
               }
             });
@@ -213,12 +230,9 @@ class _StockTableState extends State<StockTable> {
               ),
             ],
           )),
-          DataCell(
-            Text('${stock.amount}'),
-          ),
-          DataCell(
-            Text(StringUtil.formatDate(date)),
-          ),
+          DataCell(Text('${stock.amount}')),
+          DataCell(Text('${stock.price ?? 0.0}')),
+          DataCell(Text(StringUtil.formatDate(date))),
         ]);
       }).toList(),
     );

@@ -1136,15 +1136,270 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
   }
 }
 
+class LocationData extends DataClass implements Insertable<LocationData> {
+  final int id;
+  final int? parent;
+  final String name;
+  final String? description;
+  const LocationData(
+      {required this.id, this.parent, required this.name, this.description});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || parent != null) {
+      map['parent'] = Variable<int>(parent);
+    }
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    return map;
+  }
+
+  LocationCompanion toCompanion(bool nullToAbsent) {
+    return LocationCompanion(
+      id: Value(id),
+      parent:
+          parent == null && nullToAbsent ? const Value.absent() : Value(parent),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+    );
+  }
+
+  factory LocationData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LocationData(
+      id: serializer.fromJson<int>(json['id']),
+      parent: serializer.fromJson<int?>(json['parent']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'parent': serializer.toJson<int?>(parent),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+    };
+  }
+
+  LocationData copyWith(
+          {int? id,
+          Value<int?> parent = const Value.absent(),
+          String? name,
+          Value<String?> description = const Value.absent()}) =>
+      LocationData(
+        id: id ?? this.id,
+        parent: parent.present ? parent.value : this.parent,
+        name: name ?? this.name,
+        description: description.present ? description.value : this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LocationData(')
+          ..write('id: $id, ')
+          ..write('parent: $parent, ')
+          ..write('name: $name, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, parent, name, description);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LocationData &&
+          other.id == this.id &&
+          other.parent == this.parent &&
+          other.name == this.name &&
+          other.description == this.description);
+}
+
+class LocationCompanion extends UpdateCompanion<LocationData> {
+  final Value<int> id;
+  final Value<int?> parent;
+  final Value<String> name;
+  final Value<String?> description;
+  const LocationCompanion({
+    this.id = const Value.absent(),
+    this.parent = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+  });
+  LocationCompanion.insert({
+    this.id = const Value.absent(),
+    this.parent = const Value.absent(),
+    required String name,
+    this.description = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<LocationData> custom({
+    Expression<int>? id,
+    Expression<int>? parent,
+    Expression<String>? name,
+    Expression<String>? description,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (parent != null) 'parent': parent,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+    });
+  }
+
+  LocationCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? parent,
+      Value<String>? name,
+      Value<String?>? description}) {
+    return LocationCompanion(
+      id: id ?? this.id,
+      parent: parent ?? this.parent,
+      name: name ?? this.name,
+      description: description ?? this.description,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (parent.present) {
+      map['parent'] = Variable<int>(parent.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocationCompanion(')
+          ..write('id: $id, ')
+          ..write('parent: $parent, ')
+          ..write('name: $name, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LocationTable extends Location
+    with TableInfo<$LocationTable, LocationData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LocationTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _parentMeta = const VerificationMeta('parent');
+  @override
+  late final GeneratedColumn<int> parent = GeneratedColumn<int>(
+      'parent', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: 'REFERENCES "location" ("id")');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [id, parent, name, description];
+  @override
+  String get aliasedName => _alias ?? 'location';
+  @override
+  String get actualTableName => 'location';
+  @override
+  VerificationContext validateIntegrity(Insertable<LocationData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('parent')) {
+      context.handle(_parentMeta,
+          parent.isAcceptableOrUnknown(data['parent']!, _parentMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LocationData(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      parent: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}parent']),
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+    );
+  }
+
+  @override
+  $LocationTable createAlias(String alias) {
+    return $LocationTable(attachedDatabase, alias);
+  }
+}
+
 class StockData extends DataClass implements Insertable<StockData> {
   final int id;
   final int part;
   final int amount;
+  final double? price;
+  final String? note;
+  final int? location;
   final DateTime modified;
   const StockData(
       {required this.id,
       required this.part,
       required this.amount,
+      this.price,
+      this.note,
+      this.location,
       required this.modified});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1152,6 +1407,15 @@ class StockData extends DataClass implements Insertable<StockData> {
     map['id'] = Variable<int>(id);
     map['part'] = Variable<int>(part);
     map['amount'] = Variable<int>(amount);
+    if (!nullToAbsent || price != null) {
+      map['price'] = Variable<double>(price);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || location != null) {
+      map['location'] = Variable<int>(location);
+    }
     map['modified'] = Variable<DateTime>(modified);
     return map;
   }
@@ -1161,6 +1425,12 @@ class StockData extends DataClass implements Insertable<StockData> {
       id: Value(id),
       part: Value(part),
       amount: Value(amount),
+      price:
+          price == null && nullToAbsent ? const Value.absent() : Value(price),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      location: location == null && nullToAbsent
+          ? const Value.absent()
+          : Value(location),
       modified: Value(modified),
     );
   }
@@ -1172,6 +1442,9 @@ class StockData extends DataClass implements Insertable<StockData> {
       id: serializer.fromJson<int>(json['id']),
       part: serializer.fromJson<int>(json['part']),
       amount: serializer.fromJson<int>(json['amount']),
+      price: serializer.fromJson<double?>(json['price']),
+      note: serializer.fromJson<String?>(json['note']),
+      location: serializer.fromJson<int?>(json['location']),
       modified: serializer.fromJson<DateTime>(json['modified']),
     );
   }
@@ -1182,15 +1455,28 @@ class StockData extends DataClass implements Insertable<StockData> {
       'id': serializer.toJson<int>(id),
       'part': serializer.toJson<int>(part),
       'amount': serializer.toJson<int>(amount),
+      'price': serializer.toJson<double?>(price),
+      'note': serializer.toJson<String?>(note),
+      'location': serializer.toJson<int?>(location),
       'modified': serializer.toJson<DateTime>(modified),
     };
   }
 
-  StockData copyWith({int? id, int? part, int? amount, DateTime? modified}) =>
+  StockData copyWith(
+          {int? id,
+          int? part,
+          int? amount,
+          Value<double?> price = const Value.absent(),
+          Value<String?> note = const Value.absent(),
+          Value<int?> location = const Value.absent(),
+          DateTime? modified}) =>
       StockData(
         id: id ?? this.id,
         part: part ?? this.part,
         amount: amount ?? this.amount,
+        price: price.present ? price.value : this.price,
+        note: note.present ? note.value : this.note,
+        location: location.present ? location.value : this.location,
         modified: modified ?? this.modified,
       );
   @override
@@ -1199,13 +1485,17 @@ class StockData extends DataClass implements Insertable<StockData> {
           ..write('id: $id, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
+          ..write('price: $price, ')
+          ..write('note: $note, ')
+          ..write('location: $location, ')
           ..write('modified: $modified')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, part, amount, modified);
+  int get hashCode =>
+      Object.hash(id, part, amount, price, note, location, modified);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1213,6 +1503,9 @@ class StockData extends DataClass implements Insertable<StockData> {
           other.id == this.id &&
           other.part == this.part &&
           other.amount == this.amount &&
+          other.price == this.price &&
+          other.note == this.note &&
+          other.location == this.location &&
           other.modified == this.modified);
 }
 
@@ -1220,17 +1513,26 @@ class StockCompanion extends UpdateCompanion<StockData> {
   final Value<int> id;
   final Value<int> part;
   final Value<int> amount;
+  final Value<double?> price;
+  final Value<String?> note;
+  final Value<int?> location;
   final Value<DateTime> modified;
   const StockCompanion({
     this.id = const Value.absent(),
     this.part = const Value.absent(),
     this.amount = const Value.absent(),
+    this.price = const Value.absent(),
+    this.note = const Value.absent(),
+    this.location = const Value.absent(),
     this.modified = const Value.absent(),
   });
   StockCompanion.insert({
     this.id = const Value.absent(),
     required int part,
     required int amount,
+    this.price = const Value.absent(),
+    this.note = const Value.absent(),
+    this.location = const Value.absent(),
     this.modified = const Value.absent(),
   })  : part = Value(part),
         amount = Value(amount);
@@ -1238,12 +1540,18 @@ class StockCompanion extends UpdateCompanion<StockData> {
     Expression<int>? id,
     Expression<int>? part,
     Expression<int>? amount,
+    Expression<double>? price,
+    Expression<String>? note,
+    Expression<int>? location,
     Expression<DateTime>? modified,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (part != null) 'part': part,
       if (amount != null) 'amount': amount,
+      if (price != null) 'price': price,
+      if (note != null) 'note': note,
+      if (location != null) 'location': location,
       if (modified != null) 'modified': modified,
     });
   }
@@ -1252,11 +1560,17 @@ class StockCompanion extends UpdateCompanion<StockData> {
       {Value<int>? id,
       Value<int>? part,
       Value<int>? amount,
+      Value<double?>? price,
+      Value<String?>? note,
+      Value<int?>? location,
       Value<DateTime>? modified}) {
     return StockCompanion(
       id: id ?? this.id,
       part: part ?? this.part,
       amount: amount ?? this.amount,
+      price: price ?? this.price,
+      note: note ?? this.note,
+      location: location ?? this.location,
       modified: modified ?? this.modified,
     );
   }
@@ -1273,6 +1587,15 @@ class StockCompanion extends UpdateCompanion<StockData> {
     if (amount.present) {
       map['amount'] = Variable<int>(amount.value);
     }
+    if (price.present) {
+      map['price'] = Variable<double>(price.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<int>(location.value);
+    }
     if (modified.present) {
       map['modified'] = Variable<DateTime>(modified.value);
     }
@@ -1285,6 +1608,9 @@ class StockCompanion extends UpdateCompanion<StockData> {
           ..write('id: $id, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
+          ..write('price: $price, ')
+          ..write('note: $note, ')
+          ..write('location: $location, ')
           ..write('modified: $modified')
           ..write(')'))
         .toString();
@@ -1315,6 +1641,23 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _priceMeta = const VerificationMeta('price');
+  @override
+  late final GeneratedColumn<double> price = GeneratedColumn<double>(
+      'price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  final VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  final VerificationMeta _locationMeta = const VerificationMeta('location');
+  @override
+  late final GeneratedColumn<int> location = GeneratedColumn<int>(
+      'location', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: 'REFERENCES "location" ("id")');
   final VerificationMeta _modifiedMeta = const VerificationMeta('modified');
   @override
   late final GeneratedColumn<DateTime> modified = GeneratedColumn<DateTime>(
@@ -1323,7 +1666,8 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
   @override
-  List<GeneratedColumn> get $columns => [id, part, amount, modified];
+  List<GeneratedColumn> get $columns =>
+      [id, part, amount, price, note, location, modified];
   @override
   String get aliasedName => _alias ?? 'stock';
   @override
@@ -1348,6 +1692,18 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
     } else if (isInserting) {
       context.missing(_amountMeta);
     }
+    if (data.containsKey('price')) {
+      context.handle(
+          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('location')) {
+      context.handle(_locationMeta,
+          location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+    }
     if (data.containsKey('modified')) {
       context.handle(_modifiedMeta,
           modified.isAcceptableOrUnknown(data['modified']!, _modifiedMeta));
@@ -1367,6 +1723,12 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
           .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
       amount: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
+      price: attachedDatabase.options.types
+          .read(DriftSqlType.double, data['${effectivePrefix}price']),
+      note: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+      location: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}location']),
       modified: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}modified'])!,
     );
@@ -1662,6 +2024,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $CategoryTable category = $CategoryTable(this);
   late final $PartTable part = $PartTable(this);
   late final $PartBomTable partBom = $PartBomTable(this);
+  late final $LocationTable location = $LocationTable(this);
   late final $StockTable stock = $StockTable(this);
   late final $StockTrackingTable stockTracking = $StockTrackingTable(this);
   Selectable<String> getParentCategoryNames(int var1) {
@@ -1723,7 +2086,7 @@ abstract class _$Database extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [category, part, partBom, stock, stockTracking];
+      [category, part, partBom, location, stock, stockTracking];
   @override
   DriftDatabaseOptions get options =>
       const DriftDatabaseOptions(storeDateTimeAsText: true);

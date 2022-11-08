@@ -71,6 +71,8 @@ extension SQLiteStock on Stock {
       id: data.id,
       part: data.part,
       amount: data.amount,
+      price: data.price,
+      note: data.note,
       modified: data.modified,
     );
   }
@@ -288,8 +290,12 @@ class SQLiteStrategy implements DBStrategy {
   Future<int> insertStock(Stock stock) {
     return _db
         .into(_db.stock)
-        .insertReturning(
-            db.StockCompanion.insert(part: stock.part, amount: stock.amount))
+        .insertReturning(db.StockCompanion.insert(
+          part: stock.part,
+          amount: stock.amount,
+          price: Value(stock.price),
+          note: Value(stock.note),
+        ))
         .then((value) => value.id);
   }
 

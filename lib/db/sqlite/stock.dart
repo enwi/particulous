@@ -4,11 +4,13 @@ class Stock extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get part => integer().references(Part, #id)();
   IntColumn get amount => integer()();
+  RealColumn get price => real().nullable()();
+  // IntColumn get currency => integer().references(Currency, #id)();
+  TextColumn get note => text().nullable()();
+  IntColumn get location => integer().nullable().references(Location, #id)();
   DateTimeColumn get modified => dateTime().withDefault(currentDateAndTime)();
   // IntColumn get supplier => integer().references(supplier, #id)();
-  // TODO Location
-  // TODO price
-  // TODO order
+  // TODO order, supplier
 }
 
 class StockTracking extends Table {

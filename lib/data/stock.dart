@@ -9,6 +9,12 @@ class Stock {
   /// Amount of parts the stock has
   final int amount;
 
+  /// Price per part
+  final double? price;
+
+  /// Note about stock
+  final String? note;
+
   /// Last time stock was modified
   final DateTime modified;
 
@@ -16,6 +22,8 @@ class Stock {
     required this.id,
     required this.part,
     required this.amount,
+    this.price,
+    this.note,
     required this.modified,
   });
 }

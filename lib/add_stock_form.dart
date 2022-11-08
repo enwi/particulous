@@ -19,6 +19,8 @@ class _AddStockFormState extends State<AddStockForm> {
 
   Part? _stockPart;
   int _stockAmount = 0;
+  double? _stockPrice;
+  String? _stockNote;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,26 @@ class _AddStockFormState extends State<AddStockForm> {
             labelText: 'Part',
             onSaved: (newValue) => _stockPart = newValue,
           ),
-          // TODO add note and also insert into StockTracking
+          const SizedBox(height: 16),
           SpinBox(
+            decoration: const InputDecoration(label: Text('Amount')),
             min: 0.0,
             max: double.maxFinite,
             value: 0.0,
             onChanged: (newValue) => _stockAmount = newValue.toInt(),
+          ),
+          const SizedBox(height: 16),
+          SpinBox(
+            decoration: const InputDecoration(label: Text('Price (optional)')),
+            min: 0.0,
+            max: double.maxFinite,
+            value: 0.0,
+            decimals: 4,
+            onChanged: (newValue) => _stockPrice = newValue,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(label: Text('Note (optional)')),
+            onSaved: (newValue) => _stockNote = newValue,
           ),
           ElevatedButton(
             onPressed: () {
@@ -50,6 +66,8 @@ class _AddStockFormState extends State<AddStockForm> {
                 id: -1,
                 part: _stockPart!.identifier,
                 amount: _stockAmount,
+                price: _stockPrice,
+                note: _stockNote,
                 modified: DateTime.now(),
               ))
                   .then((value) {
