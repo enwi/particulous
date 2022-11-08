@@ -24,14 +24,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: const Text('Database'),
+            title: const Text('Storage'),
             tiles: [
               SettingsTile.navigation(
                 leading: const Icon(Icons.storage),
-                title: const Text('Location'),
+                title: const Text('Database'),
                 enabled: false,
                 value: Text(
                     join(dirs.documentsDir.path, 'particulous', 'db.sqlite')),
+              ),
+              SettingsTile.navigation(
+                leading: const Icon(Icons.image),
+                title: const Text('Images'),
+                enabled: false,
+                value: Text(dirs.imageDir.path),
               ),
             ],
           ),
