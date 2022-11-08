@@ -101,6 +101,7 @@ class _BomTableState extends State<BomTable> {
         const DataColumn(label: Text('Variants')),
         DataColumn(
           label: const Text('Can build'),
+          numeric: true,
           onSort: (columnIndex, ascending) {
             setState(() {
               if (columnIndex != _sortColumnIndex) {
@@ -144,19 +145,24 @@ class _BomTableState extends State<BomTable> {
               ],
             ),
           ),
-          DataCell(
-            Text('${part.amount}'),
-          ),
+          DataCell(Text('${part.amount}')),
           DataCell(Text(part.reference ?? '-')),
-          DataCell(Text(part.optional ? 'yes' : 'no')),
-          DataCell(Text(part.variants ? 'yes' : 'no')),
+          DataCell(yesNoChip(part.optional)),
+          DataCell(yesNoChip(part.variants)),
           DataCell(StreamBuilder(
             stream: widget.dbh.watchStockCountOfPart(part.part.identifier),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final canBuild = snapshot.data! / part.amount;
                 _partHasCanBuild[part.part.identifier] = canBuild;
-                return Text('$canBuild');
+                return Chip(
+                  label: Text('$canBuild'),
+                  backgroundColor: canBuild <= 5
+                      ? canBuild <= 1
+                          ? Colors.red
+                          : Colors.orange
+                      : Colors.green,
+                );
               }
               return const CircularProgressIndicator();
             },
@@ -164,5 +170,17 @@ class _BomTableState extends State<BomTable> {
         ]);
       }).toList(),
     );
+  }
+
+  Chip yesNoChip(final bool yes) {
+    return yes
+        ? const Chip(
+            label: Text('yes'),
+            backgroundColor: Colors.green,
+          )
+        : const Chip(
+            label: Text('no'),
+            backgroundColor: Colors.orange,
+          );
   }
 }
