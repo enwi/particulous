@@ -1,3 +1,5 @@
+import 'package:particulous/data/location.dart';
+
 /// Represents the stock of a [part]
 class Stock {
   /// Unique stock identifier
@@ -15,6 +17,9 @@ class Stock {
   /// Note about stock
   final String? note;
 
+  /// Location where stock is located
+  final Location location;
+
   /// Last time stock was modified
   final DateTime modified;
 
@@ -24,6 +29,7 @@ class Stock {
     required this.amount,
     this.price,
     this.note,
+    required this.location,
     required this.modified,
   });
 }

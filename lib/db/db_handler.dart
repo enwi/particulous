@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/category.dart';
+import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/stock.dart';
@@ -91,4 +92,8 @@ class DBHandler with ChangeNotifier {
 
   Future<void> updateImageOfPart(final String image, final int part) =>
       _strategy.updateImageOfPart(image, part);
+
+  Future<List<Location>> fetchLocations() => _strategy.fetchLocations();
+  Future<int> insertLocation(final Location location) =>
+      _strategy.insertLocation(location);
 }

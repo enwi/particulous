@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:particulous/add_bom_part_form.dart';
 import 'package:particulous/add_category_form.dart';
+import 'package:particulous/add_location_form.dart';
 import 'package:particulous/add_part_form.dart';
 import 'package:particulous/add_stock_form.dart';
 import 'package:particulous/data/part.dart';
@@ -162,6 +163,30 @@ abstract class AddUtils {
                 child: AddStockForm(
                   dbHandler: dbh,
                   initialPart: part,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+  static void addLocation({
+    required final BuildContext context,
+    required final DBHandler dbh,
+    Part? part,
+  }) =>
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: const Text('New Location'),
+            ),
+            body: Center(
+              child: SizedBox(
+                width: 500,
+                child: AddLocationForm(
+                  dbHandler: dbh,
                 ),
               ),
             ),

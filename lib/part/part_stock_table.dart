@@ -114,6 +114,7 @@ class _StockTableState extends State<StockTable> {
             });
           },
         ),
+        const DataColumn(label: Text('Location')),
         const DataColumn(label: Text('Last updated')),
       ],
       rows: _stocks.map((stock) {
@@ -232,6 +233,7 @@ class _StockTableState extends State<StockTable> {
           )),
           DataCell(Text('${stock.amount}')),
           DataCell(Text('${stock.price ?? 0.0}')),
+          DataCell(Text(stock.location?.name ?? '-')),
           DataCell(Text(StringUtil.formatDate(date))),
         ]);
       }).toList(),

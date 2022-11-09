@@ -221,9 +221,7 @@ class $CategoryTable extends Category
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1024),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -1419,7 +1417,7 @@ class StockData extends DataClass implements Insertable<StockData> {
   final int amount;
   final double? price;
   final String? note;
-  final int? location;
+  final int location;
   final DateTime modified;
   const StockData(
       {required this.id,
@@ -1427,7 +1425,7 @@ class StockData extends DataClass implements Insertable<StockData> {
       required this.amount,
       this.price,
       this.note,
-      this.location,
+      required this.location,
       required this.modified});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1441,9 +1439,7 @@ class StockData extends DataClass implements Insertable<StockData> {
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<String>(note);
     }
-    if (!nullToAbsent || location != null) {
-      map['location'] = Variable<int>(location);
-    }
+    map['location'] = Variable<int>(location);
     map['modified'] = Variable<DateTime>(modified);
     return map;
   }
@@ -1456,9 +1452,7 @@ class StockData extends DataClass implements Insertable<StockData> {
       price:
           price == null && nullToAbsent ? const Value.absent() : Value(price),
       note: note == null && nullToAbsent ? const Value.absent() : Value(note),
-      location: location == null && nullToAbsent
-          ? const Value.absent()
-          : Value(location),
+      location: Value(location),
       modified: Value(modified),
     );
   }
@@ -1472,7 +1466,7 @@ class StockData extends DataClass implements Insertable<StockData> {
       amount: serializer.fromJson<int>(json['amount']),
       price: serializer.fromJson<double?>(json['price']),
       note: serializer.fromJson<String?>(json['note']),
-      location: serializer.fromJson<int?>(json['location']),
+      location: serializer.fromJson<int>(json['location']),
       modified: serializer.fromJson<DateTime>(json['modified']),
     );
   }
@@ -1485,7 +1479,7 @@ class StockData extends DataClass implements Insertable<StockData> {
       'amount': serializer.toJson<int>(amount),
       'price': serializer.toJson<double?>(price),
       'note': serializer.toJson<String?>(note),
-      'location': serializer.toJson<int?>(location),
+      'location': serializer.toJson<int>(location),
       'modified': serializer.toJson<DateTime>(modified),
     };
   }
@@ -1496,7 +1490,7 @@ class StockData extends DataClass implements Insertable<StockData> {
           int? amount,
           Value<double?> price = const Value.absent(),
           Value<String?> note = const Value.absent(),
-          Value<int?> location = const Value.absent(),
+          int? location,
           DateTime? modified}) =>
       StockData(
         id: id ?? this.id,
@@ -1504,7 +1498,7 @@ class StockData extends DataClass implements Insertable<StockData> {
         amount: amount ?? this.amount,
         price: price.present ? price.value : this.price,
         note: note.present ? note.value : this.note,
-        location: location.present ? location.value : this.location,
+        location: location ?? this.location,
         modified: modified ?? this.modified,
       );
   @override
@@ -1543,7 +1537,7 @@ class StockCompanion extends UpdateCompanion<StockData> {
   final Value<int> amount;
   final Value<double?> price;
   final Value<String?> note;
-  final Value<int?> location;
+  final Value<int> location;
   final Value<DateTime> modified;
   const StockCompanion({
     this.id = const Value.absent(),
@@ -1560,10 +1554,11 @@ class StockCompanion extends UpdateCompanion<StockData> {
     required int amount,
     this.price = const Value.absent(),
     this.note = const Value.absent(),
-    this.location = const Value.absent(),
+    required int location,
     this.modified = const Value.absent(),
   })  : part = Value(part),
-        amount = Value(amount);
+        amount = Value(amount),
+        location = Value(location);
   static Insertable<StockData> custom({
     Expression<int>? id,
     Expression<int>? part,
@@ -1590,7 +1585,7 @@ class StockCompanion extends UpdateCompanion<StockData> {
       Value<int>? amount,
       Value<double?>? price,
       Value<String?>? note,
-      Value<int?>? location,
+      Value<int>? location,
       Value<DateTime>? modified}) {
     return StockCompanion(
       id: id ?? this.id,
@@ -1685,9 +1680,9 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   final VerificationMeta _locationMeta = const VerificationMeta('location');
   @override
   late final GeneratedColumn<int> location = GeneratedColumn<int>(
-      'location', aliasedName, true,
+      'location', aliasedName, false,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
+      requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES "location" ("id")'));
   final VerificationMeta _modifiedMeta = const VerificationMeta('modified');
@@ -1735,6 +1730,8 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
     if (data.containsKey('location')) {
       context.handle(_locationMeta,
           location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+    } else if (isInserting) {
+      context.missing(_locationMeta);
     }
     if (data.containsKey('modified')) {
       context.handle(_modifiedMeta,
@@ -1760,7 +1757,7 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       note: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}note']),
       location: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}location']),
+          .read(DriftSqlType.int, data['${effectivePrefix}location'])!,
       modified: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}modified'])!,
     );

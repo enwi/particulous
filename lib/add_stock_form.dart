@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/data/stock.dart';
 import 'package:particulous/db/db_handler.dart';
+import 'package:particulous/location_dropdown.dart';
 import 'package:particulous/part/part_dropdown.dart';
 
 class AddStockForm extends StatefulWidget {
@@ -21,6 +23,7 @@ class _AddStockFormState extends State<AddStockForm> {
   int _stockAmount = 0;
   double? _stockPrice;
   String? _stockNote;
+  Location? _stockLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,8 @@ class _AddStockFormState extends State<AddStockForm> {
       child: Column(
         children: [
           PartDropdown(
-            dbHandler: widget.dbHandler,
-            initialPart: widget.initialPart,
+            options: widget.dbHandler.fetchParts(),
+            initialOption: widget.initialPart,
             labelText: 'Part',
             onSaved: (newValue) => _stockPart = newValue,
           ),
@@ -55,6 +58,17 @@ class _AddStockFormState extends State<AddStockForm> {
             decoration: const InputDecoration(label: Text('Note (optional)')),
             onSaved: (newValue) => _stockNote = newValue,
           ),
+          LocationDropdown(
+            dbHandler: widget.dbHandler,
+            labelText: 'Location (optional)',
+            onSaved: ((newValue) => _stockLocation = newValue),
+            validator: (value) {
+              if (value == null) {
+                return 'Stock must have a location';
+              }
+              return null;
+            },
+          ),
           ElevatedButton(
             onPressed: () {
               if (!_formKey.currentState!.validate()) {
@@ -68,12 +82,12 @@ class _AddStockFormState extends State<AddStockForm> {
                 amount: _stockAmount,
                 price: _stockPrice,
                 note: _stockNote,
+                location: _stockLocation!,
                 modified: DateTime.now(),
               ))
-                  .then((value) {
+                  .then((id) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content:
-                      Text('Successfully created new category with ID $value'),
+                  content: Text('Successfully created new stock with ID $id'),
                 ));
                 Navigator.pop(context);
               });

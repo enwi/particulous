@@ -34,9 +34,6 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
               if (value == null || value.isEmpty) {
                 return 'Category must have a name';
               }
-              if (value.length > 1024) {
-                return 'Category can only have 1024 characters max';
-              }
               return null;
             },
             onSaved: (newValue) => _categoryName = newValue,
@@ -76,10 +73,10 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                       description: _categoryDescription!,
                       keywords: _categoryKeywords,
                       parent: _categoryParent?.identifier))
-                  .then((value) {
+                  .then((id) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content:
-                      Text('Successfully created new category with ID $value'),
+                      Text('Successfully created new category with ID $id'),
                 ));
                 Navigator.pop(context);
               });

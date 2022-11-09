@@ -7,7 +7,7 @@ class Stock extends Table {
   RealColumn get price => real().nullable()();
   // IntColumn get currency => integer().references(Currency, #id)();
   TextColumn get note => text().nullable()();
-  IntColumn get location => integer().nullable().references(Location, #id)();
+  IntColumn get location => integer().references(Location, #id)();
   DateTimeColumn get modified => dateTime().withDefault(currentDateAndTime)();
   // IntColumn get supplier => integer().references(supplier, #id)();
   // TODO order, supplier

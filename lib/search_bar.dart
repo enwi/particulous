@@ -84,6 +84,14 @@ class _SearchBarState extends State<SearchBar> {
                     dbh: dbh,
                   ),
                 ),
+                SpeedDialChild(
+                  child: const Icon(Icons.location_on),
+                  label: 'Location',
+                  onTap: () => AddUtils.addLocation(
+                    context: context,
+                    dbh: dbh,
+                  ),
+                ),
               ],
             ),
             body: ListView.builder(

@@ -29,18 +29,19 @@ class _AddBOMPartFormState extends State<AddBOMPartForm> {
 
   @override
   Widget build(BuildContext context) {
+    final parts = widget.dbHandler.fetchParts();
     return Form(
       key: _formKey,
       child: Column(
         children: [
           PartDropdown(
-            dbHandler: widget.dbHandler,
-            initialPart: widget.initialParent,
+            options: parts,
+            initialOption: widget.initialParent,
             labelText: 'Parent part',
             onSaved: (newValue) => _bomParent = newValue,
           ),
           PartDropdown(
-            dbHandler: widget.dbHandler,
+            options: parts,
             labelText: 'Part',
             onSaved: (newValue) => _bomPart = newValue,
             validator: (value) {

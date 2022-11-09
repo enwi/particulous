@@ -105,7 +105,7 @@ class _AddPartFormState extends State<AddPartForm> {
             ],
           ),
           PartDropdown(
-            fetchParts: () => widget.dbHandler.fetchTemplateParts(),
+            options: widget.dbHandler.fetchTemplateParts(),
             labelText: 'Variant of',
             onSaved: (newValue) => _partVariant = newValue,
           ),
@@ -151,10 +151,10 @@ class _AddPartFormState extends State<AddPartForm> {
                           File(_partImage!.path!).readAsBytesSync());
                 }
                 return value;
-              }).then((value) {
+              }).then((id) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content:
-                        Text('Successfully created new part with ID $value')));
+                        Text('Successfully created new part with ID $id')));
                 Navigator.pop(context);
               });
             },

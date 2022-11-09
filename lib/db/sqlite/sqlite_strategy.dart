@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/category.dart';
+import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/data/stock.dart';
 import 'package:particulous/db/db_strategy.dart';
@@ -69,14 +70,16 @@ extension SQLiteCategory on Category {
 }
 
 extension SQLiteStock on Stock {
-  static Stock fromStockData(final db.StockData data) {
+  static Stock fromTypedResult(final TypedResult result) {
+    final rawData = result.rawData;
     return Stock(
-      id: data.id,
-      part: data.part,
-      amount: data.amount,
-      price: data.price,
-      note: data.note,
-      modified: data.modified,
+      id: rawData.read('stock.id'),
+      part: rawData.read('stock.part'),
+      amount: rawData.read('stock.amount'),
+      price: rawData.read('stock.price'),
+      note: rawData.read('stock.note'),
+      modified: rawData.read('stock.modified'),
+      location: SQLiteLocation.fromTypedResult(result),
     );
   }
 }
@@ -91,6 +94,27 @@ extension SQLitePartBom on BomPart {
       reference: rawData.read('part_bom.reference'),
       optional: rawData.read('part_bom.optional'),
       variants: rawData.read('part_bom.variants'),
+    );
+  }
+}
+
+extension SQLiteLocation on Location {
+  static Location fromLocationData(final db.LocationData data) {
+    return Location(
+      id: data.id,
+      name: data.name,
+      parent: data.parent,
+      description: data.description,
+    );
+  }
+
+  static Location fromTypedResult(final TypedResult result) {
+    final rawData = result.rawData;
+    return Location(
+      id: rawData.read('location.id'),
+      name: rawData.read('location.name'),
+      parent: rawData.read('location.parent'),
+      description: rawData.read('location.description'),
     );
   }
 }
@@ -228,11 +252,13 @@ class SQLiteStrategy implements DBStrategy {
 
   @override
   Stream<List<Stock>> watchStockOfPart(final int part) {
-    return (_db.select(_db.stock)
-          ..where((tbl) => tbl.part.equals(part))
-          ..orderBy([(tbl) => OrderingTerm.desc(tbl.amount)]))
+    return (_db.select(_db.stock).join([
+      innerJoin(_db.location, _db.location.id.equalsExp(_db.stock.location))
+    ])
+          ..where(_db.stock.part.equals(part))
+          ..orderBy([OrderingTerm.desc(_db.stock.amount)]))
         .watch()
-        .map((result) => result.map(SQLiteStock.fromStockData).toList());
+        .map((result) => result.map(SQLiteStock.fromTypedResult).toList());
   }
 
   @override
@@ -302,6 +328,7 @@ class SQLiteStrategy implements DBStrategy {
           amount: stock.amount,
           price: Value(stock.price),
           note: Value(stock.note),
+          location: stock.location.id,
         ))
         .then((value) => value.id);
   }
@@ -336,5 +363,25 @@ class SQLiteStrategy implements DBStrategy {
   Future<void> updateImageOfPart(final String image, final int part) {
     return (_db.update(_db.part)..where((tbl) => tbl.id.equals(part)))
         .writeReturning(db.PartCompanion.custom(image: Variable(image)));
+  }
+
+  @override
+  Future<List<Location>> fetchLocations() {
+    return _db
+        .select(_db.location)
+        .get()
+        .then((result) => result.map(SQLiteLocation.fromLocationData).toList());
+  }
+
+  @override
+  Future<int> insertLocation(Location location) {
+    return _db
+        .into(_db.location)
+        .insertReturning(db.LocationCompanion.insert(
+          name: location.name,
+          description: Value(location.description),
+          parent: Value(location.parent),
+        ))
+        .then((value) => value.id);
   }
 }
