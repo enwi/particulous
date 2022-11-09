@@ -117,7 +117,10 @@ abstract class AddUtils {
           ),
         ),
       );
-    }).catchError((error) => log('Error: $error'));
+    }).catchError((error) {
+      log('Error: $error');
+      return null;
+    });
   }
 
   static void addCategory({
