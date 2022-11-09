@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:particulous/data/application_directories.dart';
+import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_bom_table.dart';
@@ -36,7 +36,7 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
-    final imageDir = Provider.of<ApplicationDirectories>(context).imageDir.path;
+    final imageDir = Provider.of<Settings>(context).imageDir;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.part.name),
@@ -71,12 +71,8 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
                         final image = result.files.first;
                         final imageFileName =
                             '${widget.part.image?.split('.').first ?? '${widget.part.name.hashCode}'}.${image.extension ?? 'png'}';
-                        final dirs = Provider.of<ApplicationDirectories>(
-                            context,
-                            listen: false);
-                        File(join(dirs.imageDir.path, imageFileName))
-                            .writeAsBytes(image.bytes ??
-                                File(image.path!).readAsBytesSync());
+                        File(join(imageDir, imageFileName)).writeAsBytes(
+                            image.bytes ?? File(image.path!).readAsBytesSync());
                         if (widget.part.image == null) {
                           widget.dbh.updateImageOfPart(
                               imageFileName, widget.part.identifier);

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:particulous/data/application_directories.dart';
+import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +71,7 @@ class _BomTableState extends State<BomTable> {
 
   @override
   Widget build(BuildContext context) {
-    final imageDir = Provider.of<ApplicationDirectories>(context).imageDir.path;
+    final imageDir = Provider.of<Settings>(context).imageDir;
     return DataTable(
       sortColumnIndex: _sortColumnIndex,
       sortAscending: _sortAsc,

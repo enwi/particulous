@@ -1,6 +1,8 @@
+import 'dart:developer';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:particulous/data/application_directories.dart';
-import 'package:path/path.dart';
+import 'package:particulous/data/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -12,11 +14,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _switch = true;
-
   @override
   Widget build(BuildContext context) {
-    final dirs = Provider.of<ApplicationDirectories>(context);
+    final dbSettings = Provider.of<DBSettings>(context);
+    final settings = Provider.of<Settings>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -29,15 +30,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile.navigation(
                 leading: const Icon(Icons.storage),
                 title: const Text('Database'),
-                enabled: false,
-                value: Text(
-                    join(dirs.documentsDir.path, 'particulous', 'db.sqlite')),
+                value: Text(dbSettings.database),
+                onPressed: (context) => FilePicker.platform.pickFiles(
+                  allowMultiple: false,
+                  lockParentWindow: true,
+                  type: FileType.custom,
+                  allowedExtensions: ['sqlite'],
+                ).then((result) {
+                  if (result == null ||
+                      result.count != 1 ||
+                      result.files.first.path == null) {
+                    log('No database files have been picked');
+                    return;
+                  }
+                  dbSettings.setDatabase(result.files.first.path!);
+                }),
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.image),
                 title: const Text('Images'),
-                enabled: false,
-                value: Text(dirs.imageDir.path),
+                value: Text(settings.imageDir),
+                onPressed: (context) => FilePicker.platform
+                    .getDirectoryPath(
+                      lockParentWindow: true,
+                    )
+                    .then(settings.setImageDir),
               ),
             ],
           ),

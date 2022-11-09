@@ -38,6 +38,7 @@ dependencies:
   flutter_spinbox: ^0.10.0
   settings_ui: ^2.0.2
   file_picker: ^4.6.1
+  shared_preferences: ^2.0.15
 
 dependency_overrides:
   drift:

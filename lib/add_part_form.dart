@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:particulous/category_dropdown.dart';
-import 'package:particulous/data/application_directories.dart';
+import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
@@ -144,9 +144,9 @@ class _AddPartFormState extends State<AddPartForm> {
               ))
                   .then((value) {
                 if (internalImage != null) {
-                  final dirs = Provider.of<ApplicationDirectories>(context,
-                      listen: false);
-                  File(join(dirs.imageDir.path, internalImage)).writeAsBytes(
+                  final settings =
+                      Provider.of<Settings>(context, listen: false);
+                  File(join(settings.imageDir, internalImage)).writeAsBytes(
                       _partImage!.bytes ??
                           File(_partImage!.path!).readAsBytesSync());
                 }

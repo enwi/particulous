@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
 import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/part.dart';
@@ -93,7 +96,11 @@ extension SQLitePartBom on BomPart {
 }
 
 class SQLiteStrategy implements DBStrategy {
-  final _db = db.Database();
+  final db.Database _db;
+
+  SQLiteStrategy(final File file) : _db = db.Database(NativeDatabase(file)) {
+    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+  }
 
   @override
   void close() {
