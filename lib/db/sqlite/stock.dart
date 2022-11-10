@@ -21,3 +21,20 @@ class StockTracking extends Table {
   IntColumn get stock => integer().references(Stock, #id)();
   // TODO user
 }
+
+class BuildOrder extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get reference => text()();
+  IntColumn get part => integer().references(Part, #id)();
+  TextColumn get description => text().nullable()();
+  IntColumn get amount => integer()();
+  IntColumn get destination => integer().nullable().references(Location, #id)();
+  DateTimeColumn get created => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get completed => dateTime().nullable()();
+}
+
+class StockAllocation extends Table {
+  IntColumn get stock => integer().references(Stock, #id)();
+  IntColumn get buildOrder => integer().references(BuildOrder, #id)();
+  IntColumn get amount => integer()();
+}

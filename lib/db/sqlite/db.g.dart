@@ -821,14 +821,14 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   }
 }
 
-class PartBomData extends DataClass implements Insertable<PartBomData> {
+class BomPartData extends DataClass implements Insertable<BomPartData> {
   final int parent;
   final int part;
   final int amount;
   final String? reference;
   final bool optional;
   final bool variants;
-  const PartBomData(
+  const BomPartData(
       {required this.parent,
       required this.part,
       required this.amount,
@@ -849,8 +849,8 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
     return map;
   }
 
-  PartBomCompanion toCompanion(bool nullToAbsent) {
-    return PartBomCompanion(
+  BomPartCompanion toCompanion(bool nullToAbsent) {
+    return BomPartCompanion(
       parent: Value(parent),
       part: Value(part),
       amount: Value(amount),
@@ -862,10 +862,10 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
     );
   }
 
-  factory PartBomData.fromJson(Map<String, dynamic> json,
+  factory BomPartData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PartBomData(
+    return BomPartData(
       parent: serializer.fromJson<int>(json['parent']),
       part: serializer.fromJson<int>(json['part']),
       amount: serializer.fromJson<int>(json['amount']),
@@ -887,14 +887,14 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
     };
   }
 
-  PartBomData copyWith(
+  BomPartData copyWith(
           {int? parent,
           int? part,
           int? amount,
           Value<String?> reference = const Value.absent(),
           bool? optional,
           bool? variants}) =>
-      PartBomData(
+      BomPartData(
         parent: parent ?? this.parent,
         part: part ?? this.part,
         amount: amount ?? this.amount,
@@ -904,7 +904,7 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
       );
   @override
   String toString() {
-    return (StringBuffer('PartBomData(')
+    return (StringBuffer('BomPartData(')
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
@@ -921,7 +921,7 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PartBomData &&
+      (other is BomPartData &&
           other.parent == this.parent &&
           other.part == this.part &&
           other.amount == this.amount &&
@@ -930,14 +930,14 @@ class PartBomData extends DataClass implements Insertable<PartBomData> {
           other.variants == this.variants);
 }
 
-class PartBomCompanion extends UpdateCompanion<PartBomData> {
+class BomPartCompanion extends UpdateCompanion<BomPartData> {
   final Value<int> parent;
   final Value<int> part;
   final Value<int> amount;
   final Value<String?> reference;
   final Value<bool> optional;
   final Value<bool> variants;
-  const PartBomCompanion({
+  const BomPartCompanion({
     this.parent = const Value.absent(),
     this.part = const Value.absent(),
     this.amount = const Value.absent(),
@@ -945,7 +945,7 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
     this.optional = const Value.absent(),
     this.variants = const Value.absent(),
   });
-  PartBomCompanion.insert({
+  BomPartCompanion.insert({
     required int parent,
     required int part,
     required int amount,
@@ -955,7 +955,7 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
   })  : parent = Value(parent),
         part = Value(part),
         amount = Value(amount);
-  static Insertable<PartBomData> custom({
+  static Insertable<BomPartData> custom({
     Expression<int>? parent,
     Expression<int>? part,
     Expression<int>? amount,
@@ -973,14 +973,14 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
     });
   }
 
-  PartBomCompanion copyWith(
+  BomPartCompanion copyWith(
       {Value<int>? parent,
       Value<int>? part,
       Value<int>? amount,
       Value<String?>? reference,
       Value<bool>? optional,
       Value<bool>? variants}) {
-    return PartBomCompanion(
+    return BomPartCompanion(
       parent: parent ?? this.parent,
       part: part ?? this.part,
       amount: amount ?? this.amount,
@@ -1016,7 +1016,7 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
 
   @override
   String toString() {
-    return (StringBuffer('PartBomCompanion(')
+    return (StringBuffer('BomPartCompanion(')
           ..write('parent: $parent, ')
           ..write('part: $part, ')
           ..write('amount: $amount, ')
@@ -1028,11 +1028,11 @@ class PartBomCompanion extends UpdateCompanion<PartBomData> {
   }
 }
 
-class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
+class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $PartBomTable(this.attachedDatabase, [this._alias]);
+  $BomPartTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
@@ -1087,11 +1087,11 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
   List<GeneratedColumn> get $columns =>
       [parent, part, amount, reference, optional, variants];
   @override
-  String get aliasedName => _alias ?? 'part_bom';
+  String get aliasedName => _alias ?? 'bom_part';
   @override
-  String get actualTableName => 'part_bom';
+  String get actualTableName => 'bom_part';
   @override
-  VerificationContext validateIntegrity(Insertable<PartBomData> instance,
+  VerificationContext validateIntegrity(Insertable<BomPartData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1135,9 +1135,9 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
         {parent, part},
       ];
   @override
-  PartBomData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  BomPartData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PartBomData(
+    return BomPartData(
       parent: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}parent'])!,
       part: attachedDatabase.typeMapping
@@ -1154,8 +1154,8 @@ class $PartBomTable extends PartBom with TableInfo<$PartBomTable, PartBomData> {
   }
 
   @override
-  $PartBomTable createAlias(String alias) {
-    return $PartBomTable(attachedDatabase, alias);
+  $BomPartTable createAlias(String alias) {
+    return $BomPartTable(attachedDatabase, alias);
   }
 }
 
@@ -2051,14 +2051,645 @@ class $StockTrackingTable extends StockTracking
   }
 }
 
+class BuildOrderData extends DataClass implements Insertable<BuildOrderData> {
+  final int id;
+  final String reference;
+  final int part;
+  final String? description;
+  final int amount;
+  final int? destination;
+  final DateTime created;
+  final DateTime? completed;
+  const BuildOrderData(
+      {required this.id,
+      required this.reference,
+      required this.part,
+      this.description,
+      required this.amount,
+      this.destination,
+      required this.created,
+      this.completed});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['reference'] = Variable<String>(reference);
+    map['part'] = Variable<int>(part);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['amount'] = Variable<int>(amount);
+    if (!nullToAbsent || destination != null) {
+      map['destination'] = Variable<int>(destination);
+    }
+    map['created'] = Variable<DateTime>(created);
+    if (!nullToAbsent || completed != null) {
+      map['completed'] = Variable<DateTime>(completed);
+    }
+    return map;
+  }
+
+  BuildOrderCompanion toCompanion(bool nullToAbsent) {
+    return BuildOrderCompanion(
+      id: Value(id),
+      reference: Value(reference),
+      part: Value(part),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      amount: Value(amount),
+      destination: destination == null && nullToAbsent
+          ? const Value.absent()
+          : Value(destination),
+      created: Value(created),
+      completed: completed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completed),
+    );
+  }
+
+  factory BuildOrderData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BuildOrderData(
+      id: serializer.fromJson<int>(json['id']),
+      reference: serializer.fromJson<String>(json['reference']),
+      part: serializer.fromJson<int>(json['part']),
+      description: serializer.fromJson<String?>(json['description']),
+      amount: serializer.fromJson<int>(json['amount']),
+      destination: serializer.fromJson<int?>(json['destination']),
+      created: serializer.fromJson<DateTime>(json['created']),
+      completed: serializer.fromJson<DateTime?>(json['completed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'reference': serializer.toJson<String>(reference),
+      'part': serializer.toJson<int>(part),
+      'description': serializer.toJson<String?>(description),
+      'amount': serializer.toJson<int>(amount),
+      'destination': serializer.toJson<int?>(destination),
+      'created': serializer.toJson<DateTime>(created),
+      'completed': serializer.toJson<DateTime?>(completed),
+    };
+  }
+
+  BuildOrderData copyWith(
+          {int? id,
+          String? reference,
+          int? part,
+          Value<String?> description = const Value.absent(),
+          int? amount,
+          Value<int?> destination = const Value.absent(),
+          DateTime? created,
+          Value<DateTime?> completed = const Value.absent()}) =>
+      BuildOrderData(
+        id: id ?? this.id,
+        reference: reference ?? this.reference,
+        part: part ?? this.part,
+        description: description.present ? description.value : this.description,
+        amount: amount ?? this.amount,
+        destination: destination.present ? destination.value : this.destination,
+        created: created ?? this.created,
+        completed: completed.present ? completed.value : this.completed,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('BuildOrderData(')
+          ..write('id: $id, ')
+          ..write('reference: $reference, ')
+          ..write('part: $part, ')
+          ..write('description: $description, ')
+          ..write('amount: $amount, ')
+          ..write('destination: $destination, ')
+          ..write('created: $created, ')
+          ..write('completed: $completed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, reference, part, description, amount,
+      destination, created, completed);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BuildOrderData &&
+          other.id == this.id &&
+          other.reference == this.reference &&
+          other.part == this.part &&
+          other.description == this.description &&
+          other.amount == this.amount &&
+          other.destination == this.destination &&
+          other.created == this.created &&
+          other.completed == this.completed);
+}
+
+class BuildOrderCompanion extends UpdateCompanion<BuildOrderData> {
+  final Value<int> id;
+  final Value<String> reference;
+  final Value<int> part;
+  final Value<String?> description;
+  final Value<int> amount;
+  final Value<int?> destination;
+  final Value<DateTime> created;
+  final Value<DateTime?> completed;
+  const BuildOrderCompanion({
+    this.id = const Value.absent(),
+    this.reference = const Value.absent(),
+    this.part = const Value.absent(),
+    this.description = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.destination = const Value.absent(),
+    this.created = const Value.absent(),
+    this.completed = const Value.absent(),
+  });
+  BuildOrderCompanion.insert({
+    this.id = const Value.absent(),
+    required String reference,
+    required int part,
+    this.description = const Value.absent(),
+    required int amount,
+    this.destination = const Value.absent(),
+    this.created = const Value.absent(),
+    this.completed = const Value.absent(),
+  })  : reference = Value(reference),
+        part = Value(part),
+        amount = Value(amount);
+  static Insertable<BuildOrderData> custom({
+    Expression<int>? id,
+    Expression<String>? reference,
+    Expression<int>? part,
+    Expression<String>? description,
+    Expression<int>? amount,
+    Expression<int>? destination,
+    Expression<DateTime>? created,
+    Expression<DateTime>? completed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (reference != null) 'reference': reference,
+      if (part != null) 'part': part,
+      if (description != null) 'description': description,
+      if (amount != null) 'amount': amount,
+      if (destination != null) 'destination': destination,
+      if (created != null) 'created': created,
+      if (completed != null) 'completed': completed,
+    });
+  }
+
+  BuildOrderCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? reference,
+      Value<int>? part,
+      Value<String?>? description,
+      Value<int>? amount,
+      Value<int?>? destination,
+      Value<DateTime>? created,
+      Value<DateTime?>? completed}) {
+    return BuildOrderCompanion(
+      id: id ?? this.id,
+      reference: reference ?? this.reference,
+      part: part ?? this.part,
+      description: description ?? this.description,
+      amount: amount ?? this.amount,
+      destination: destination ?? this.destination,
+      created: created ?? this.created,
+      completed: completed ?? this.completed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (reference.present) {
+      map['reference'] = Variable<String>(reference.value);
+    }
+    if (part.present) {
+      map['part'] = Variable<int>(part.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
+    }
+    if (destination.present) {
+      map['destination'] = Variable<int>(destination.value);
+    }
+    if (created.present) {
+      map['created'] = Variable<DateTime>(created.value);
+    }
+    if (completed.present) {
+      map['completed'] = Variable<DateTime>(completed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BuildOrderCompanion(')
+          ..write('id: $id, ')
+          ..write('reference: $reference, ')
+          ..write('part: $part, ')
+          ..write('description: $description, ')
+          ..write('amount: $amount, ')
+          ..write('destination: $destination, ')
+          ..write('created: $created, ')
+          ..write('completed: $completed')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BuildOrderTable extends BuildOrder
+    with TableInfo<$BuildOrderTable, BuildOrderData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BuildOrderTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+      hasAutoIncrement: true);
+  final VerificationMeta _referenceMeta = const VerificationMeta('reference');
+  @override
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+      'reference', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _partMeta = const VerificationMeta('part');
+  @override
+  late final GeneratedColumn<int> part = GeneratedColumn<int>(
+      'part', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES "part" ("id")'));
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _destinationMeta =
+      const VerificationMeta('destination');
+  @override
+  late final GeneratedColumn<int> destination = GeneratedColumn<int>(
+      'destination', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES "location" ("id")'));
+  final VerificationMeta _createdMeta = const VerificationMeta('created');
+  @override
+  late final GeneratedColumn<DateTime> created = GeneratedColumn<DateTime>(
+      'created', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  final VerificationMeta _completedMeta = const VerificationMeta('completed');
+  @override
+  late final GeneratedColumn<DateTime> completed = GeneratedColumn<DateTime>(
+      'completed', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        reference,
+        part,
+        description,
+        amount,
+        destination,
+        created,
+        completed
+      ];
+  @override
+  String get aliasedName => _alias ?? 'build_order';
+  @override
+  String get actualTableName => 'build_order';
+  @override
+  VerificationContext validateIntegrity(Insertable<BuildOrderData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('reference')) {
+      context.handle(_referenceMeta,
+          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
+    } else if (isInserting) {
+      context.missing(_referenceMeta);
+    }
+    if (data.containsKey('part')) {
+      context.handle(
+          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
+    } else if (isInserting) {
+      context.missing(_partMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('destination')) {
+      context.handle(
+          _destinationMeta,
+          destination.isAcceptableOrUnknown(
+              data['destination']!, _destinationMeta));
+    }
+    if (data.containsKey('created')) {
+      context.handle(_createdMeta,
+          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    }
+    if (data.containsKey('completed')) {
+      context.handle(_completedMeta,
+          completed.isAcceptableOrUnknown(data['completed']!, _completedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  BuildOrderData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BuildOrderData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      reference: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reference'])!,
+      part: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
+      destination: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}destination']),
+      created: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created'])!,
+      completed: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}completed']),
+    );
+  }
+
+  @override
+  $BuildOrderTable createAlias(String alias) {
+    return $BuildOrderTable(attachedDatabase, alias);
+  }
+}
+
+class StockAllocationData extends DataClass
+    implements Insertable<StockAllocationData> {
+  final int stock;
+  final int buildOrder;
+  final int amount;
+  const StockAllocationData(
+      {required this.stock, required this.buildOrder, required this.amount});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['stock'] = Variable<int>(stock);
+    map['build_order'] = Variable<int>(buildOrder);
+    map['amount'] = Variable<int>(amount);
+    return map;
+  }
+
+  StockAllocationCompanion toCompanion(bool nullToAbsent) {
+    return StockAllocationCompanion(
+      stock: Value(stock),
+      buildOrder: Value(buildOrder),
+      amount: Value(amount),
+    );
+  }
+
+  factory StockAllocationData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockAllocationData(
+      stock: serializer.fromJson<int>(json['stock']),
+      buildOrder: serializer.fromJson<int>(json['buildOrder']),
+      amount: serializer.fromJson<int>(json['amount']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'stock': serializer.toJson<int>(stock),
+      'buildOrder': serializer.toJson<int>(buildOrder),
+      'amount': serializer.toJson<int>(amount),
+    };
+  }
+
+  StockAllocationData copyWith({int? stock, int? buildOrder, int? amount}) =>
+      StockAllocationData(
+        stock: stock ?? this.stock,
+        buildOrder: buildOrder ?? this.buildOrder,
+        amount: amount ?? this.amount,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StockAllocationData(')
+          ..write('stock: $stock, ')
+          ..write('buildOrder: $buildOrder, ')
+          ..write('amount: $amount')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(stock, buildOrder, amount);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockAllocationData &&
+          other.stock == this.stock &&
+          other.buildOrder == this.buildOrder &&
+          other.amount == this.amount);
+}
+
+class StockAllocationCompanion extends UpdateCompanion<StockAllocationData> {
+  final Value<int> stock;
+  final Value<int> buildOrder;
+  final Value<int> amount;
+  const StockAllocationCompanion({
+    this.stock = const Value.absent(),
+    this.buildOrder = const Value.absent(),
+    this.amount = const Value.absent(),
+  });
+  StockAllocationCompanion.insert({
+    required int stock,
+    required int buildOrder,
+    required int amount,
+  })  : stock = Value(stock),
+        buildOrder = Value(buildOrder),
+        amount = Value(amount);
+  static Insertable<StockAllocationData> custom({
+    Expression<int>? stock,
+    Expression<int>? buildOrder,
+    Expression<int>? amount,
+  }) {
+    return RawValuesInsertable({
+      if (stock != null) 'stock': stock,
+      if (buildOrder != null) 'build_order': buildOrder,
+      if (amount != null) 'amount': amount,
+    });
+  }
+
+  StockAllocationCompanion copyWith(
+      {Value<int>? stock, Value<int>? buildOrder, Value<int>? amount}) {
+    return StockAllocationCompanion(
+      stock: stock ?? this.stock,
+      buildOrder: buildOrder ?? this.buildOrder,
+      amount: amount ?? this.amount,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (stock.present) {
+      map['stock'] = Variable<int>(stock.value);
+    }
+    if (buildOrder.present) {
+      map['build_order'] = Variable<int>(buildOrder.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockAllocationCompanion(')
+          ..write('stock: $stock, ')
+          ..write('buildOrder: $buildOrder, ')
+          ..write('amount: $amount')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StockAllocationTable extends StockAllocation
+    with TableInfo<$StockAllocationTable, StockAllocationData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StockAllocationTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _stockMeta = const VerificationMeta('stock');
+  @override
+  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
+      'stock', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES "stock" ("id")'));
+  final VerificationMeta _buildOrderMeta = const VerificationMeta('buildOrder');
+  @override
+  late final GeneratedColumn<int> buildOrder = GeneratedColumn<int>(
+      'build_order', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES "build_order" ("id")'));
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [stock, buildOrder, amount];
+  @override
+  String get aliasedName => _alias ?? 'stock_allocation';
+  @override
+  String get actualTableName => 'stock_allocation';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<StockAllocationData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('stock')) {
+      context.handle(
+          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
+    } else if (isInserting) {
+      context.missing(_stockMeta);
+    }
+    if (data.containsKey('build_order')) {
+      context.handle(
+          _buildOrderMeta,
+          buildOrder.isAcceptableOrUnknown(
+              data['build_order']!, _buildOrderMeta));
+    } else if (isInserting) {
+      context.missing(_buildOrderMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  StockAllocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockAllocationData(
+      stock: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}stock'])!,
+      buildOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}build_order'])!,
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
+    );
+  }
+
+  @override
+  $StockAllocationTable createAlias(String alias) {
+    return $StockAllocationTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   late final $CategoryTable category = $CategoryTable(this);
   late final $PartTable part = $PartTable(this);
-  late final $PartBomTable partBom = $PartBomTable(this);
+  late final $BomPartTable bomPart = $BomPartTable(this);
   late final $LocationTable location = $LocationTable(this);
   late final $StockTable stock = $StockTable(this);
   late final $StockTrackingTable stockTracking = $StockTrackingTable(this);
+  late final $BuildOrderTable buildOrder = $BuildOrderTable(this);
+  late final $StockAllocationTable stockAllocation =
+      $StockAllocationTable(this);
   Selectable<String> getParentCategoryNames(int var1) {
     return customSelect(
         'WITH RECURSIVE ParentCategory(i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory ORDER BY p',
@@ -2117,8 +2748,16 @@ abstract class _$Database extends GeneratedDatabase {
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [category, part, partBom, location, stock, stockTracking];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        category,
+        part,
+        bomPart,
+        location,
+        stock,
+        stockTracking,
+        buildOrder,
+        stockAllocation
+      ];
   @override
   DriftDatabaseOptions get options =>
       const DriftDatabaseOptions(storeDateTimeAsText: true);

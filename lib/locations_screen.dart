@@ -1,43 +1,44 @@
-import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:particulous/data/part.dart';
+import 'package:particulous/create_action_button.dart';
+import 'package:particulous/data/location.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_detail_screen.dart';
 import 'package:particulous/part/part_widget.dart';
 import 'package:particulous/settings_screen.dart';
-import 'package:particulous/util/add_utils.dart';
+import 'package:particulous/util/my_drawer.dart';
 import 'package:provider/provider.dart';
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({super.key});
+class LocationsScreen extends StatefulWidget {
+  static const String route = '/locations';
+
+  const LocationsScreen({super.key});
 
   @override
-  State<SearchBar> createState() => _SearchBarState();
+  State<LocationsScreen> createState() => _LocationsScreenState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _LocationsScreenState extends State<LocationsScreen> {
   @override
   Widget build(BuildContext context) {
     final DBHandler dbh = Provider.of<DBHandler>(context);
-    return StreamBuilder<List<Part>>(
-      stream: dbh.watchParts(),
+    return StreamBuilder<List<Location>>(
+      stream: dbh.watchLocations(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final parts = snapshot.data!;
+          final locations = snapshot.data!;
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Parts'),
+              title: const Text('Locations'),
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () => showSearch(
-                    context: context,
-                    delegate: DataSearch(
-                      dbh: dbh,
-                      parts: parts,
-                    ),
-                  ),
+                const IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: null,
+                  // onPressed: () => showSearch(
+                  //   context: context,
+                  //   delegate: LocationsSearch(
+                  //     dbh: dbh,
+                  //   ),
+                  // ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.settings),
@@ -49,63 +50,20 @@ class _SearchBarState extends State<SearchBar> {
                 ),
               ],
             ),
-            floatingActionButton: SpeedDial(
-              icon: Icons.add,
-              children: [
-                SpeedDialChild(
-                  child: const Icon(Icons.category),
-                  label: 'Category',
-                  onTap: () => AddUtils.addCategory(
-                    context: context,
-                    dbh: dbh,
-                  ),
-                ),
-                SpeedDialChild(
-                  child: const Icon(Icons.download),
-                  label: 'Import LCSC Part',
-                  onTap: () => AddUtils.addLCSCPart(
-                    context: context,
-                    dbh: dbh,
-                  ),
-                ),
-                SpeedDialChild(
-                  child: const Icon(Icons.article),
-                  label: 'Part',
-                  onTap: () => AddUtils.addPart(
-                    context: context,
-                    dbh: dbh,
-                  ),
-                ),
-                SpeedDialChild(
-                  child: const Icon(Icons.bar_chart),
-                  label: 'Stock',
-                  onTap: () => AddUtils.addStock(
-                    context: context,
-                    dbh: dbh,
-                  ),
-                ),
-                SpeedDialChild(
-                  child: const Icon(Icons.location_on),
-                  label: 'Location',
-                  onTap: () => AddUtils.addLocation(
-                    context: context,
-                    dbh: dbh,
-                  ),
-                ),
-              ],
-            ),
+            drawer: getDrawer(context),
+            floatingActionButton: CreateActionButton(dbh: dbh),
             body: ListView.builder(
-                itemCount: parts.length + 1,
+                itemCount: locations.length + 1,
                 itemBuilder: (context, index) {
-                  if (index == parts.length) {
+                  if (index == locations.length) {
                     return const SizedBox(
                       height: 200.0,
                     );
                   }
-                  return PartWidget(
-                    dbh: dbh,
-                    part: parts[index],
-                    clickableCategories: true,
+                  final location = locations[index];
+                  return ListTile(
+                    title: Text(location.name),
+                    subtitle: Text(location.id.toString()),
                   );
                 }),
           );
@@ -116,11 +74,10 @@ class _SearchBarState extends State<SearchBar> {
   }
 }
 
-class DataSearch extends SearchDelegate<String> {
+class LocationSearch extends SearchDelegate<String> {
   final DBHandler dbh;
-  final List<Part> parts;
 
-  DataSearch({required this.dbh, required this.parts});
+  LocationSearch({required this.dbh});
 
   @override
   List<Widget> buildActions(BuildContext context) {

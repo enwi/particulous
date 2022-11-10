@@ -1,4 +1,5 @@
 import 'package:particulous/data/alter_stock.dart';
+import 'package:particulous/data/bom_part.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
@@ -47,11 +48,12 @@ abstract class DBStrategy {
 
   Future<int> insertStock(final Stock stock);
 
-  Future<void> insertPartBom(BomPart partBom);
+  Future<void> insertPartBom(BomPart part);
   Stream<List<BomPart>> watchBOMOfPart(final int part);
 
   Future<void> updateImageOfPart(final String image, final int part);
 
   Future<List<Location>> fetchLocations();
+  Stream<List<Location>> watchLocations();
   Future<int> insertLocation(final Location location);
 }

@@ -13,6 +13,8 @@ import 'package:particulous/util/add_utils.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
+import 'part_image_widget.dart';
+
 const imageSize = 200.0;
 
 class PartDetailScreen extends StatefulWidget {
@@ -31,12 +33,9 @@ class PartDetailScreen extends StatefulWidget {
 
 class _PartDetailScreenState extends State<PartDetailScreen> {
   final ScrollController _scrollController = ScrollController();
-  bool _isImageHover = false;
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    final imageDir = Provider.of<Settings>(context).imageDir;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.part.name),
@@ -50,67 +49,7 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                  child: InkWell(
-                    onHover: (value) => setState(() => _isImageHover = value),
-                    onTap: () => FilePicker.platform
-                        .pickFiles(
-                      allowMultiple: false,
-                      type: FileType.image,
-                      lockParentWindow: true,
-                    )
-                        .then(
-                      (result) {
-                        if (result == null || result.count != 1) {
-                          log('No files have been picked');
-                          return;
-                        }
-
-                        final image = result.files.first;
-                        final imageFileName =
-                            '${widget.part.image?.split('.').first ?? '${widget.part.name.hashCode}'}.${image.extension ?? 'png'}';
-                        File(join(imageDir, imageFileName)).writeAsBytes(
-                            image.bytes ?? File(image.path!).readAsBytesSync());
-                        if (widget.part.image == null) {
-                          widget.dbh.updateImageOfPart(
-                              imageFileName, widget.part.identifier);
-                        }
-                      },
-                    ),
-                    child: SizedBox(
-                      width: imageSize,
-                      height: imageSize,
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: widget.part.image == null
-                                  ? Container(
-                                      color: Colors.grey.shade400,
-                                      child:
-                                          const Center(child: Text('No Image')),
-                                    )
-                                  : Image.file(
-                                      File(join(imageDir, widget.part.image!)),
-                                      fit: BoxFit.contain,
-                                    ),
-                            ),
-                          ),
-                          if (_isImageHover) ...[
-                            Container(
-                              alignment: Alignment.bottomCenter,
-                              child: const Chip(label: Text('Edit')),
-                            )
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              PartDetailImage(dbh: widget.dbh, part: widget.part),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -209,6 +148,88 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
                 ],
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PartDetailImage extends StatefulWidget {
+  final DBHandler dbh;
+  final Part part;
+
+  const PartDetailImage({
+    super.key,
+    required this.dbh,
+    required this.part,
+  });
+
+  @override
+  State<PartDetailImage> createState() => _PartDetailImageState();
+}
+
+class _PartDetailImageState extends State<PartDetailImage> {
+  bool _isImageHover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final imageDir = Provider.of<Settings>(context).imageDir;
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: InkWell(
+          onHover: (value) => setState(() => _isImageHover = value),
+          onTap: () => FilePicker.platform
+              .pickFiles(
+            allowMultiple: false,
+            type: FileType.image,
+            lockParentWindow: true,
+          )
+              .then(
+            (result) {
+              if (result == null || result.count != 1) {
+                log('No files have been picked');
+                return;
+              }
+
+              final image = result.files.first;
+              final imageFileName =
+                  '${widget.part.image?.split('.').first ?? '${widget.part.name.hashCode}'}.${image.extension ?? 'png'}';
+              File(join(imageDir, imageFileName)).writeAsBytes(
+                  image.bytes ?? File(image.path!).readAsBytesSync());
+              if (widget.part.image == null) {
+                widget.dbh
+                    .updateImageOfPart(imageFileName, widget.part.identifier);
+              }
+            },
+          ),
+          child: SizedBox(
+            width: imageSize,
+            height: imageSize,
+            child: Stack(
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: widget.part.image == null
+                        ? Container(
+                            color: Colors.grey.shade400,
+                            child: const Center(child: Text('No Image')),
+                          )
+                        : PartImageWidget(
+                            image: widget.part.image!,
+                          ),
+                  ),
+                ),
+                if (_isImageHover) ...[
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: const Chip(label: Text('Edit')),
+                  )
+                ],
+              ],
+            ),
           ),
         ),
       ),

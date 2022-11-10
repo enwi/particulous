@@ -12,10 +12,12 @@ part 'location.dart';
   tables: [
     Part,
     Category,
-    PartBom,
+    BomPart,
     Stock,
     StockTracking,
     Location,
+    BuildOrder,
+    StockAllocation,
   ],
   queries: {
     'getParentCategoryNames': 'WITH RECURSIVE ParentCategory(i,p,n) AS ('

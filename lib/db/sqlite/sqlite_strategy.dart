@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:particulous/data/alter_stock.dart';
+import 'package:particulous/data/bom_part.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
@@ -88,12 +89,12 @@ extension SQLitePartBom on BomPart {
   static BomPart fromTypedResult(final TypedResult result) {
     final rawData = result.rawData;
     return BomPart(
-      parent: rawData.read('part_bom.parent'),
+      parent: rawData.read('bom_part.parent'),
       part: SQLitePart.fromResult(result),
-      amount: rawData.read('part_bom.amount'),
-      reference: rawData.read('part_bom.reference'),
-      optional: rawData.read('part_bom.optional'),
-      variants: rawData.read('part_bom.variants'),
+      amount: rawData.read('bom_part.amount'),
+      reference: rawData.read('bom_part.reference'),
+      optional: rawData.read('bom_part.optional'),
+      variants: rawData.read('bom_part.variants'),
     );
   }
 }
@@ -334,25 +335,25 @@ class SQLiteStrategy implements DBStrategy {
   }
 
   @override
-  Future<void> insertPartBom(final BomPart partBom) {
+  Future<void> insertPartBom(final BomPart part) {
     return _db
-        .into(_db.partBom)
-        .insertReturning(db.PartBomCompanion.insert(
-          parent: partBom.parent,
-          part: partBom.part.identifier,
-          amount: partBom.amount,
-          reference: Value(partBom.reference),
-          optional: Value(partBom.optional),
-          variants: Value(partBom.variants),
+        .into(_db.bomPart)
+        .insertReturning(db.BomPartCompanion.insert(
+          parent: part.parent,
+          part: part.part.identifier,
+          amount: part.amount,
+          reference: Value(part.reference),
+          optional: Value(part.optional),
+          variants: Value(part.variants),
         ))
         .then((value) => null);
   }
 
   @override
   Stream<List<BomPart>> watchBOMOfPart(final int part) {
-    return (_db.select(_db.partBom)..where((tbl) => tbl.parent.equals(part)))
+    return (_db.select(_db.bomPart)..where((tbl) => tbl.parent.equals(part)))
         .join([
-          innerJoin(_db.part, _db.part.id.equalsExp(_db.partBom.part)),
+          innerJoin(_db.part, _db.part.id.equalsExp(_db.bomPart.part)),
           innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id)),
         ])
         .watch()
@@ -371,6 +372,14 @@ class SQLiteStrategy implements DBStrategy {
         .select(_db.location)
         .get()
         .then((result) => result.map(SQLiteLocation.fromLocationData).toList());
+  }
+
+  @override
+  Stream<List<Location>> watchLocations() {
+    return _db
+        .select(_db.location)
+        .watch()
+        .map((result) => result.map(SQLiteLocation.fromLocationData).toList());
   }
 
   @override

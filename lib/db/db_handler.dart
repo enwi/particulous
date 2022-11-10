@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:particulous/data/alter_stock.dart';
+import 'package:particulous/data/bom_part.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
@@ -84,8 +85,8 @@ class DBHandler with ChangeNotifier {
 
   Future<int> insertStock(final Stock stock) => _strategy.insertStock(stock);
 
-  Future<void> insertBomPart(final BomPart partBom) =>
-      _strategy.insertPartBom(partBom);
+  Future<void> insertBomPart(final BomPart part) =>
+      _strategy.insertPartBom(part);
 
   Stream<List<BomPart>> watchBOMOfPart(final int part) =>
       _strategy.watchBOMOfPart(part);
@@ -94,6 +95,7 @@ class DBHandler with ChangeNotifier {
       _strategy.updateImageOfPart(image, part);
 
   Future<List<Location>> fetchLocations() => _strategy.fetchLocations();
+  Stream<List<Location>> watchLocations() => _strategy.watchLocations();
   Future<int> insertLocation(final Location location) =>
       _strategy.insertLocation(location);
 }

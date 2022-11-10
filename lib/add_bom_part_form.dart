@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:particulous/data/bom_part.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_dropdown.dart';

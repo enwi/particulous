@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_category_widget.dart';
 import 'package:particulous/part/part_detail_screen.dart';
-import 'package:path/path.dart';
+import 'package:particulous/part/part_image_widget.dart';
 import 'package:provider/provider.dart';
 
 class PartWidget extends StatefulWidget {
@@ -85,10 +83,7 @@ class _PartWidgetState extends State<PartWidget>
                     ? null
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(2.0),
-                        child: Image.file(
-                          File(join(imageDir, widget.part.image!)),
-                          fit: BoxFit.contain,
-                        ),
+                        child: PartImageWidget(image: widget.part.image!),
                       ),
               ),
             ),
