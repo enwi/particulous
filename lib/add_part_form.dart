@@ -16,12 +16,16 @@ class AddPartForm extends StatefulWidget {
   final DBHandler dbHandler;
   final String? name;
   final String? description;
+  final String? sku;
+  final String? mpn;
   final List<PlatformFile> images;
   const AddPartForm({
     super.key,
     required this.dbHandler,
     this.name,
     this.description,
+    this.sku,
+    this.mpn,
     this.images = const [],
   });
 
@@ -32,8 +36,10 @@ class AddPartForm extends StatefulWidget {
 class _AddPartFormState extends State<AddPartForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String? _partIpn;
   String? _partName;
+  String? _partIpn;
+  String? _partSku;
+  String? _partMpn;
   String? _partDescription;
   Category? _partCategory;
   PlatformFile? _partImage;
@@ -65,6 +71,18 @@ class _AddPartFormState extends State<AddPartForm> {
             decoration: const InputDecoration(
                 label: Text('Internal Product Number (IPN)')),
             onSaved: (newValue) => _partIpn = newValue,
+          ),
+          TextFormField(
+            initialValue: widget.sku,
+            decoration:
+                const InputDecoration(label: Text('Stock Keeping Unit (SKU)')),
+            onSaved: (newValue) => _partSku = newValue,
+          ),
+          TextFormField(
+            initialValue: widget.mpn,
+            decoration: const InputDecoration(
+                label: Text('Manufacturer Part Number (MPN)')),
+            onSaved: (newValue) => _partMpn = newValue,
           ),
           TextFormField(
             initialValue: widget.description,
@@ -128,6 +146,7 @@ class _AddPartFormState extends State<AddPartForm> {
               final internalImage = _partImage == null
                   ? null
                   : '${_partName.hashCode}.${(_partImage!.extension ?? 'png')}';
+              // TODO think of better hashing
               widget.dbHandler
                   .insertPart(Part(
                 identifier: -1,
@@ -139,8 +158,8 @@ class _AddPartFormState extends State<AddPartForm> {
                 variant: _partVariant?.identifier,
                 template: _partTemplate!,
                 assembly: _partAssembly!,
-                // sku: ,
-                // mpn: ,
+                sku: _partSku,
+                mpn: _partMpn,
               ))
                   .then((value) {
                 if (internalImage != null) {

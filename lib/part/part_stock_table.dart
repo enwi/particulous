@@ -31,11 +31,15 @@ class _PartStockTableState extends State<PartStockTable> {
           final stocks = snapshot.data!;
           return Padding(
             padding: const EdgeInsets.all(8),
-            child: StockTable(
-              // TODO find better method than this key to force update
-              key: Key("${Random().nextDouble()}"),
-              dbh: widget.dbh,
-              stocks: stocks,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: StockTable(
+                // TODO find better method than this key to force update
+                key: Key("${Random().nextDouble()}"),
+                dbh: widget.dbh,
+                stocks: stocks,
+              ),
             ),
           );
         }

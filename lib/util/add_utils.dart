@@ -28,10 +28,14 @@ abstract class AddUtils {
             appBar: AppBar(
               title: const Text('New Part'),
             ),
-            body: Center(
-              child: SizedBox(
-                width: 500,
-                child: AddPartForm(dbHandler: dbh),
+            body: SingleChildScrollView(
+              child: Center(
+                child: Container(
+                  width: 500,
+                  padding: const EdgeInsets.only(
+                      left: 16, top: 16, right: 16, bottom: 32),
+                  child: AddPartForm(dbHandler: dbh),
+                ),
               ),
             ),
           ),
@@ -88,8 +92,10 @@ abstract class AddUtils {
         log('Part not found');
         return;
       }
-      final name = json['productModel'];
+      final name = json['title'];
       final description = json['productIntroEn'];
+      final sku = json['productCode'];
+      final mpn = json['productModel'];
       final image = values[1] as PlatformFile?;
 
       if (name == null || description == null) {
@@ -111,6 +117,8 @@ abstract class AddUtils {
                   dbHandler: dbh,
                   name: name,
                   description: description,
+                  sku: sku,
+                  mpn: mpn,
                   images: image == null ? [] : [image],
                 ),
               ),

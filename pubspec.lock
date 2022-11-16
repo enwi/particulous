@@ -188,7 +188,7 @@ packages:
     description:
       path: drift
       ref: develop
-      resolved-ref: dfa01c133276a864f44a17f16921f34a51db3355
+      resolved-ref: f6830bcd68afecfd51aafc1462da796f14be1677
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "2.3.0-dev"
@@ -197,7 +197,7 @@ packages:
     description:
       path: drift_dev
       ref: develop
-      resolved-ref: dfa01c133276a864f44a17f16921f34a51db3355
+      resolved-ref: f6830bcd68afecfd51aafc1462da796f14be1677
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "2.3.0-dev"
@@ -600,7 +600,7 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   pubspec_parse:
     dependency: transitive
     description:
@@ -730,7 +730,7 @@ packages:
     description:
       path: sqlparser
       ref: develop
-      resolved-ref: dfa01c133276a864f44a17f16921f34a51db3355
+      resolved-ref: f6830bcd68afecfd51aafc1462da796f14be1677
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "0.23.3"

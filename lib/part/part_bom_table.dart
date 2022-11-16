@@ -28,11 +28,15 @@ class _PartBOMTableState extends State<PartBOMTable> {
           final parts = snapshot.data!;
           return Padding(
             padding: const EdgeInsets.all(8),
-            child: BomTable(
-              // TODO find better method than this key to force update
-              key: Key("${Random().nextDouble()}"),
-              dbh: widget.dbh,
-              parts: parts,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: BomTable(
+                // TODO find better method than this key to force update
+                key: Key("${Random().nextDouble()}"),
+                dbh: widget.dbh,
+                parts: parts,
+              ),
             ),
           );
         }
