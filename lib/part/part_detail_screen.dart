@@ -7,6 +7,7 @@ import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_bom_table.dart';
+import 'package:particulous/part/part_build_order_table.dart';
 import 'package:particulous/part/part_category_widget.dart';
 import 'package:particulous/part/part_stock_table.dart';
 import 'package:particulous/util/add_utils.dart';
@@ -40,6 +41,16 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
       appBar: AppBar(
         title: Text(widget.part.name),
       ),
+      floatingActionButton: widget.part.assembly
+          ? FloatingActionButton(
+              onPressed: () => AddUtils.addBuildOrder(
+                context: context,
+                dbh: widget.dbh,
+                part: widget.part,
+              ),
+              child: const Icon(Icons.build),
+            )
+          : null,
       body: Scrollbar(
         controller: _scrollController,
         thumbVisibility: true,
@@ -116,6 +127,8 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
                   ),
                   PartStockTable(dbh: widget.dbh, part: widget.part),
                   if (widget.part.assembly) ...[
+                    const Divider(),
+                    PartBuildOrderTable(dbh: widget.dbh, part: widget.part),
                     const Divider(),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),

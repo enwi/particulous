@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/bom_part.dart';
+import 'package:particulous/data/build_order.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
@@ -36,11 +37,17 @@ class DBHandler with ChangeNotifier {
     _strategy.close();
   }
 
+  /// Fetch a part with the given identifier from the database
+  Future<Part?> fetchPart(final int part) => _strategy.fetchPart(part);
+
   /// Fetch all parts from the database
   Future<List<Part>> fetchParts() => _strategy.fetchParts();
 
   /// Fetch all parts from the database that are a template
   Future<List<Part>> fetchTemplateParts() => _strategy.fetchTemplateParts();
+
+  /// Fetch all parts from the database that can be assembled
+  Future<List<Part>> fetchAssemblyParts() => _strategy.fetchAssemblyParts();
 
   /// Watch all parts from the database.
   /// Like [fetchParts], but observes and notifies changes
@@ -98,4 +105,11 @@ class DBHandler with ChangeNotifier {
   Stream<List<Location>> watchLocations() => _strategy.watchLocations();
   Future<int> insertLocation(final Location location) =>
       _strategy.insertLocation(location);
+
+  Future<int> insertBuildOrder(final BuildOrder order) =>
+      _strategy.insertBuildOrder(order);
+
+  Future<BuildOrder?> getLatestBuildOrder() => _strategy.getLatestBuildOrder();
+  Stream<List<BuildOrder>> watchBuildOrdersOfPart(final int part) =>
+      _strategy.watchBuildOrdersOfPart(part);
 }

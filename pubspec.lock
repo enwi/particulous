@@ -188,7 +188,7 @@ packages:
     description:
       path: drift
       ref: develop
-      resolved-ref: f6830bcd68afecfd51aafc1462da796f14be1677
+      resolved-ref: f41cff5fc6ecec84d259a3528714a18dcba7d36a
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "2.3.0-dev"
@@ -197,7 +197,7 @@ packages:
     description:
       path: drift_dev
       ref: develop
-      resolved-ref: f6830bcd68afecfd51aafc1462da796f14be1677
+      resolved-ref: f41cff5fc6ecec84d259a3528714a18dcba7d36a
       url: "https://github.com/simolus3/drift.git"
     source: git
     version: "2.3.0-dev"
@@ -711,6 +711,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.0"
+  sprintf:
+    dependency: "direct main"
+    description:
+      name: sprintf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.0"
   sqlite3:
     dependency: transitive
     description:
@@ -730,10 +737,10 @@ packages:
     description:
       path: sqlparser
       ref: develop
-      resolved-ref: f6830bcd68afecfd51aafc1462da796f14be1677
+      resolved-ref: f41cff5fc6ecec84d259a3528714a18dcba7d36a
       url: "https://github.com/simolus3/drift.git"
     source: git
-    version: "0.23.3"
+    version: "0.24.0-dev"
   stack_trace:
     dependency: transitive
     description:

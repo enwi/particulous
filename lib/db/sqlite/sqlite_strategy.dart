@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/bom_part.dart';
+import 'package:particulous/data/build_order.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
@@ -120,6 +121,21 @@ extension SQLiteLocation on Location {
   }
 }
 
+extension SQLiteBuildOrder on BuildOrder {
+  static BuildOrder fromBuildOrderData(final db.BuildOrderData data) {
+    return BuildOrder(
+      id: data.id,
+      reference: data.reference,
+      part: data.part,
+      description: data.description,
+      amount: data.amount,
+      destination: data.destination,
+      created: data.created,
+      completed: data.completed,
+    );
+  }
+}
+
 class SQLiteStrategy implements DBStrategy {
   final db.Database _db;
 
@@ -133,6 +149,19 @@ class SQLiteStrategy implements DBStrategy {
   }
 
   @override
+  Future<Part?> fetchPart(final int part) {
+    return (_db.select(_db.part)
+          ..where((tbl) => tbl.id.equals(part))
+          ..limit(1))
+        .join([
+          innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id))
+        ])
+        .getSingleOrNull()
+        .then(
+            (result) => result == null ? null : SQLitePart.fromResult(result));
+  }
+
+  @override
   Future<List<Part>> fetchParts() {
     return _db
         .select(_db.part)
@@ -143,14 +172,24 @@ class SQLiteStrategy implements DBStrategy {
         .then((results) => results.map(SQLitePart.fromResult).toList());
   }
 
-  @override
-  Future<List<Part>> fetchTemplateParts() {
-    return (_db.select(_db.part)..where((tbl) => tbl.template.equals(true)))
+  Future<List<Part>> _fetchPartsWhere(
+      Expression<bool> Function(db.$PartTable) filter) {
+    return (_db.select(_db.part)..where(filter))
         .join([
           innerJoin(_db.category, _db.part.category.equalsExp(_db.category.id))
         ])
         .get()
         .then((results) => results.map(SQLitePart.fromResult).toList());
+  }
+
+  @override
+  Future<List<Part>> fetchTemplateParts() {
+    return _fetchPartsWhere((tbl) => tbl.template.equals(true));
+  }
+
+  @override
+  Future<List<Part>> fetchAssemblyParts() {
+    return _fetchPartsWhere((tbl) => tbl.assembly.equals(true));
   }
 
   @override
@@ -392,5 +431,37 @@ class SQLiteStrategy implements DBStrategy {
           parent: Value(location.parent),
         ))
         .then((value) => value.id);
+  }
+
+  @override
+  Future<int> insertBuildOrder(BuildOrder order) {
+    return _db
+        .into(_db.buildOrder)
+        .insertReturning(db.BuildOrderCompanion.insert(
+          reference: order.reference,
+          part: order.part,
+          amount: order.amount,
+          description: Value(order.description),
+          destination: Value(order.destination),
+        ))
+        .then((value) => value.id);
+  }
+
+  @override
+  Future<BuildOrder?> getLatestBuildOrder() {
+    return (_db.select(_db.buildOrder)
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.id)])
+          ..limit(1))
+        .getSingleOrNull()
+        .then((value) =>
+            value == null ? null : SQLiteBuildOrder.fromBuildOrderData(value));
+  }
+
+  @override
+  Stream<List<BuildOrder>> watchBuildOrdersOfPart(final int part) {
+    return (_db.select(_db.buildOrder)..where((tbl) => tbl.part.equals(part)))
+        .watch()
+        .map((result) =>
+            result.map(SQLiteBuildOrder.fromBuildOrderData).toList());
   }
 }

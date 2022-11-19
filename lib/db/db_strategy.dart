@@ -1,5 +1,6 @@
 import 'package:particulous/data/alter_stock.dart';
 import 'package:particulous/data/bom_part.dart';
+import 'package:particulous/data/build_order.dart';
 import 'package:particulous/data/category.dart';
 import 'package:particulous/data/location.dart';
 import 'package:particulous/data/part.dart';
@@ -9,11 +10,17 @@ abstract class DBStrategy {
   /// Close all connections and db
   void close();
 
+  /// Get a specific part as future
+  Future<Part?> fetchPart(final int part);
+
   /// Get a future list of all parts
   Future<List<Part>> fetchParts();
 
   /// Get a future list of all parts that are marked as template
   Future<List<Part>> fetchTemplateParts();
+
+  /// Get a future list of all parts that can be assembled
+  Future<List<Part>> fetchAssemblyParts();
 
   /// Observe and get a stream list of all parts
   Stream<List<Part>> watchParts();
@@ -56,4 +63,8 @@ abstract class DBStrategy {
   Future<List<Location>> fetchLocations();
   Stream<List<Location>> watchLocations();
   Future<int> insertLocation(final Location location);
+
+  Future<int> insertBuildOrder(final BuildOrder order);
+  Future<BuildOrder?> getLatestBuildOrder();
+  Stream<List<BuildOrder>> watchBuildOrdersOfPart(final int part);
 }

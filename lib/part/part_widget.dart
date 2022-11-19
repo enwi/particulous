@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:particulous/data/settings.dart';
 import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_category_widget.dart';
 import 'package:particulous/part/part_detail_screen.dart';
 import 'package:particulous/part/part_image_widget.dart';
-import 'package:provider/provider.dart';
 
 class PartWidget extends StatefulWidget {
   final DBHandler dbh;
@@ -50,7 +48,6 @@ class _PartWidgetState extends State<PartWidget>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final imageDir = Provider.of<Settings>(context).imageDir;
     return InkWell(
       onTap: widget.onTap ??
           () => Navigator.push(

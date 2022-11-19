@@ -55,7 +55,9 @@ class _AddBOMPartFormState extends State<AddBOMPartForm> {
               return null;
             },
           ),
+          const SizedBox(height: 16),
           SpinBox(
+            decoration: const InputDecoration(label: Text('Amount')),
             min: 0.0,
             max: double.maxFinite,
             value: 0.0,

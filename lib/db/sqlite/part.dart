@@ -2,7 +2,7 @@ part of db;
 
 class Part extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get name => text().withLength(max: 1024)();
+  TextColumn get name => text()();
   TextColumn get ipn => text().nullable()(); // internal part number
   TextColumn get description => text().nullable()();
   IntColumn get category => integer().references(Category, #id)();

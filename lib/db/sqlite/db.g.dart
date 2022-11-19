@@ -2,10 +2,6 @@
 
 part of db;
 
-// **************************************************************************
-// DriftDatabaseGenerator
-// **************************************************************************
-
 // ignore_for_file: type=lint
 class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int id;
@@ -204,11 +200,11 @@ class $CategoryTable extends Category
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
-      hasAutoIncrement: true);
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   final VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
@@ -216,7 +212,7 @@ class $CategoryTable extends Category
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "category" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -631,18 +627,16 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
-      hasAutoIncrement: true);
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1024),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _ipnMeta = const VerificationMeta('ipn');
   @override
   late final GeneratedColumn<String> ipn = GeneratedColumn<String>(
@@ -661,7 +655,7 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "category" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
   final VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
   late final GeneratedColumn<String> image = GeneratedColumn<String>(
@@ -674,7 +668,7 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "part" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
   final VerificationMeta _templateMeta = const VerificationMeta('template');
   @override
   late final GeneratedColumn<bool> template =
@@ -1040,7 +1034,7 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "part" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
   final VerificationMeta _partMeta = const VerificationMeta('part');
   @override
   late final GeneratedColumn<int> part = GeneratedColumn<int>(
@@ -1048,7 +1042,7 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "part" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
@@ -1129,7 +1123,7 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => const <GeneratedColumn>{};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
         {parent, part},
@@ -1331,11 +1325,11 @@ class $LocationTable extends Location
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
-      hasAutoIncrement: true);
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   final VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
@@ -1343,7 +1337,7 @@ class $LocationTable extends Location
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "location" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -1649,11 +1643,11 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
-      hasAutoIncrement: true);
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   final VerificationMeta _partMeta = const VerificationMeta('part');
   @override
   late final GeneratedColumn<int> part = GeneratedColumn<int>(
@@ -1661,7 +1655,7 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "part" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
@@ -1684,7 +1678,7 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "location" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
   final VerificationMeta _modifiedMeta = const VerificationMeta('modified');
   @override
   late final GeneratedColumn<DateTime> modified = GeneratedColumn<DateTime>(
@@ -1957,11 +1951,11 @@ class $StockTrackingTable extends StockTracking
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
-      hasAutoIncrement: true);
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   final VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
@@ -1986,7 +1980,7 @@ class $StockTrackingTable extends StockTracking
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "stock" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
   @override
   List<GeneratedColumn> get $columns => [id, notes, date, amount, stock];
   @override
@@ -2318,11 +2312,11 @@ class $BuildOrderTable extends BuildOrder
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
-      hasAutoIncrement: true);
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   final VerificationMeta _referenceMeta = const VerificationMeta('reference');
   @override
   late final GeneratedColumn<String> reference = GeneratedColumn<String>(
@@ -2335,7 +2329,7 @@ class $BuildOrderTable extends BuildOrder
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "part" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -2355,7 +2349,7 @@ class $BuildOrderTable extends BuildOrder
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "location" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
   final VerificationMeta _createdMeta = const VerificationMeta('created');
   @override
   late final GeneratedColumn<DateTime> created = GeneratedColumn<DateTime>(
@@ -2609,15 +2603,15 @@ class $StockAllocationTable extends StockAllocation
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES "stock" ("id")'));
+          GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
   final VerificationMeta _buildOrderMeta = const VerificationMeta('buildOrder');
   @override
   late final GeneratedColumn<int> buildOrder = GeneratedColumn<int>(
       'build_order', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'REFERENCES "build_order" ("id")'));
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES build_order (id)'));
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
@@ -2659,7 +2653,7 @@ class $StockAllocationTable extends StockAllocation
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => const <GeneratedColumn>{};
   @override
   StockAllocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -2692,7 +2686,7 @@ abstract class _$Database extends GeneratedDatabase {
       $StockAllocationTable(this);
   Selectable<String> getParentCategoryNames(int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory ORDER BY p',
+        'WITH RECURSIVE ParentCategory (i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT n AS name FROM ParentCategory ORDER BY p',
         variables: [
           Variable<int>(var1)
         ],
@@ -2703,7 +2697,7 @@ abstract class _$Database extends GeneratedDatabase {
 
   Selectable<CategoryData> getParentCategories(int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(i, p, n, d, k) AS (SELECT id, parent, name, description, keywords FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name, description, keywords FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory ORDER BY p',
+        'WITH RECURSIVE ParentCategory (i, p, n, d, k) AS (SELECT id, parent, name, description, keywords FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name, description, keywords FROM category JOIN ParentCategory ON ParentCategory.p = category.id) SELECT i AS id, p AS parent, n AS name, d AS description, k AS keywords FROM ParentCategory ORDER BY p',
         variables: [
           Variable<int>(var1)
         ],
@@ -2715,7 +2709,7 @@ abstract class _$Database extends GeneratedDatabase {
   Selectable<GetPartsOfChildCategoriesResult> getPartsOfChildCategories(
       int var1) {
     return customSelect(
-        'WITH RECURSIVE ParentCategory(i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.i = category.parent) SELECT p.*, c.id AS cId, c.parent AS cParent, c.name AS cName, c.description AS cDescription, c.keywords AS cKeywords FROM part AS p JOIN category AS c ON p.category = c.id WHERE p.category IN (SELECT i FROM ParentCategory) ORDER BY p.category',
+        'WITH RECURSIVE ParentCategory (i, p, n) AS (SELECT id, parent, name FROM category WHERE id = ?1 UNION ALL SELECT id, parent, name FROM category JOIN ParentCategory ON ParentCategory.i = category.parent) SELECT p.*, c.id AS cId, c.parent AS cParent, c.name AS cName, c.description AS cDescription, c.keywords AS cKeywords FROM part AS p JOIN category AS c ON p.category = c.id WHERE p.category IN (SELECT i FROM ParentCategory) ORDER BY p.category',
         variables: [
           Variable<int>(var1)
         ],
