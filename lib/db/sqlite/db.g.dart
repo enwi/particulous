@@ -196,7 +196,7 @@ class $CategoryTable extends Category
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $CategoryTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -205,7 +205,7 @@ class $CategoryTable extends Category
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  final VerificationMeta _parentMeta = const VerificationMeta('parent');
+  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
       'parent', aliasedName, true,
@@ -213,18 +213,19 @@ class $CategoryTable extends Category
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _keywordsMeta = const VerificationMeta('keywords');
+  static const VerificationMeta _keywordsMeta =
+      const VerificationMeta('keywords');
   @override
   late final GeneratedColumn<String> keywords = GeneratedColumn<String>(
       'keywords', aliasedName, true,
@@ -623,7 +624,7 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $PartTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -632,23 +633,24 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _ipnMeta = const VerificationMeta('ipn');
+  static const VerificationMeta _ipnMeta = const VerificationMeta('ipn');
   @override
   late final GeneratedColumn<String> ipn = GeneratedColumn<String>(
       'ipn', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _categoryMeta = const VerificationMeta('category');
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
   @override
   late final GeneratedColumn<int> category = GeneratedColumn<int>(
       'category', aliasedName, false,
@@ -656,12 +658,13 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
-  final VerificationMeta _imageMeta = const VerificationMeta('image');
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
   late final GeneratedColumn<String> image = GeneratedColumn<String>(
       'image', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _variantMeta = const VerificationMeta('variant');
+  static const VerificationMeta _variantMeta =
+      const VerificationMeta('variant');
   @override
   late final GeneratedColumn<int> variant = GeneratedColumn<int>(
       'variant', aliasedName, true,
@@ -669,7 +672,8 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  final VerificationMeta _templateMeta = const VerificationMeta('template');
+  static const VerificationMeta _templateMeta =
+      const VerificationMeta('template');
   @override
   late final GeneratedColumn<bool> template =
       GeneratedColumn<bool>('template', aliasedName, false,
@@ -681,7 +685,8 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
             SqlDialect.postgres: '',
           }),
           defaultValue: const Constant(false));
-  final VerificationMeta _assemblyMeta = const VerificationMeta('assembly');
+  static const VerificationMeta _assemblyMeta =
+      const VerificationMeta('assembly');
   @override
   late final GeneratedColumn<bool> assembly =
       GeneratedColumn<bool>('assembly', aliasedName, false,
@@ -693,12 +698,12 @@ class $PartTable extends Part with TableInfo<$PartTable, PartData> {
             SqlDialect.postgres: '',
           }),
           defaultValue: const Constant(false));
-  final VerificationMeta _skuMeta = const VerificationMeta('sku');
+  static const VerificationMeta _skuMeta = const VerificationMeta('sku');
   @override
   late final GeneratedColumn<String> sku = GeneratedColumn<String>(
       'sku', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _mpnMeta = const VerificationMeta('mpn');
+  static const VerificationMeta _mpnMeta = const VerificationMeta('mpn');
   @override
   late final GeneratedColumn<String> mpn = GeneratedColumn<String>(
       'mpn', aliasedName, true,
@@ -1027,7 +1032,7 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $BomPartTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _parentMeta = const VerificationMeta('parent');
+  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
       'parent', aliasedName, false,
@@ -1035,7 +1040,7 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  final VerificationMeta _partMeta = const VerificationMeta('part');
+  static const VerificationMeta _partMeta = const VerificationMeta('part');
   @override
   late final GeneratedColumn<int> part = GeneratedColumn<int>(
       'part', aliasedName, false,
@@ -1043,17 +1048,19 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _referenceMeta = const VerificationMeta('reference');
+  static const VerificationMeta _referenceMeta =
+      const VerificationMeta('reference');
   @override
   late final GeneratedColumn<String> reference = GeneratedColumn<String>(
       'reference', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _optionalMeta = const VerificationMeta('optional');
+  static const VerificationMeta _optionalMeta =
+      const VerificationMeta('optional');
   @override
   late final GeneratedColumn<bool> optional =
       GeneratedColumn<bool>('optional', aliasedName, false,
@@ -1065,7 +1072,8 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
             SqlDialect.postgres: '',
           }),
           defaultValue: const Constant(false));
-  final VerificationMeta _variantsMeta = const VerificationMeta('variants');
+  static const VerificationMeta _variantsMeta =
+      const VerificationMeta('variants');
   @override
   late final GeneratedColumn<bool> variants =
       GeneratedColumn<bool>('variants', aliasedName, false,
@@ -1123,7 +1131,7 @@ class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
         {parent, part},
@@ -1321,7 +1329,7 @@ class $LocationTable extends Location
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $LocationTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -1330,7 +1338,7 @@ class $LocationTable extends Location
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  final VerificationMeta _parentMeta = const VerificationMeta('parent');
+  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
       'parent', aliasedName, true,
@@ -1338,12 +1346,12 @@ class $LocationTable extends Location
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
@@ -1639,7 +1647,7 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $StockTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -1648,7 +1656,7 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  final VerificationMeta _partMeta = const VerificationMeta('part');
+  static const VerificationMeta _partMeta = const VerificationMeta('part');
   @override
   late final GeneratedColumn<int> part = GeneratedColumn<int>(
       'part', aliasedName, false,
@@ -1656,22 +1664,23 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _priceMeta = const VerificationMeta('price');
+  static const VerificationMeta _priceMeta = const VerificationMeta('price');
   @override
   late final GeneratedColumn<double> price = GeneratedColumn<double>(
       'price', aliasedName, true,
       type: DriftSqlType.double, requiredDuringInsert: false);
-  final VerificationMeta _noteMeta = const VerificationMeta('note');
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
   @override
   late final GeneratedColumn<String> note = GeneratedColumn<String>(
       'note', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _locationMeta = const VerificationMeta('location');
+  static const VerificationMeta _locationMeta =
+      const VerificationMeta('location');
   @override
   late final GeneratedColumn<int> location = GeneratedColumn<int>(
       'location', aliasedName, false,
@@ -1679,7 +1688,8 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
-  final VerificationMeta _modifiedMeta = const VerificationMeta('modified');
+  static const VerificationMeta _modifiedMeta =
+      const VerificationMeta('modified');
   @override
   late final GeneratedColumn<DateTime> modified = GeneratedColumn<DateTime>(
       'modified', aliasedName, false,
@@ -1947,7 +1957,7 @@ class $StockTrackingTable extends StockTracking
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $StockTrackingTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -1956,24 +1966,24 @@ class $StockTrackingTable extends StockTracking
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  final VerificationMeta _notesMeta = const VerificationMeta('notes');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
       'notes', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
       'date', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _stockMeta = const VerificationMeta('stock');
+  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
   @override
   late final GeneratedColumn<int> stock = GeneratedColumn<int>(
       'stock', aliasedName, false,
@@ -2308,7 +2318,7 @@ class $BuildOrderTable extends BuildOrder
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $BuildOrderTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -2317,12 +2327,13 @@ class $BuildOrderTable extends BuildOrder
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  final VerificationMeta _referenceMeta = const VerificationMeta('reference');
+  static const VerificationMeta _referenceMeta =
+      const VerificationMeta('reference');
   @override
   late final GeneratedColumn<String> reference = GeneratedColumn<String>(
       'reference', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _partMeta = const VerificationMeta('part');
+  static const VerificationMeta _partMeta = const VerificationMeta('part');
   @override
   late final GeneratedColumn<int> part = GeneratedColumn<int>(
       'part', aliasedName, false,
@@ -2330,18 +2341,18 @@ class $BuildOrderTable extends BuildOrder
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  final VerificationMeta _descriptionMeta =
+  static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _destinationMeta =
+  static const VerificationMeta _destinationMeta =
       const VerificationMeta('destination');
   @override
   late final GeneratedColumn<int> destination = GeneratedColumn<int>(
@@ -2350,14 +2361,16 @@ class $BuildOrderTable extends BuildOrder
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
-  final VerificationMeta _createdMeta = const VerificationMeta('created');
+  static const VerificationMeta _createdMeta =
+      const VerificationMeta('created');
   @override
   late final GeneratedColumn<DateTime> created = GeneratedColumn<DateTime>(
       'created', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
-  final VerificationMeta _completedMeta = const VerificationMeta('completed');
+  static const VerificationMeta _completedMeta =
+      const VerificationMeta('completed');
   @override
   late final GeneratedColumn<DateTime> completed = GeneratedColumn<DateTime>(
       'completed', aliasedName, true,
@@ -2596,7 +2609,7 @@ class $StockAllocationTable extends StockAllocation
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $StockAllocationTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _stockMeta = const VerificationMeta('stock');
+  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
   @override
   late final GeneratedColumn<int> stock = GeneratedColumn<int>(
       'stock', aliasedName, false,
@@ -2604,7 +2617,8 @@ class $StockAllocationTable extends StockAllocation
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
-  final VerificationMeta _buildOrderMeta = const VerificationMeta('buildOrder');
+  static const VerificationMeta _buildOrderMeta =
+      const VerificationMeta('buildOrder');
   @override
   late final GeneratedColumn<int> buildOrder = GeneratedColumn<int>(
       'build_order', aliasedName, false,
@@ -2612,7 +2626,7 @@ class $StockAllocationTable extends StockAllocation
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES build_order (id)'));
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
@@ -2653,7 +2667,7 @@ class $StockAllocationTable extends StockAllocation
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   StockAllocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -2739,7 +2753,7 @@ abstract class _$Database extends GeneratedDatabase {
   }
 
   @override
-  Iterable<TableInfo<Table, dynamic>> get allTables =>
+  Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [

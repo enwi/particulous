@@ -186,28 +186,24 @@ packages:
   drift:
     dependency: "direct main"
     description:
-      path: drift
-      ref: develop
-      resolved-ref: f41cff5fc6ecec84d259a3528714a18dcba7d36a
-      url: "https://github.com/simolus3/drift.git"
-    source: git
-    version: "2.3.0-dev"
+      name: drift
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0"
   drift_dev:
     dependency: "direct dev"
     description:
-      path: drift_dev
-      ref: develop
-      resolved-ref: f41cff5fc6ecec84d259a3528714a18dcba7d36a
-      url: "https://github.com/simolus3/drift.git"
-    source: git
-    version: "2.3.0-dev"
+      name: drift_dev
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.2"
   dropdown_search:
     dependency: "direct main"
     description:
       name: dropdown_search
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.3"
+    version: "5.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -306,7 +302,7 @@ packages:
       name: frontend_server_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.0"
   glob:
     dependency: transitive
     description:
@@ -411,7 +407,7 @@ packages:
       name: mime
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   nested:
     dependency: transitive
     description:
@@ -488,7 +484,7 @@ packages:
       name: path_provider_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.21"
+    version: "2.0.22"
   path_provider_ios:
     dependency: transitive
     description:
@@ -731,16 +727,14 @@ packages:
       name: sqlite3_flutter_libs
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.11+1"
+    version: "0.5.12"
   sqlparser:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: sqlparser
-      ref: develop
-      resolved-ref: f41cff5fc6ecec84d259a3528714a18dcba7d36a
-      url: "https://github.com/simolus3/drift.git"
-    source: git
-    version: "0.24.0-dev"
+      name: sqlparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.24.0"
   stack_trace:
     dependency: transitive
     description:
