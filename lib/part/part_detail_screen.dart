@@ -1,5 +1,6 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:io';
+import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,7 @@ class _PartDetailScreenState extends State<PartDetailScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Text(
+                    child: SelectableText(
                       widget.part.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
@@ -184,6 +185,7 @@ class PartDetailImage extends StatefulWidget {
 
 class _PartDetailImageState extends State<PartDetailImage> {
   bool _isImageHover = false;
+  Key _imageKey = Key('${Random().nextDouble()}');
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +204,7 @@ class _PartDetailImageState extends State<PartDetailImage> {
               .then(
             (result) {
               if (result == null || result.count != 1) {
-                log('No files have been picked');
+                dev.log('No files have been picked');
                 return;
               }
 
@@ -215,6 +217,11 @@ class _PartDetailImageState extends State<PartDetailImage> {
                 widget.dbh
                     .updateImageOfPart(imageFileName, widget.part.identifier);
               }
+              setState(() {
+                imageCache.clear();
+                imageCache.clearLiveImages();
+                _imageKey = Key('${Random().nextDouble()}');
+              });
             },
           ),
           child: SizedBox(
@@ -231,6 +238,7 @@ class _PartDetailImageState extends State<PartDetailImage> {
                             child: const Center(child: Text('No Image')),
                           )
                         : PartImageWidget(
+                            key: _imageKey,
                             image: widget.part.image!,
                           ),
                   ),
