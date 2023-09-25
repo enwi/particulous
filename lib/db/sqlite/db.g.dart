@@ -1,8 +1,114 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of db;
+part of 'db.dart';
 
 // ignore_for_file: type=lint
+class $CategoryTable extends Category
+    with TableInfo<$CategoryTable, CategoryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CategoryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
+  @override
+  late final GeneratedColumn<int> parent = GeneratedColumn<int>(
+      'parent', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _keywordsMeta =
+      const VerificationMeta('keywords');
+  @override
+  late final GeneratedColumn<String> keywords = GeneratedColumn<String>(
+      'keywords', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, parent, name, description, keywords];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'category';
+  @override
+  VerificationContext validateIntegrity(Insertable<CategoryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('parent')) {
+      context.handle(_parentMeta,
+          parent.isAcceptableOrUnknown(data['parent']!, _parentMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('keywords')) {
+      context.handle(_keywordsMeta,
+          keywords.isAcceptableOrUnknown(data['keywords']!, _keywordsMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CategoryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CategoryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      parent: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}parent']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+      keywords: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}keywords']),
+    );
+  }
+
+  @override
+  $CategoryTable createAlias(String alias) {
+    return $CategoryTable(attachedDatabase, alias);
+  }
+}
+
 class CategoryData extends DataClass implements Insertable<CategoryData> {
   final int id;
   final int? parent;
@@ -190,12 +296,11 @@ class CategoryCompanion extends UpdateCompanion<CategoryData> {
   }
 }
 
-class $CategoryTable extends Category
-    with TableInfo<$CategoryTable, CategoryData> {
+class $PartTable extends Part with TableInfo<$PartTable, PartData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $CategoryTable(this.attachedDatabase, [this._alias]);
+  $PartTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -205,49 +310,101 @@ class $CategoryTable extends Category
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
-  @override
-  late final GeneratedColumn<int> parent = GeneratedColumn<int>(
-      'parent', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _ipnMeta = const VerificationMeta('ipn');
+  @override
+  late final GeneratedColumn<String> ipn = GeneratedColumn<String>(
+      'ipn', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _keywordsMeta =
-      const VerificationMeta('keywords');
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
   @override
-  late final GeneratedColumn<String> keywords = GeneratedColumn<String>(
-      'keywords', aliasedName, true,
+  late final GeneratedColumn<int> category = GeneratedColumn<int>(
+      'category', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+      'image', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _variantMeta =
+      const VerificationMeta('variant');
+  @override
+  late final GeneratedColumn<int> variant = GeneratedColumn<int>(
+      'variant', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
+  static const VerificationMeta _templateMeta =
+      const VerificationMeta('template');
+  @override
+  late final GeneratedColumn<bool> template = GeneratedColumn<bool>(
+      'template', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("template" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _assemblyMeta =
+      const VerificationMeta('assembly');
+  @override
+  late final GeneratedColumn<bool> assembly = GeneratedColumn<bool>(
+      'assembly', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("assembly" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _skuMeta = const VerificationMeta('sku');
+  @override
+  late final GeneratedColumn<String> sku = GeneratedColumn<String>(
+      'sku', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _mpnMeta = const VerificationMeta('mpn');
+  @override
+  late final GeneratedColumn<String> mpn = GeneratedColumn<String>(
+      'mpn', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, parent, name, description, keywords];
+  List<GeneratedColumn> get $columns => [
+        id,
+        name,
+        ipn,
+        description,
+        category,
+        image,
+        variant,
+        template,
+        assembly,
+        sku,
+        mpn
+      ];
   @override
-  String get aliasedName => _alias ?? 'category';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'category';
+  String get actualTableName => $name;
+  static const String $name = 'part';
   @override
-  VerificationContext validateIntegrity(Insertable<CategoryData> instance,
+  VerificationContext validateIntegrity(Insertable<PartData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('parent')) {
-      context.handle(_parentMeta,
-          parent.isAcceptableOrUnknown(data['parent']!, _parentMeta));
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -255,17 +412,45 @@ class $CategoryTable extends Category
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('ipn')) {
+      context.handle(
+          _ipnMeta, ipn.isAcceptableOrUnknown(data['ipn']!, _ipnMeta));
+    }
     if (data.containsKey('description')) {
       context.handle(
           _descriptionMeta,
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
-    } else if (isInserting) {
-      context.missing(_descriptionMeta);
     }
-    if (data.containsKey('keywords')) {
-      context.handle(_keywordsMeta,
-          keywords.isAcceptableOrUnknown(data['keywords']!, _keywordsMeta));
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    }
+    if (data.containsKey('variant')) {
+      context.handle(_variantMeta,
+          variant.isAcceptableOrUnknown(data['variant']!, _variantMeta));
+    }
+    if (data.containsKey('template')) {
+      context.handle(_templateMeta,
+          template.isAcceptableOrUnknown(data['template']!, _templateMeta));
+    }
+    if (data.containsKey('assembly')) {
+      context.handle(_assemblyMeta,
+          assembly.isAcceptableOrUnknown(data['assembly']!, _assemblyMeta));
+    }
+    if (data.containsKey('sku')) {
+      context.handle(
+          _skuMeta, sku.isAcceptableOrUnknown(data['sku']!, _skuMeta));
+    }
+    if (data.containsKey('mpn')) {
+      context.handle(
+          _mpnMeta, mpn.isAcceptableOrUnknown(data['mpn']!, _mpnMeta));
     }
     return context;
   }
@@ -273,25 +458,37 @@ class $CategoryTable extends Category
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  CategoryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CategoryData(
+    return PartData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      parent: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parent']),
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      ipn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ipn']),
       description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
-      keywords: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}keywords']),
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category'])!,
+      image: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}image']),
+      variant: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}variant']),
+      template: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}template'])!,
+      assembly: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}assembly'])!,
+      sku: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sku']),
+      mpn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mpn']),
     );
   }
 
   @override
-  $CategoryTable createAlias(String alias) {
-    return $CategoryTable(attachedDatabase, alias);
+  $PartTable createAlias(String alias) {
+    return $PartTable(attachedDatabase, alias);
   }
 }
 
@@ -619,204 +816,132 @@ class PartCompanion extends UpdateCompanion<PartData> {
   }
 }
 
-class $PartTable extends Part with TableInfo<$PartTable, PartData> {
+class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $PartTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  $BomPartTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _ipnMeta = const VerificationMeta('ipn');
-  @override
-  late final GeneratedColumn<String> ipn = GeneratedColumn<String>(
-      'ipn', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
-  @override
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _categoryMeta =
-      const VerificationMeta('category');
-  @override
-  late final GeneratedColumn<int> category = GeneratedColumn<int>(
-      'category', aliasedName, false,
+  late final GeneratedColumn<int> parent = GeneratedColumn<int>(
+      'parent', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES category (id)'));
-  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
+  static const VerificationMeta _partMeta = const VerificationMeta('part');
   @override
-  late final GeneratedColumn<String> image = GeneratedColumn<String>(
-      'image', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _variantMeta =
-      const VerificationMeta('variant');
-  @override
-  late final GeneratedColumn<int> variant = GeneratedColumn<int>(
-      'variant', aliasedName, true,
+  late final GeneratedColumn<int> part = GeneratedColumn<int>(
+      'part', aliasedName, false,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
+      requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  static const VerificationMeta _templateMeta =
-      const VerificationMeta('template');
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedColumn<bool> template =
-      GeneratedColumn<bool>('template', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("template" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
-  static const VerificationMeta _assemblyMeta =
-      const VerificationMeta('assembly');
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _referenceMeta =
+      const VerificationMeta('reference');
   @override
-  late final GeneratedColumn<bool> assembly =
-      GeneratedColumn<bool>('assembly', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("assembly" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
-  static const VerificationMeta _skuMeta = const VerificationMeta('sku');
-  @override
-  late final GeneratedColumn<String> sku = GeneratedColumn<String>(
-      'sku', aliasedName, true,
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+      'reference', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _mpnMeta = const VerificationMeta('mpn');
+  static const VerificationMeta _optionalMeta =
+      const VerificationMeta('optional');
   @override
-  late final GeneratedColumn<String> mpn = GeneratedColumn<String>(
-      'mpn', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumn<bool> optional = GeneratedColumn<bool>(
+      'optional', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("optional" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _variantsMeta =
+      const VerificationMeta('variants');
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        name,
-        ipn,
-        description,
-        category,
-        image,
-        variant,
-        template,
-        assembly,
-        sku,
-        mpn
-      ];
+  late final GeneratedColumn<bool> variants = GeneratedColumn<bool>(
+      'variants', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("variants" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
-  String get aliasedName => _alias ?? 'part';
+  List<GeneratedColumn> get $columns =>
+      [parent, part, amount, reference, optional, variants];
   @override
-  String get actualTableName => 'part';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  VerificationContext validateIntegrity(Insertable<PartData> instance,
+  String get actualTableName => $name;
+  static const String $name = 'bom_part';
+  @override
+  VerificationContext validateIntegrity(Insertable<BomPartData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    if (data.containsKey('parent')) {
+      context.handle(_parentMeta,
+          parent.isAcceptableOrUnknown(data['parent']!, _parentMeta));
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_parentMeta);
     }
-    if (data.containsKey('ipn')) {
+    if (data.containsKey('part')) {
       context.handle(
-          _ipnMeta, ipn.isAcceptableOrUnknown(data['ipn']!, _ipnMeta));
-    }
-    if (data.containsKey('description')) {
-      context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
-    }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
     } else if (isInserting) {
-      context.missing(_categoryMeta);
+      context.missing(_partMeta);
     }
-    if (data.containsKey('image')) {
-      context.handle(
-          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
     }
-    if (data.containsKey('variant')) {
-      context.handle(_variantMeta,
-          variant.isAcceptableOrUnknown(data['variant']!, _variantMeta));
+    if (data.containsKey('reference')) {
+      context.handle(_referenceMeta,
+          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
     }
-    if (data.containsKey('template')) {
-      context.handle(_templateMeta,
-          template.isAcceptableOrUnknown(data['template']!, _templateMeta));
+    if (data.containsKey('optional')) {
+      context.handle(_optionalMeta,
+          optional.isAcceptableOrUnknown(data['optional']!, _optionalMeta));
     }
-    if (data.containsKey('assembly')) {
-      context.handle(_assemblyMeta,
-          assembly.isAcceptableOrUnknown(data['assembly']!, _assemblyMeta));
-    }
-    if (data.containsKey('sku')) {
-      context.handle(
-          _skuMeta, sku.isAcceptableOrUnknown(data['sku']!, _skuMeta));
-    }
-    if (data.containsKey('mpn')) {
-      context.handle(
-          _mpnMeta, mpn.isAcceptableOrUnknown(data['mpn']!, _mpnMeta));
+    if (data.containsKey('variants')) {
+      context.handle(_variantsMeta,
+          variants.isAcceptableOrUnknown(data['variants']!, _variantsMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  PartData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {parent, part},
+      ];
+  @override
+  BomPartData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PartData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      ipn: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}ipn']),
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      category: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}category'])!,
-      image: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}image']),
-      variant: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}variant']),
-      template: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}template'])!,
-      assembly: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}assembly'])!,
-      sku: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sku']),
-      mpn: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}mpn']),
+    return BomPartData(
+      parent: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}parent'])!,
+      part: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
+      reference: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reference']),
+      optional: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}optional'])!,
+      variants: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}variants'])!,
     );
   }
 
   @override
-  $PartTable createAlias(String alias) {
-    return $PartTable(attachedDatabase, alias);
+  $BomPartTable createAlias(String alias) {
+    return $BomPartTable(attachedDatabase, alias);
   }
 }
 
@@ -936,6 +1061,7 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
   final Value<String?> reference;
   final Value<bool> optional;
   final Value<bool> variants;
+  final Value<int> rowid;
   const BomPartCompanion({
     this.parent = const Value.absent(),
     this.part = const Value.absent(),
@@ -943,6 +1069,7 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
     this.reference = const Value.absent(),
     this.optional = const Value.absent(),
     this.variants = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   BomPartCompanion.insert({
     required int parent,
@@ -951,6 +1078,7 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
     this.reference = const Value.absent(),
     this.optional = const Value.absent(),
     this.variants = const Value.absent(),
+    this.rowid = const Value.absent(),
   })  : parent = Value(parent),
         part = Value(part),
         amount = Value(amount);
@@ -961,6 +1089,7 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
     Expression<String>? reference,
     Expression<bool>? optional,
     Expression<bool>? variants,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (parent != null) 'parent': parent,
@@ -969,6 +1098,7 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
       if (reference != null) 'reference': reference,
       if (optional != null) 'optional': optional,
       if (variants != null) 'variants': variants,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -978,7 +1108,8 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
       Value<int>? amount,
       Value<String?>? reference,
       Value<bool>? optional,
-      Value<bool>? variants}) {
+      Value<bool>? variants,
+      Value<int>? rowid}) {
     return BomPartCompanion(
       parent: parent ?? this.parent,
       part: part ?? this.part,
@@ -986,6 +1117,7 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
       reference: reference ?? this.reference,
       optional: optional ?? this.optional,
       variants: variants ?? this.variants,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1010,6 +1142,9 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
     if (variants.present) {
       map['variants'] = Variable<bool>(variants.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -1021,143 +1156,101 @@ class BomPartCompanion extends UpdateCompanion<BomPartData> {
           ..write('amount: $amount, ')
           ..write('reference: $reference, ')
           ..write('optional: $optional, ')
-          ..write('variants: $variants')
+          ..write('variants: $variants, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $BomPartTable extends BomPart with TableInfo<$BomPartTable, BomPartData> {
+class $LocationTable extends Location
+    with TableInfo<$LocationTable, LocationData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $BomPartTable(this.attachedDatabase, [this._alias]);
+  $LocationTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _parentMeta = const VerificationMeta('parent');
   @override
   late final GeneratedColumn<int> parent = GeneratedColumn<int>(
-      'parent', aliasedName, false,
+      'parent', aliasedName, true,
       type: DriftSqlType.int,
-      requiredDuringInsert: true,
+      requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  static const VerificationMeta _partMeta = const VerificationMeta('part');
+          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<int> part = GeneratedColumn<int>(
-      'part', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
   @override
-  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
-      'amount', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _referenceMeta =
-      const VerificationMeta('reference');
-  @override
-  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
-      'reference', aliasedName, true,
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _optionalMeta =
-      const VerificationMeta('optional');
   @override
-  late final GeneratedColumn<bool> optional =
-      GeneratedColumn<bool>('optional', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("optional" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
-  static const VerificationMeta _variantsMeta =
-      const VerificationMeta('variants');
+  List<GeneratedColumn> get $columns => [id, parent, name, description];
   @override
-  late final GeneratedColumn<bool> variants =
-      GeneratedColumn<bool>('variants', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("variants" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  List<GeneratedColumn> get $columns =>
-      [parent, part, amount, reference, optional, variants];
+  String get actualTableName => $name;
+  static const String $name = 'location';
   @override
-  String get aliasedName => _alias ?? 'bom_part';
-  @override
-  String get actualTableName => 'bom_part';
-  @override
-  VerificationContext validateIntegrity(Insertable<BomPartData> instance,
+  VerificationContext validateIntegrity(Insertable<LocationData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('parent')) {
       context.handle(_parentMeta,
           parent.isAcceptableOrUnknown(data['parent']!, _parentMeta));
-    } else if (isInserting) {
-      context.missing(_parentMeta);
     }
-    if (data.containsKey('part')) {
+    if (data.containsKey('name')) {
       context.handle(
-          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
-      context.missing(_partMeta);
+      context.missing(_nameMeta);
     }
-    if (data.containsKey('amount')) {
-      context.handle(_amountMeta,
-          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
-    } else if (isInserting) {
-      context.missing(_amountMeta);
-    }
-    if (data.containsKey('reference')) {
-      context.handle(_referenceMeta,
-          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
-    }
-    if (data.containsKey('optional')) {
-      context.handle(_optionalMeta,
-          optional.isAcceptableOrUnknown(data['optional']!, _optionalMeta));
-    }
-    if (data.containsKey('variants')) {
-      context.handle(_variantsMeta,
-          variants.isAcceptableOrUnknown(data['variants']!, _variantsMeta));
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  List<Set<GeneratedColumn>> get uniqueKeys => [
-        {parent, part},
-      ];
-  @override
-  BomPartData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  LocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return BomPartData(
+    return LocationData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       parent: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parent'])!,
-      part: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
-      amount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-      reference: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}reference']),
-      optional: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}optional'])!,
-      variants: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}variants'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}parent']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
     );
   }
 
   @override
-  $BomPartTable createAlias(String alias) {
-    return $BomPartTable(attachedDatabase, alias);
+  $LocationTable createAlias(String alias) {
+    return $LocationTable(attachedDatabase, alias);
   }
 }
 
@@ -1323,12 +1416,11 @@ class LocationCompanion extends UpdateCompanion<LocationData> {
   }
 }
 
-class $LocationTable extends Location
-    with TableInfo<$LocationTable, LocationData> {
+class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $LocationTable(this.attachedDatabase, [this._alias]);
+  $StockTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1338,54 +1430,91 @@ class $LocationTable extends Location
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _parentMeta = const VerificationMeta('parent');
+  static const VerificationMeta _partMeta = const VerificationMeta('part');
   @override
-  late final GeneratedColumn<int> parent = GeneratedColumn<int>(
-      'parent', aliasedName, true,
+  late final GeneratedColumn<int> part = GeneratedColumn<int>(
+      'part', aliasedName, false,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _priceMeta = const VerificationMeta('price');
+  @override
+  late final GeneratedColumn<double> price = GeneratedColumn<double>(
+      'price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _locationMeta =
+      const VerificationMeta('location');
+  @override
+  late final GeneratedColumn<int> location = GeneratedColumn<int>(
+      'location', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _modifiedMeta =
+      const VerificationMeta('modified');
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
+  late final GeneratedColumn<DateTime> modified = GeneratedColumn<DateTime>(
+      'modified', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   @override
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  List<GeneratedColumn> get $columns =>
+      [id, part, amount, price, note, location, modified];
   @override
-  List<GeneratedColumn> get $columns => [id, parent, name, description];
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get aliasedName => _alias ?? 'location';
+  String get actualTableName => $name;
+  static const String $name = 'stock';
   @override
-  String get actualTableName => 'location';
-  @override
-  VerificationContext validateIntegrity(Insertable<LocationData> instance,
+  VerificationContext validateIntegrity(Insertable<StockData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('parent')) {
-      context.handle(_parentMeta,
-          parent.isAcceptableOrUnknown(data['parent']!, _parentMeta));
-    }
-    if (data.containsKey('name')) {
+    if (data.containsKey('part')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_partMeta);
     }
-    if (data.containsKey('description')) {
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('price')) {
       context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
+          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('location')) {
+      context.handle(_locationMeta,
+          location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+    } else if (isInserting) {
+      context.missing(_locationMeta);
+    }
+    if (data.containsKey('modified')) {
+      context.handle(_modifiedMeta,
+          modified.isAcceptableOrUnknown(data['modified']!, _modifiedMeta));
     }
     return context;
   }
@@ -1393,23 +1522,29 @@ class $LocationTable extends Location
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  LocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  StockData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return LocationData(
+    return StockData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      parent: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parent']),
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      part: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
+      price: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}price']),
+      note: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+      location: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}location'])!,
+      modified: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}modified'])!,
     );
   }
 
   @override
-  $LocationTable createAlias(String alias) {
-    return $LocationTable(attachedDatabase, alias);
+  $StockTable createAlias(String alias) {
+    return $StockTable(attachedDatabase, alias);
   }
 }
 
@@ -1642,11 +1777,12 @@ class StockCompanion extends UpdateCompanion<StockData> {
   }
 }
 
-class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
+class $StockTrackingTable extends StockTracking
+    with TableInfo<$StockTrackingTable, StockTrackingData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $StockTable(this.attachedDatabase, [this._alias]);
+  $StockTrackingTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1656,66 +1792,55 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _partMeta = const VerificationMeta('part');
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
-  late final GeneratedColumn<int> part = GeneratedColumn<int>(
-      'part', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+      'date', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _priceMeta = const VerificationMeta('price');
+  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
   @override
-  late final GeneratedColumn<double> price = GeneratedColumn<double>(
-      'price', aliasedName, true,
-      type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _noteMeta = const VerificationMeta('note');
-  @override
-  late final GeneratedColumn<String> note = GeneratedColumn<String>(
-      'note', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _locationMeta =
-      const VerificationMeta('location');
-  @override
-  late final GeneratedColumn<int> location = GeneratedColumn<int>(
-      'location', aliasedName, false,
+  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
+      'stock', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
-  static const VerificationMeta _modifiedMeta =
-      const VerificationMeta('modified');
+          GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
   @override
-  late final GeneratedColumn<DateTime> modified = GeneratedColumn<DateTime>(
-      'modified', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
+  List<GeneratedColumn> get $columns => [id, notes, date, amount, stock];
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, part, amount, price, note, location, modified];
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get aliasedName => _alias ?? 'stock';
+  String get actualTableName => $name;
+  static const String $name = 'stock_tracking';
   @override
-  String get actualTableName => 'stock';
-  @override
-  VerificationContext validateIntegrity(Insertable<StockData> instance,
+  VerificationContext validateIntegrity(Insertable<StockTrackingData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('part')) {
+    if (data.containsKey('notes')) {
       context.handle(
-          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     } else if (isInserting) {
-      context.missing(_partMeta);
+      context.missing(_notesMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     }
     if (data.containsKey('amount')) {
       context.handle(_amountMeta,
@@ -1723,23 +1848,11 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
     } else if (isInserting) {
       context.missing(_amountMeta);
     }
-    if (data.containsKey('price')) {
+    if (data.containsKey('stock')) {
       context.handle(
-          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
-    }
-    if (data.containsKey('note')) {
-      context.handle(
-          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
-    }
-    if (data.containsKey('location')) {
-      context.handle(_locationMeta,
-          location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
     } else if (isInserting) {
-      context.missing(_locationMeta);
-    }
-    if (data.containsKey('modified')) {
-      context.handle(_modifiedMeta,
-          modified.isAcceptableOrUnknown(data['modified']!, _modifiedMeta));
+      context.missing(_stockMeta);
     }
     return context;
   }
@@ -1747,29 +1860,25 @@ class $StockTable extends Stock with TableInfo<$StockTable, StockData> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  StockData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  StockTrackingData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return StockData(
+    return StockTrackingData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      part: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes'])!,
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
       amount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-      price: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}price']),
-      note: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}note']),
-      location: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}location'])!,
-      modified: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}modified'])!,
+      stock: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}stock'])!,
     );
   }
 
   @override
-  $StockTable createAlias(String alias) {
-    return $StockTable(attachedDatabase, alias);
+  $StockTrackingTable createAlias(String alias) {
+    return $StockTrackingTable(attachedDatabase, alias);
   }
 }
 
@@ -1951,12 +2060,12 @@ class StockTrackingCompanion extends UpdateCompanion<StockTrackingData> {
   }
 }
 
-class $StockTrackingTable extends StockTracking
-    with TableInfo<$StockTrackingTable, StockTrackingData> {
+class $BuildOrderTable extends BuildOrder
+    with TableInfo<$BuildOrderTable, BuildOrderData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $StockTrackingTable(this.attachedDatabase, [this._alias]);
+  $BuildOrderTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1966,54 +2075,95 @@ class $StockTrackingTable extends StockTracking
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  static const VerificationMeta _referenceMeta =
+      const VerificationMeta('reference');
   @override
-  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
-      'notes', aliasedName, false,
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+      'reference', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  static const VerificationMeta _partMeta = const VerificationMeta('part');
   @override
-  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
-      'date', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
+  late final GeneratedColumn<int> part = GeneratedColumn<int>(
+      'part', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
+  static const VerificationMeta _destinationMeta =
+      const VerificationMeta('destination');
   @override
-  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
-      'stock', aliasedName, false,
+  late final GeneratedColumn<int> destination = GeneratedColumn<int>(
+      'destination', aliasedName, true,
       type: DriftSqlType.int,
-      requiredDuringInsert: true,
+      requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
+  static const VerificationMeta _createdMeta =
+      const VerificationMeta('created');
   @override
-  List<GeneratedColumn> get $columns => [id, notes, date, amount, stock];
+  late final GeneratedColumn<DateTime> created = GeneratedColumn<DateTime>(
+      'created', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _completedMeta =
+      const VerificationMeta('completed');
   @override
-  String get aliasedName => _alias ?? 'stock_tracking';
+  late final GeneratedColumn<DateTime> completed = GeneratedColumn<DateTime>(
+      'completed', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
-  String get actualTableName => 'stock_tracking';
+  List<GeneratedColumn> get $columns => [
+        id,
+        reference,
+        part,
+        description,
+        amount,
+        destination,
+        created,
+        completed
+      ];
   @override
-  VerificationContext validateIntegrity(Insertable<StockTrackingData> instance,
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'build_order';
+  @override
+  VerificationContext validateIntegrity(Insertable<BuildOrderData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('notes')) {
-      context.handle(
-          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    if (data.containsKey('reference')) {
+      context.handle(_referenceMeta,
+          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
     } else if (isInserting) {
-      context.missing(_notesMeta);
+      context.missing(_referenceMeta);
     }
-    if (data.containsKey('date')) {
+    if (data.containsKey('part')) {
       context.handle(
-          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
+    } else if (isInserting) {
+      context.missing(_partMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
     }
     if (data.containsKey('amount')) {
       context.handle(_amountMeta,
@@ -2021,11 +2171,19 @@ class $StockTrackingTable extends StockTracking
     } else if (isInserting) {
       context.missing(_amountMeta);
     }
-    if (data.containsKey('stock')) {
+    if (data.containsKey('destination')) {
       context.handle(
-          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
-    } else if (isInserting) {
-      context.missing(_stockMeta);
+          _destinationMeta,
+          destination.isAcceptableOrUnknown(
+              data['destination']!, _destinationMeta));
+    }
+    if (data.containsKey('created')) {
+      context.handle(_createdMeta,
+          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    }
+    if (data.containsKey('completed')) {
+      context.handle(_completedMeta,
+          completed.isAcceptableOrUnknown(data['completed']!, _completedMeta));
     }
     return context;
   }
@@ -2033,25 +2191,31 @@ class $StockTrackingTable extends StockTracking
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  StockTrackingData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  BuildOrderData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return StockTrackingData(
+    return BuildOrderData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      notes: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}notes'])!,
-      date: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
+      reference: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reference'])!,
+      part: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
       amount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-      stock: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}stock'])!,
+      destination: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}destination']),
+      created: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created'])!,
+      completed: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}completed']),
     );
   }
 
   @override
-  $StockTrackingTable createAlias(String alias) {
-    return $StockTrackingTable(attachedDatabase, alias);
+  $BuildOrderTable createAlias(String alias) {
+    return $BuildOrderTable(attachedDatabase, alias);
   }
 }
 
@@ -2312,109 +2476,60 @@ class BuildOrderCompanion extends UpdateCompanion<BuildOrderData> {
   }
 }
 
-class $BuildOrderTable extends BuildOrder
-    with TableInfo<$BuildOrderTable, BuildOrderData> {
+class $StockAllocationTable extends StockAllocation
+    with TableInfo<$StockAllocationTable, StockAllocationData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $BuildOrderTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  $StockAllocationTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _referenceMeta =
-      const VerificationMeta('reference');
-  @override
-  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
-      'reference', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _partMeta = const VerificationMeta('part');
-  @override
-  late final GeneratedColumn<int> part = GeneratedColumn<int>(
-      'part', aliasedName, false,
+  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
+      'stock', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES part (id)'));
-  static const VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
+          GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
+  static const VerificationMeta _buildOrderMeta =
+      const VerificationMeta('buildOrder');
   @override
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumn<int> buildOrder = GeneratedColumn<int>(
+      'build_order', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES build_order (id)'));
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _destinationMeta =
-      const VerificationMeta('destination');
   @override
-  late final GeneratedColumn<int> destination = GeneratedColumn<int>(
-      'destination', aliasedName, true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES location (id)'));
-  static const VerificationMeta _createdMeta =
-      const VerificationMeta('created');
+  List<GeneratedColumn> get $columns => [stock, buildOrder, amount];
   @override
-  late final GeneratedColumn<DateTime> created = GeneratedColumn<DateTime>(
-      'created', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
-  static const VerificationMeta _completedMeta =
-      const VerificationMeta('completed');
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  late final GeneratedColumn<DateTime> completed = GeneratedColumn<DateTime>(
-      'completed', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  String get actualTableName => $name;
+  static const String $name = 'stock_allocation';
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        reference,
-        part,
-        description,
-        amount,
-        destination,
-        created,
-        completed
-      ];
-  @override
-  String get aliasedName => _alias ?? 'build_order';
-  @override
-  String get actualTableName => 'build_order';
-  @override
-  VerificationContext validateIntegrity(Insertable<BuildOrderData> instance,
+  VerificationContext validateIntegrity(
+      Insertable<StockAllocationData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('reference')) {
-      context.handle(_referenceMeta,
-          reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta));
-    } else if (isInserting) {
-      context.missing(_referenceMeta);
-    }
-    if (data.containsKey('part')) {
+    if (data.containsKey('stock')) {
       context.handle(
-          _partMeta, part.isAcceptableOrUnknown(data['part']!, _partMeta));
+          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
     } else if (isInserting) {
-      context.missing(_partMeta);
+      context.missing(_stockMeta);
     }
-    if (data.containsKey('description')) {
+    if (data.containsKey('build_order')) {
       context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
+          _buildOrderMeta,
+          buildOrder.isAcceptableOrUnknown(
+              data['build_order']!, _buildOrderMeta));
+    } else if (isInserting) {
+      context.missing(_buildOrderMeta);
     }
     if (data.containsKey('amount')) {
       context.handle(_amountMeta,
@@ -2422,51 +2537,27 @@ class $BuildOrderTable extends BuildOrder
     } else if (isInserting) {
       context.missing(_amountMeta);
     }
-    if (data.containsKey('destination')) {
-      context.handle(
-          _destinationMeta,
-          destination.isAcceptableOrUnknown(
-              data['destination']!, _destinationMeta));
-    }
-    if (data.containsKey('created')) {
-      context.handle(_createdMeta,
-          created.isAcceptableOrUnknown(data['created']!, _createdMeta));
-    }
-    if (data.containsKey('completed')) {
-      context.handle(_completedMeta,
-          completed.isAcceptableOrUnknown(data['completed']!, _completedMeta));
-    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  BuildOrderData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  StockAllocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return BuildOrderData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      reference: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}reference'])!,
-      part: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}part'])!,
-      description: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}description']),
+    return StockAllocationData(
+      stock: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}stock'])!,
+      buildOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}build_order'])!,
       amount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-      destination: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}destination']),
-      created: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created'])!,
-      completed: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}completed']),
     );
   }
 
   @override
-  $BuildOrderTable createAlias(String alias) {
-    return $BuildOrderTable(attachedDatabase, alias);
+  $StockAllocationTable createAlias(String alias) {
+    return $StockAllocationTable(attachedDatabase, alias);
   }
 }
 
@@ -2544,15 +2635,18 @@ class StockAllocationCompanion extends UpdateCompanion<StockAllocationData> {
   final Value<int> stock;
   final Value<int> buildOrder;
   final Value<int> amount;
+  final Value<int> rowid;
   const StockAllocationCompanion({
     this.stock = const Value.absent(),
     this.buildOrder = const Value.absent(),
     this.amount = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   StockAllocationCompanion.insert({
     required int stock,
     required int buildOrder,
     required int amount,
+    this.rowid = const Value.absent(),
   })  : stock = Value(stock),
         buildOrder = Value(buildOrder),
         amount = Value(amount);
@@ -2560,20 +2654,26 @@ class StockAllocationCompanion extends UpdateCompanion<StockAllocationData> {
     Expression<int>? stock,
     Expression<int>? buildOrder,
     Expression<int>? amount,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (stock != null) 'stock': stock,
       if (buildOrder != null) 'build_order': buildOrder,
       if (amount != null) 'amount': amount,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   StockAllocationCompanion copyWith(
-      {Value<int>? stock, Value<int>? buildOrder, Value<int>? amount}) {
+      {Value<int>? stock,
+      Value<int>? buildOrder,
+      Value<int>? amount,
+      Value<int>? rowid}) {
     return StockAllocationCompanion(
       stock: stock ?? this.stock,
       buildOrder: buildOrder ?? this.buildOrder,
       amount: amount ?? this.amount,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -2589,6 +2689,9 @@ class StockAllocationCompanion extends UpdateCompanion<StockAllocationData> {
     if (amount.present) {
       map['amount'] = Variable<int>(amount.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -2597,93 +2700,10 @@ class StockAllocationCompanion extends UpdateCompanion<StockAllocationData> {
     return (StringBuffer('StockAllocationCompanion(')
           ..write('stock: $stock, ')
           ..write('buildOrder: $buildOrder, ')
-          ..write('amount: $amount')
+          ..write('amount: $amount, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
-  }
-}
-
-class $StockAllocationTable extends StockAllocation
-    with TableInfo<$StockAllocationTable, StockAllocationData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $StockAllocationTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _stockMeta = const VerificationMeta('stock');
-  @override
-  late final GeneratedColumn<int> stock = GeneratedColumn<int>(
-      'stock', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES stock (id)'));
-  static const VerificationMeta _buildOrderMeta =
-      const VerificationMeta('buildOrder');
-  @override
-  late final GeneratedColumn<int> buildOrder = GeneratedColumn<int>(
-      'build_order', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES build_order (id)'));
-  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
-  @override
-  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
-      'amount', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [stock, buildOrder, amount];
-  @override
-  String get aliasedName => _alias ?? 'stock_allocation';
-  @override
-  String get actualTableName => 'stock_allocation';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<StockAllocationData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('stock')) {
-      context.handle(
-          _stockMeta, stock.isAcceptableOrUnknown(data['stock']!, _stockMeta));
-    } else if (isInserting) {
-      context.missing(_stockMeta);
-    }
-    if (data.containsKey('build_order')) {
-      context.handle(
-          _buildOrderMeta,
-          buildOrder.isAcceptableOrUnknown(
-              data['build_order']!, _buildOrderMeta));
-    } else if (isInserting) {
-      context.missing(_buildOrderMeta);
-    }
-    if (data.containsKey('amount')) {
-      context.handle(_amountMeta,
-          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
-    } else if (isInserting) {
-      context.missing(_amountMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => const {};
-  @override
-  StockAllocationData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return StockAllocationData(
-      stock: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}stock'])!,
-      buildOrder: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}build_order'])!,
-      amount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-    );
-  }
-
-  @override
-  $StockAllocationTable createAlias(String alias) {
-    return $StockAllocationTable(attachedDatabase, alias);
   }
 }
 
@@ -2730,26 +2750,24 @@ abstract class _$Database extends GeneratedDatabase {
         readsFrom: {
           category,
           part,
-        }).map((QueryRow row) {
-      return GetPartsOfChildCategoriesResult(
-        id: row.read<int>('id'),
-        name: row.read<String>('name'),
-        ipn: row.readNullable<String>('ipn'),
-        description: row.readNullable<String>('description'),
-        category: row.read<int>('category'),
-        image: row.readNullable<String>('image'),
-        variant: row.readNullable<int>('variant'),
-        template: row.read<bool>('template'),
-        assembly: row.read<bool>('assembly'),
-        sku: row.readNullable<String>('sku'),
-        mpn: row.readNullable<String>('mpn'),
-        cId: row.read<int>('cId'),
-        cParent: row.readNullable<int>('cParent'),
-        cName: row.read<String>('cName'),
-        cDescription: row.read<String>('cDescription'),
-        cKeywords: row.readNullable<String>('cKeywords'),
-      );
-    });
+        }).map((QueryRow row) => GetPartsOfChildCategoriesResult(
+          id: row.read<int>('id'),
+          name: row.read<String>('name'),
+          ipn: row.readNullable<String>('ipn'),
+          description: row.readNullable<String>('description'),
+          category: row.read<int>('category'),
+          image: row.readNullable<String>('image'),
+          variant: row.readNullable<int>('variant'),
+          template: row.read<bool>('template'),
+          assembly: row.read<bool>('assembly'),
+          sku: row.readNullable<String>('sku'),
+          mpn: row.readNullable<String>('mpn'),
+          cId: row.read<int>('cId'),
+          cParent: row.readNullable<int>('cParent'),
+          cName: row.read<String>('cName'),
+          cDescription: row.read<String>('cDescription'),
+          cKeywords: row.readNullable<String>('cKeywords'),
+        ));
   }
 
   @override

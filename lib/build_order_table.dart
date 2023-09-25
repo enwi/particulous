@@ -3,6 +3,7 @@ import 'package:particulous/data/build_order.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/part/part_image_widget.dart';
 
+import 'build_order_screen.dart';
 import 'data/part.dart';
 
 class BuildOrderTable extends StatefulWidget {
@@ -37,6 +38,7 @@ class _BuildOrderTableState extends State<BuildOrderTable> {
       sortAscending: _sortAsc,
       columnSpacing: 16,
       horizontalMargin: 16,
+      showCheckboxColumn: false,
       columns: [
         const DataColumn(label: Text('Build Order')),
         const DataColumn(label: Text('Description')),
@@ -62,46 +64,59 @@ class _BuildOrderTableState extends State<BuildOrderTable> {
         const DataColumn(label: Text('Completed')),
       ],
       rows: _orders.map((order) {
-        return DataRow(cells: [
-          DataCell(Text(order.reference)),
-          DataCell(Text(order.description ?? '-')),
-          DataCell(
-            FutureBuilder<Part?>(
-              future: widget.dbh.fetchPart(order.part),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final part = snapshot.data!;
-                  return Wrap(
-                    direction: Axis.horizontal,
-                    children: [
-                      if (part.image != null) ...[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: PartImageWidget(
-                            image: part.image!,
-                            height: kMinInteractiveDimension,
-                            width: kMinInteractiveDimension,
+        return DataRow(
+          onSelectChanged: (value) {
+            if (value ?? true) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      BuildOrderScreen(dbh: widget.dbh, buildOrder: order),
+                ),
+              );
+            }
+          },
+          cells: [
+            DataCell(Text(order.reference)),
+            DataCell(Text(order.description ?? '-')),
+            DataCell(
+              FutureBuilder<Part?>(
+                future: widget.dbh.fetchPart(order.part),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final part = snapshot.data!;
+                    return Wrap(
+                      direction: Axis.horizontal,
+                      children: [
+                        if (part.image != null) ...[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: PartImageWidget(
+                              image: part.image!,
+                              height: kMinInteractiveDimension,
+                              width: kMinInteractiveDimension,
+                            ),
                           ),
-                        ),
-                      ] else ...[
-                        const SizedBox(
-                          width: kMinInteractiveDimension,
-                          height: kMinInteractiveDimension,
-                        )
+                        ] else ...[
+                          const SizedBox(
+                            width: kMinInteractiveDimension,
+                            height: kMinInteractiveDimension,
+                          )
+                        ],
+                        const SizedBox(width: 8),
+                        Text(part.name),
                       ],
-                      const SizedBox(width: 8),
-                      Text(part.name),
-                    ],
-                  );
-                }
-                return const CircularProgressIndicator();
-              },
+                    );
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
             ),
-          ),
-          DataCell(Text('${order.amount}')),
-          DataCell(Text(order.created.toLocal().toString())),
-          DataCell(Text(order.completed?.toLocal().toString() ?? '-')),
-        ]);
+            DataCell(Text('${order.amount}')),
+            DataCell(Text(order.created.toLocal().toString())),
+            DataCell(Text(order.completed?.toLocal().toString() ?? '-')),
+          ],
+        );
       }).toList(),
     );
   }

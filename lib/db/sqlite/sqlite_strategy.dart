@@ -136,6 +136,17 @@ extension SQLiteBuildOrder on BuildOrder {
   }
 }
 
+extension SQLiteStockAllocation on StockAllocation {
+  static StockAllocation fromStockAllocationData(
+      final db.StockAllocationData data) {
+    return StockAllocation(
+      stock: data.stock,
+      buildOrder: data.buildOrder,
+      amount: data.amount,
+    );
+  }
+}
+
 class SQLiteStrategy implements DBStrategy {
   final db.Database _db;
 
@@ -288,6 +299,18 @@ class SQLiteStrategy implements DBStrategy {
         .map((row) => row.read(sum))
         .watchSingle()
         .map((value) => value ?? 0);
+  }
+
+  @override
+  Future<List<Stock>> fetchTemplateStockOfPart(final int part) {
+    return (_db.select(_db.stock).join([
+      innerJoin(_db.location, _db.location.id.equalsExp(_db.stock.location)),
+      innerJoin(_db.part, _db.part.id.equalsExp(_db.stock.part)),
+    ])
+          ..where(_db.stock.part.equals(part) |
+              _db.stock.part.equalsExp(_db.part.variant)))
+        .get()
+        .then((result) => result.map(SQLiteStock.fromTypedResult).toList());
   }
 
   @override
@@ -463,5 +486,15 @@ class SQLiteStrategy implements DBStrategy {
         .watch()
         .map((result) =>
             result.map(SQLiteBuildOrder.fromBuildOrderData).toList());
+  }
+
+  @override
+  Stream<List<StockAllocation>> watchStockAllocationsOfBuildOrder(
+      final int order) {
+    return (_db.select(_db.stockAllocation)
+          ..where((tbl) => tbl.buildOrder.equals(order)))
+        .watch()
+        .map((result) =>
+            result.map(SQLiteStockAllocation.fromStockAllocationData).toList());
   }
 }

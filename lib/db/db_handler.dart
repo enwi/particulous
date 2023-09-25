@@ -82,6 +82,9 @@ class DBHandler with ChangeNotifier {
   Stream<List<Stock>> watchStockOfPart(final int part) =>
       _strategy.watchStockOfPart(part);
 
+  Future<List<Stock>> fetchTemplateStockOfPart(final int part) =>
+      _strategy.fetchTemplateStockOfPart(part);
+
   Future<int> alterStock(final AlterStock? alter) =>
       _strategy.alterStock(alter);
 
@@ -112,4 +115,8 @@ class DBHandler with ChangeNotifier {
   Future<BuildOrder?> getLatestBuildOrder() => _strategy.getLatestBuildOrder();
   Stream<List<BuildOrder>> watchBuildOrdersOfPart(final int part) =>
       _strategy.watchBuildOrdersOfPart(part);
+
+  Stream<List<StockAllocation>> watchStockAllocationsOfBuildOrder(
+          final int order) =>
+      _strategy.watchStockAllocationsOfBuildOrder(order);
 }

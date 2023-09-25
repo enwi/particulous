@@ -48,6 +48,7 @@ abstract class DBStrategy {
   Future<int> fetchStockCountOfPart(final int part);
   Stream<int> watchStockCountOfPart(final int part);
   Stream<List<Stock>> watchStockOfPart(final int part);
+  Future<List<Stock>> fetchTemplateStockOfPart(final int part);
 
   Future<int> alterStock(final AlterStock? alter);
   Future<List<String>> fetchSearchSuggestions(final String query);
@@ -67,4 +68,7 @@ abstract class DBStrategy {
   Future<int> insertBuildOrder(final BuildOrder order);
   Future<BuildOrder?> getLatestBuildOrder();
   Stream<List<BuildOrder>> watchBuildOrdersOfPart(final int part);
+
+  Stream<List<StockAllocation>> watchStockAllocationsOfBuildOrder(
+      final int order);
 }

@@ -22,6 +22,7 @@ class PartImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Settings>(
       builder: (context, value, child) => Image.file(
+        key: key,
         File(join(value.imageDir, image)),
         width: width,
         height: height,

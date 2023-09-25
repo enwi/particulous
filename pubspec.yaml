@@ -35,12 +35,13 @@ dependencies:
   dropdown_search: ^5.0.3
   form_builder_file_picker: ^2.3.0
   http: ^0.13.5
-  flutter_spinbox: ^0.11.0
+  flutter_spinbox: ^0.12.0
   settings_ui: ^2.0.2
-  file_picker: ^4.6.1
+  file_picker: ^5.5.0
   shared_preferences: ^2.0.15
-  package_info_plus: ^1.4.2
+  package_info_plus: ^4.1.0
   sprintf: ^7.0.0
+  multiple_stream_builder: ^3.0.2
 
 dev_dependencies:
   flutter_test:

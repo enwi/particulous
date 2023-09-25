@@ -33,3 +33,15 @@ class Stock {
     required this.modified,
   });
 }
+
+class StockAllocation {
+  final int stock;
+  final int buildOrder;
+  final int amount;
+
+  StockAllocation({
+    required this.stock,
+    required this.buildOrder,
+    required this.amount,
+  });
+}

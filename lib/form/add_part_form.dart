@@ -107,11 +107,11 @@ class _AddPartFormState extends State<AddPartForm> {
             maxFiles: 1,
             onSaved: (newValue) => _partImage =
                 newValue?.isNotEmpty ?? false ? newValue?.first : null,
-            typeSelectors: [
+            typeSelectors: const [
               TypeSelector(
                 type: FileType.image,
                 selector: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.add_circle),
                     Padding(
                       padding: EdgeInsets.only(left: 8.0),
