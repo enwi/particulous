@@ -8,6 +8,8 @@ import 'package:particulous/parts_screen.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   final settings = await Settings.load();
   final dbSettings = await DBSettings.load();
 

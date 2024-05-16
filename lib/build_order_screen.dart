@@ -58,7 +58,7 @@ class _BuildOrderScreenState extends State<BuildOrderScreen> {
                     ...allocations
                         .map(
                             (e) => Text('Stock ${e.stock}, amount ${e.amount}'))
-                        .toList(),
+                        ,
                     const Text('BOM'),
                     ...bom
                         .map((e) => Row(
@@ -77,7 +77,7 @@ class _BuildOrderScreenState extends State<BuildOrderScreen> {
                                 ),
                               ],
                             ))
-                        .toList(),
+                        ,
                   ],
                 );
               }

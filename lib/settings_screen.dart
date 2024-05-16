@@ -30,7 +30,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile.navigation(
                 leading: const Icon(Icons.storage),
                 title: const Text('Database'),
-                value: Text(dbSettings.database),
+                description: Text(
+                  dbSettings.database,
+                  overflow: TextOverflow.clip,
+                ),
                 onPressed: (context) => FilePicker.platform.pickFiles(
                   allowMultiple: false,
                   lockParentWindow: true,
@@ -49,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile.navigation(
                 leading: const Icon(Icons.image),
                 title: const Text('Images'),
-                value: Text(settings.imageDir),
+                description: Text(settings.imageDir),
                 onPressed: (context) => FilePicker.platform
                     .getDirectoryPath(
                       lockParentWindow: true,

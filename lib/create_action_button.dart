@@ -5,9 +5,9 @@ import 'package:particulous/util/add_utils.dart';
 
 class CreateActionButton extends StatelessWidget {
   const CreateActionButton({
-    Key? key,
+    super.key,
     required this.dbh,
-  }) : super(key: key);
+  });
 
   final DBHandler dbh;
 

@@ -20,16 +20,19 @@ class Settings with ChangeNotifier {
     }
 
     imageDir = dir;
+    SharedPreferences.getInstance()
+        .then((pref) => pref.setString(Settings.kImageDir, dir));
     notifyListeners();
   }
 
   static Future<Settings> load() async {
     final pref = await SharedPreferences.getInstance();
 
-    final documentsDir = (await getApplicationDocumentsDirectory()).path;
-
-    final imageDir = pref.getString(Settings.kImageDir) ??
-        join(documentsDir, 'particulous', 'image');
+    var imageDir = pref.getString(Settings.kImageDir);
+    if (imageDir == null) {
+      final documentsDir = (await getApplicationDocumentsDirectory()).path;
+      imageDir = join(documentsDir, 'particulous', 'image');
+    }
 
     return Settings(
       imageDir: imageDir,
@@ -49,10 +52,11 @@ class DBSettings with ChangeNotifier {
   static Future<DBSettings> load() async {
     final pref = await SharedPreferences.getInstance();
 
-    final documentsDir = (await getApplicationDocumentsDirectory()).path;
-
-    final database = pref.getString(DBSettings.kDatabase) ??
-        join(documentsDir, 'particulous', 'db.sqlite');
+    var database = pref.getString(DBSettings.kDatabase);
+    if (database == null) {
+      final documentsDir = (await getApplicationDocumentsDirectory()).path;
+      database = join(documentsDir, 'particulous', 'db.sqlite');
+    }
 
     return DBSettings(
       database: database,
@@ -65,6 +69,8 @@ class DBSettings with ChangeNotifier {
     }
 
     this.database = database;
+    SharedPreferences.getInstance()
+        .then((pref) => pref.setString(DBSettings.kDatabase, database));
     notifyListeners();
   }
 }

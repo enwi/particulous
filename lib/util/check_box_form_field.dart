@@ -4,15 +4,11 @@ class CheckboxFormField extends FormField<bool> {
   CheckboxFormField(
       {super.key,
       Widget? title,
-      FormFieldSetter<bool>? onSaved,
-      FormFieldValidator<bool>? validator,
-      bool initialValue = false,
-      AutovalidateMode? autovalidateMode})
+      super.onSaved,
+      super.validator,
+      bool super.initialValue = false,
+      super.autovalidateMode})
       : super(
-          onSaved: onSaved,
-          validator: validator,
-          initialValue: initialValue,
-          autovalidateMode: autovalidateMode,
           builder: (FormFieldState<bool> state) {
             return CheckboxListTile(
               dense: state.hasError,

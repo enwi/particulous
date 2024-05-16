@@ -51,7 +51,7 @@ part 'location.dart';
   },
 )
 class Database extends _$Database {
-  Database(final QueryExecutor executor) : super(executor);
+  Database(super.executor);
 
   @override
   int get schemaVersion => 1;
