@@ -174,47 +174,55 @@ class _AddPartFormState extends State<AddPartForm> {
             initialValue: false,
             onSaved: (newValue) => _partAssembly = newValue,
           ),
-          ElevatedButton(
-            onPressed: () {
-              if (!_formKey.currentState!.validate()) {
-                return;
-              }
-              _formKey.currentState!.save();
-              final internalImage = _partImage == null
-                  ? null
-                  : '${_partName.hashCode}.${(_partImage!.extension ?? 'png')}';
-              // TODO think of better hashing
-              widget.dbHandler
-                  .insertPart(Part(
-                identifier: -1,
-                ipn: _partIpn,
-                name: _partName!,
-                description: _partDescription,
-                category: _partCategory!,
-                image: internalImage,
-                variant: _partVariant?.identifier,
-                template: _partTemplate!,
-                assembly: _partAssembly!,
-                sku: _partSku,
-                mpn: _partMpn,
-              ))
-                  .then((value) {
-                if (internalImage != null) {
-                  final settings =
-                      Provider.of<Settings>(context, listen: false);
-                  File(join(settings.imageDir, internalImage)).writeAsBytes(
-                      _partImage!.bytes ??
-                          File(_partImage!.path!).readAsBytesSync());
-                }
-                return value;
-              }).then((id) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text('Successfully created new part with ID $id')));
-                Navigator.pop(context, id);
-              });
-            },
-            child: const Text('Add'),
+          ButtonBar(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+                  _formKey.currentState!.save();
+                  final internalImage = _partImage == null
+                      ? null
+                      : '${_partName.hashCode}.${(_partImage!.extension ?? 'png')}';
+                  // TODO think of better hashing
+                  widget.dbHandler
+                      .insertPart(Part(
+                    identifier: -1,
+                    ipn: _partIpn,
+                    name: _partName!,
+                    description: _partDescription,
+                    category: _partCategory!,
+                    image: internalImage,
+                    variant: _partVariant?.identifier,
+                    template: _partTemplate!,
+                    assembly: _partAssembly!,
+                    sku: _partSku,
+                    mpn: _partMpn,
+                  ))
+                      .then((value) {
+                    if (internalImage != null) {
+                      final settings =
+                          Provider.of<Settings>(context, listen: false);
+                      File(join(settings.imageDir, internalImage)).writeAsBytes(
+                          _partImage!.bytes ??
+                              File(_partImage!.path!).readAsBytesSync());
+                    }
+                    return value;
+                  }).then((id) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text('Successfully created new part with ID $id')));
+                    Navigator.pop(context, id);
+                  });
+                },
+                child: const Text('Add'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Abort'),
+              )
+            ],
           ),
         ],
       ),

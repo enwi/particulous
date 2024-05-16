@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:math' as math;
 
@@ -9,6 +10,7 @@ import 'dart:math' as math;
 // import 'package:zxing_lib/qrcode.dart';
 // import 'package:zxing_lib/zxing.dart';
 // import 'package:qr_code_vision/qr_code_vision.dart';
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:zxing2/qrcode.dart';
 
 import 'package:camera_platform_interface/camera_platform_interface.dart';
@@ -246,6 +248,21 @@ class _QRScannerState extends State<QRScanner> {
 }
 
 Future<String?> scanQR(BuildContext context) {
+  if (Platform.isMacOS) {
+    return Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AiBarcodeScanner(
+              canPop: false,
+              onScan: (String value) {},
+              onDetect: (BarcodeCapture barcodeCapture) {
+                for (final code in barcodeCapture.barcodes) {
+                  if ((code.rawValue?.contains('pc') ?? false) &&
+                      (code.rawValue?.contains('mc') ?? false)) {
+                    return Navigator.of(context).pop(code.rawValue!);
+                  }
+                }
+              },
+            )));
+  }
   return Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => const QRScanner()));
 }
