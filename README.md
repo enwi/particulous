@@ -1,5 +1,6 @@
 # particulous
 Not another part inventory management system ... this is particulous!
+<img width="1224" alt="application picture" src="https://github.com/enwi/particulous/assets/25170066/bd63a9fe-d800-47d6-b2bf-c93b06f50e77">
 
 ## Developing
 
