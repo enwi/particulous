@@ -4,12 +4,13 @@ import 'package:particulous/category_screen.dart';
 import 'package:particulous/data/settings.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/locations_screen.dart';
+import 'package:particulous/part/part_detail_screen.dart';
 import 'package:particulous/parts_screen.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   final settings = await Settings.load();
   final dbSettings = await DBSettings.load();
 
@@ -36,7 +37,8 @@ class Particoulus extends StatelessWidget {
     return MaterialApp(
       title: 'Particulous',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
       home: const PartsScreen(),
@@ -46,6 +48,26 @@ class Particoulus extends StatelessWidget {
         // TODO LocationScreen
         PartsScreen.route: (context) => const PartsScreen(),
         // TODO PartScreen
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name?.startsWith('/parts/') ?? false) {
+          final partId = int.tryParse(settings.name!.split('/').last);
+          if (partId == null) {
+            return null;
+          }
+
+          final DBHandler dbh = Provider.of<DBHandler>(context, listen: false);
+          return MaterialPageRoute(
+              builder: (context) => FutureBuilder(
+                  future: dbh.fetchPart(partId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return PartDetailScreen(dbh: dbh, part: snapshot.data!);
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  }));
+        }
+        return null;
       },
     );
   }

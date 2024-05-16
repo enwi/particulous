@@ -18,7 +18,7 @@ import 'package:particulous/util/string_util.dart';
 import 'package:path/path.dart';
 
 abstract class AddUtils {
-  static void _pushForm({
+  static Future _pushForm({
     required final BuildContext context,
     required final String title,
     required final Widget child,
@@ -52,7 +52,7 @@ abstract class AddUtils {
         context: context,
         title: 'New Part',
         child: AddPartForm(dbHandler: dbh),
-      );
+      ).then((value) => log('Added new part $value'));
 
   static Future<PlatformFile?> fetchImage(List<dynamic> images) async {
     String? image;
@@ -79,53 +79,66 @@ abstract class AddUtils {
   static void addLCSCPart({
     required final BuildContext context,
     required final DBHandler dbh,
+    final String? part,
+    final int? amount,
   }) {
     final textFieldController = TextEditingController();
-    showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Enter LCSC part number'),
-        content: TextField(
-          autofocus: true,
-          onChanged: (value) {},
-          controller: textFieldController,
-          decoration: const InputDecoration(hintText: "LCSC#"),
-        ),
-        actions: [
-          TextButton(
-            child: const Text('Abort'),
-            onPressed: () => Navigator.pop(context),
-          ),
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () => Navigator.pop(context, textFieldController.text),
-          ),
-        ],
-      ),
-    )
+    (part != null
+            ? Future.value(part)
+            : showDialog<String>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Enter LCSC part number'),
+                  content: TextField(
+                    autofocus: true,
+                    onChanged: (value) {},
+                    controller: textFieldController,
+                    decoration: const InputDecoration(hintText: "LCSC#"),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: const Text('Abort'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () =>
+                          Navigator.pop(context, textFieldController.text),
+                    ),
+                  ],
+                ),
+              ))
         .then((part) => LoadingOverlay.of(context).during(
               http
                   .get(Uri(
                     scheme: 'https',
-                    host: 'wwwapi.lcsc.com',
-                    path: 'v1/products/detail',
-                    queryParameters: {'product_code': part},
+                    host: 'wmsc.lcsc.com',
+                    path: 'ftps/wm/product/detail',
+                    queryParameters: {'productCode': part},
                   ))
                   .then((response) => jsonDecode(response.body))
                   .then((json) {
-                final images = json['productImages'];
+                final images = json['result']?['productImages'];
                 return Future.wait([
                   Future.value(json),
-                  images == null ? Future.value(null) : fetchImage(images)
+                  images == null || images.isEmpty
+                      ? Future.value(null)
+                      : fetchImage(images)
                 ]);
               }),
             ))
         .then((values) {
-      final json = values[0] as dynamic;
+      var json = values[0] as dynamic;
       if (json == null || json is List<dynamic>) {
         log('Part not found');
         return;
       }
+      json = json['result'];
+      if (json == null || json is List<dynamic>) {
+        log('Part not found');
+        return;
+      }
+
       final name = json['title'];
       final description = json['productIntroEn'];
       final sku = json['productCode'];
@@ -144,22 +157,28 @@ abstract class AddUtils {
             appBar: AppBar(
               title: const Text('Import LCSC Part'),
             ),
-            body: Center(
-              child: SizedBox(
-                width: 500,
-                child: AddPartForm(
-                  dbHandler: dbh,
-                  name: name,
-                  description: description,
-                  sku: sku,
-                  mpn: mpn,
-                  images: image == null ? [] : [image],
+            body: SingleChildScrollView(
+              child: Center(
+                child: SizedBox(
+                  width: 500,
+                  child: AddPartForm(
+                    dbHandler: dbh,
+                    name: name,
+                    description: description,
+                    sku: sku,
+                    mpn: mpn,
+                    images: image == null ? [] : [image],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      );
+      ).then((value) {
+        if (value != null) {
+          Navigator.of(context).pushNamed('/parts/$value');
+        }
+      });
     }).catchError((error) {
       log('Error: $error');
       return null;
@@ -184,7 +203,10 @@ abstract class AddUtils {
       _pushForm(
         context: context,
         title: 'New Stock',
-        child: AddStockForm(dbHandler: dbh),
+        child: AddStockForm(
+          dbHandler: dbh,
+          initialPart: part,
+        ),
       );
 
   static void addLocation({

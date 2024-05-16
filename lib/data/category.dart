@@ -15,10 +15,11 @@ class Category {
   /// Optional parent category
   int? parent;
 
-  Category(
-      {required this.identifier,
-      required this.name,
-      required this.description,
-      this.keywords,
-      this.parent});
+  Category({
+    required this.identifier,
+    required this.name,
+    required this.description,
+    this.keywords,
+    this.parent,
+  });
 }

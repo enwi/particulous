@@ -228,6 +228,12 @@ class SQLiteStrategy implements DBStrategy {
   }
 
   @override
+  Stream<List<Category>> watchCategories() {
+    return _db.select(_db.category).watch().map(
+        (results) => results.map(SQLiteCategory.fromCategoryData).toList());
+  }
+
+  @override
   Future<Category> fetchCategory(int category) {
     return (_db.select(_db.category)..where((tbl) => tbl.id.equals(category)))
         .getSingle()
@@ -308,9 +314,23 @@ class SQLiteStrategy implements DBStrategy {
       innerJoin(_db.part, _db.part.id.equalsExp(_db.stock.part)),
     ])
           ..where(_db.stock.part.equals(part) |
-              _db.stock.part.equalsExp(_db.part.variant)))
+              _db.stock.part.equalsExp(_db.part.variant) |
+              _db.part.variant.equals(part)))
         .get()
         .then((result) => result.map(SQLiteStock.fromTypedResult).toList());
+  }
+
+  @override
+  Stream<List<Stock>> watchTemplateStockOfPart(final int part) {
+    return (_db.select(_db.stock).join([
+      innerJoin(_db.location, _db.location.id.equalsExp(_db.stock.location)),
+      innerJoin(_db.part, _db.part.id.equalsExp(_db.stock.part)),
+    ])
+          ..where(_db.stock.part.equals(part) |
+              _db.stock.part.equalsExp(_db.part.variant) |
+              _db.part.variant.equals(part)))
+        .watch()
+        .map((result) => result.map(SQLiteStock.fromTypedResult).toList());
   }
 
   @override

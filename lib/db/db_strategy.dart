@@ -31,6 +31,9 @@ abstract class DBStrategy {
   /// Get a future list of all categories
   Future<List<Category>> fetchCategories();
 
+  /// Get a stream list of all categories
+  Stream<List<Category>> watchCategories();
+
   /// Get all parent category names of the given [category]
   Future<List<String>> getParentCategoryNames(final int category);
 
@@ -49,6 +52,7 @@ abstract class DBStrategy {
   Stream<int> watchStockCountOfPart(final int part);
   Stream<List<Stock>> watchStockOfPart(final int part);
   Future<List<Stock>> fetchTemplateStockOfPart(final int part);
+  Stream<List<Stock>> watchTemplateStockOfPart(final int part);
 
   Future<int> alterStock(final AlterStock? alter);
   Future<List<String>> fetchSearchSuggestions(final String query);

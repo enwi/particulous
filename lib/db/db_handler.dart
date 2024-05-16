@@ -58,6 +58,7 @@ class DBHandler with ChangeNotifier {
       _strategy.watchPartsOfCategory(category);
 
   Future<List<Category>> fetchCategories() => _strategy.fetchCategories();
+  Stream<List<Category>> watchCategories() => _strategy.watchCategories();
 
   Future<List<String>> getParentCategoryNames(final int category) =>
       _strategy.getParentCategoryNames(category);
@@ -84,6 +85,9 @@ class DBHandler with ChangeNotifier {
 
   Future<List<Stock>> fetchTemplateStockOfPart(final int part) =>
       _strategy.fetchTemplateStockOfPart(part);
+
+  Stream<List<Stock>> watchTemplateStockOfPart(final int part) =>
+      _strategy.watchTemplateStockOfPart(part);
 
   Future<int> alterStock(final AlterStock? alter) =>
       _strategy.alterStock(alter);

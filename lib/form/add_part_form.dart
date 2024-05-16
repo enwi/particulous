@@ -11,6 +11,7 @@ import 'package:particulous/part/part_dropdown.dart';
 import 'package:particulous/util/check_box_form_field.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 
 class AddPartForm extends StatefulWidget {
   final DBHandler dbHandler;
@@ -35,6 +36,7 @@ class AddPartForm extends StatefulWidget {
 
 class _AddPartFormState extends State<AddPartForm> {
   final _formKey = GlobalKey<FormState>();
+  late Future<Category?> _category;
 
   String? _partName;
   String? _partIpn;
@@ -46,6 +48,20 @@ class _AddPartFormState extends State<AddPartForm> {
   Part? _partVariant;
   bool? _partTemplate;
   bool? _partAssembly;
+
+  @override
+  void initState() {
+    _category = widget.dbHandler.fetchCategories().then((categories) {
+      final result = extractOne(
+          query: widget.description?.toLowerCase() ?? '*',
+          choices: categories,
+          cutoff: 10,
+          getter: (category) => '${category.name} ${category.keywords ?? ''}');
+
+      return result.choice;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +105,38 @@ class _AddPartFormState extends State<AddPartForm> {
             decoration: const InputDecoration(label: Text('Description')),
             onSaved: (newValue) => _partDescription = newValue,
           ),
-          CategoryDropdown(
-            dbHandler: widget.dbHandler,
-            labelText: 'Category',
-            onSaved: (newValue) => _partCategory = newValue,
-            validator: (value) {
-              if (value == null) {
-                return 'Part must have a category';
-              }
-              return null;
-            },
-          ),
+          FutureBuilder(
+              future: _category,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return CategoryDropdown(
+                    dbHandler: widget.dbHandler,
+                    initialOption: snapshot.data,
+                    labelText: 'Category',
+                    onSaved: (newValue) => _partCategory = newValue,
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Part must have a category';
+                      }
+                      return null;
+                    },
+                  );
+                }
+                if (snapshot.hasError) {
+                  return CategoryDropdown(
+                    dbHandler: widget.dbHandler,
+                    labelText: 'Category',
+                    onSaved: (newValue) => _partCategory = newValue,
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Part must have a category';
+                      }
+                      return null;
+                    },
+                  );
+                }
+                return const LinearProgressIndicator();
+              }),
           FormBuilderFilePicker(
             initialValue: widget.images,
             name: 'image',
@@ -174,7 +211,7 @@ class _AddPartFormState extends State<AddPartForm> {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content:
                         Text('Successfully created new part with ID $id')));
-                Navigator.pop(context);
+                Navigator.pop(context, id);
               });
             },
             child: const Text('Add'),

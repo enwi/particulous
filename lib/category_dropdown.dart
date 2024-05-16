@@ -10,6 +10,7 @@ class CategoryDropdown extends DropdownWidget<Category> {
     super.labelText,
     super.onSaved,
     super.validator,
+    super.initialOption,
   }) : super(
           options: dbHandler.fetchCategories(),
           compareFn: (a, b) => a.identifier == b.identifier,

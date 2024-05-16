@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:particulous/camera.dart';
 import 'package:particulous/db/db_handler.dart';
 import 'package:particulous/util/add_utils.dart';
 
@@ -54,6 +55,22 @@ class CreateActionButton extends StatelessWidget {
           onTap: () => AddUtils.addLocation(
             context: context,
             dbh: dbh,
+          ),
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.qr_code),
+          label: 'QR',
+          onTap: () => scanQR(context).then((data) => parseQR(data ?? '')).then(
+            (value) {
+              if (value is LCSCQRData) {
+                AddUtils.addLCSCPart(
+                  context: context,
+                  dbh: dbh,
+                  part: value.productNumber,
+                  amount: value.amount,
+                );
+              }
+            },
           ),
         ),
       ],

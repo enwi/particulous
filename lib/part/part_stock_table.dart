@@ -25,7 +25,9 @@ class _PartStockTableState extends State<PartStockTable> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: widget.dbh.watchStockOfPart(widget.part.identifier),
+      stream: widget.part.template
+          ? widget.dbh.watchTemplateStockOfPart(widget.part.identifier)
+          : widget.dbh.watchStockOfPart(widget.part.identifier),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final stocks = snapshot.data!;

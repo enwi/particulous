@@ -1,8 +1,8 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:particulous/create_action_button.dart';
-import 'package:particulous/data/part.dart';
 import 'package:particulous/db/db_handler.dart';
+import 'package:particulous/part/part_category_widget.dart';
 import 'package:particulous/part/part_detail_screen.dart';
 import 'package:particulous/part/part_widget.dart';
 import 'package:particulous/settings_screen.dart';
@@ -45,33 +45,55 @@ class _PartsScreenState extends State<PartsScreen> {
       ),
       drawer: getDrawer(context),
       floatingActionButton: CreateActionButton(dbh: dbh),
-      body: StreamBuilder<List<Part>>(
-        stream: dbh.watchParts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final parts = snapshot.data!;
-            return ListView.builder(
-                itemCount: parts.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == parts.length) {
-                    return const SizedBox(
-                      height: 200.0,
-                    );
-                  }
-                  return PartWidget(
-                    dbh: dbh,
-                    part: parts[index],
-                    clickableCategories: true,
+      body: Column(
+        children: [
+          StreamBuilder(
+            stream: dbh.watchCategories(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    ...snapshot.data!.map((category) =>
+                        PartCategoryWidget.buildChip(context, category, true))
+                  ],
+                );
+              }
+              return const LinearProgressIndicator();
+            },
+          ),
+          Expanded(
+            child: StreamBuilder(
+              stream: dbh.watchParts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final parts = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: parts.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == parts.length) {
+                          return const SizedBox(
+                            height: 200.0,
+                          );
+                        }
+                        return PartWidget(
+                          dbh: dbh,
+                          part: parts[index],
+                          clickableCategories: true,
+                        );
+                      });
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('${snapshot.error}'),
                   );
-                });
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('${snapshot.error}'),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

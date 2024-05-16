@@ -42,6 +42,12 @@ dependencies:
   package_info_plus: ^8.0.0
   sprintf: ^7.0.0
   multiple_stream_builder: ^3.0.2
+  camera: ^0.11.0
+  camera_windows: 
+    git:
+      url: https://github.com/yushulx/flutter_camera_windows.git
+  zxing2: ^0.2.1
+  fuzzywuzzy: ^1.1.6
 
 dev_dependencies:
   flutter_test:
