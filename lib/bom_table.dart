@@ -114,7 +114,7 @@ class _BomTableState extends State<BomTable> {
                 final canBuild = snapshot.data! / part.amount;
                 _partHasCanBuild[part.part.identifier] = canBuild;
                 return Chip(
-                  label: Text('$canBuild'),
+                  label: Text('${canBuild.floor()}'),
                   backgroundColor: canBuild <= 5
                       ? canBuild <= 1
                           ? Colors.red
