@@ -21,37 +21,36 @@ class _PartsScreenState extends State<PartsScreen> {
   @override
   Widget build(BuildContext context) {
     final DBHandler dbh = Provider.of<DBHandler>(context);
-    return StreamBuilder<List<Part>>(
-      stream: dbh.watchParts(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final parts = snapshot.data!;
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Parts'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () => showSearch(
-                    context: context,
-                    delegate: PartSearch(
-                      dbh: dbh,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Parts'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => showSearch(
+              context: context,
+              delegate: PartSearch(
+                dbh: dbh,
+              ),
             ),
-            drawer: getDrawer(context),
-            floatingActionButton: CreateActionButton(dbh: dbh),
-            body: ListView.builder(
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+            ),
+          ),
+        ],
+      ),
+      drawer: getDrawer(context),
+      floatingActionButton: CreateActionButton(dbh: dbh),
+      body: StreamBuilder<List<Part>>(
+        stream: dbh.watchParts(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final parts = snapshot.data!;
+            return ListView.builder(
                 itemCount: parts.length + 1,
                 itemBuilder: (context, index) {
                   if (index == parts.length) {
@@ -64,11 +63,16 @@ class _PartsScreenState extends State<PartsScreen> {
                     part: parts[index],
                     clickableCategories: true,
                   );
-                }),
-          );
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
+                });
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('${snapshot.error}'),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
