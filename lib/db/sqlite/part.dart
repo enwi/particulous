@@ -20,7 +20,9 @@ class Part extends Table {
 }
 
 class BomPart extends Table {
+  @ReferenceName("parent")
   IntColumn get parent => integer().references(Part, #id)();
+  @ReferenceName("part")
   IntColumn get part => integer().references(Part, #id)();
   IntColumn get amount => integer()();
   TextColumn get reference => text().nullable()();

@@ -185,6 +185,17 @@ class CategoryData extends DataClass implements Insertable<CategoryData> {
         description: description ?? this.description,
         keywords: keywords.present ? keywords.value : this.keywords,
       );
+  CategoryData copyWithCompanion(CategoryCompanion data) {
+    return CategoryData(
+      id: data.id.present ? data.id.value : this.id,
+      parent: data.parent.present ? data.parent.value : this.parent,
+      name: data.name.present ? data.name.value : this.name,
+      description:
+          data.description.present ? data.description.value : this.description,
+      keywords: data.keywords.present ? data.keywords.value : this.keywords,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CategoryData(')
@@ -626,6 +637,23 @@ class PartData extends DataClass implements Insertable<PartData> {
         sku: sku.present ? sku.value : this.sku,
         mpn: mpn.present ? mpn.value : this.mpn,
       );
+  PartData copyWithCompanion(PartCompanion data) {
+    return PartData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      ipn: data.ipn.present ? data.ipn.value : this.ipn,
+      description:
+          data.description.present ? data.description.value : this.description,
+      category: data.category.present ? data.category.value : this.category,
+      image: data.image.present ? data.image.value : this.image,
+      variant: data.variant.present ? data.variant.value : this.variant,
+      template: data.template.present ? data.template.value : this.template,
+      assembly: data.assembly.present ? data.assembly.value : this.assembly,
+      sku: data.sku.present ? data.sku.value : this.sku,
+      mpn: data.mpn.present ? data.mpn.value : this.mpn,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('PartData(')
@@ -1026,6 +1054,17 @@ class BomPartData extends DataClass implements Insertable<BomPartData> {
         optional: optional ?? this.optional,
         variants: variants ?? this.variants,
       );
+  BomPartData copyWithCompanion(BomPartCompanion data) {
+    return BomPartData(
+      parent: data.parent.present ? data.parent.value : this.parent,
+      part: data.part.present ? data.part.value : this.part,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      reference: data.reference.present ? data.reference.value : this.reference,
+      optional: data.optional.present ? data.optional.value : this.optional,
+      variants: data.variants.present ? data.variants.value : this.variants,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('BomPartData(')
@@ -1319,6 +1358,16 @@ class LocationData extends DataClass implements Insertable<LocationData> {
         name: name ?? this.name,
         description: description.present ? description.value : this.description,
       );
+  LocationData copyWithCompanion(LocationCompanion data) {
+    return LocationData(
+      id: data.id.present ? data.id.value : this.id,
+      parent: data.parent.present ? data.parent.value : this.parent,
+      name: data.name.present ? data.name.value : this.name,
+      description:
+          data.description.present ? data.description.value : this.description,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('LocationData(')
@@ -1638,6 +1687,18 @@ class StockData extends DataClass implements Insertable<StockData> {
         location: location ?? this.location,
         modified: modified ?? this.modified,
       );
+  StockData copyWithCompanion(StockCompanion data) {
+    return StockData(
+      id: data.id.present ? data.id.value : this.id,
+      part: data.part.present ? data.part.value : this.part,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      price: data.price.present ? data.price.value : this.price,
+      note: data.note.present ? data.note.value : this.note,
+      location: data.location.present ? data.location.value : this.location,
+      modified: data.modified.present ? data.modified.value : this.modified,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('StockData(')
@@ -1948,6 +2009,16 @@ class StockTrackingData extends DataClass
         amount: amount ?? this.amount,
         stock: stock ?? this.stock,
       );
+  StockTrackingData copyWithCompanion(StockTrackingCompanion data) {
+    return StockTrackingData(
+      id: data.id.present ? data.id.value : this.id,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      date: data.date.present ? data.date.value : this.date,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      stock: data.stock.present ? data.stock.value : this.stock,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('StockTrackingData(')
@@ -2324,6 +2395,21 @@ class BuildOrderData extends DataClass implements Insertable<BuildOrderData> {
         created: created ?? this.created,
         completed: completed.present ? completed.value : this.completed,
       );
+  BuildOrderData copyWithCompanion(BuildOrderCompanion data) {
+    return BuildOrderData(
+      id: data.id.present ? data.id.value : this.id,
+      reference: data.reference.present ? data.reference.value : this.reference,
+      part: data.part.present ? data.part.value : this.part,
+      description:
+          data.description.present ? data.description.value : this.description,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      destination:
+          data.destination.present ? data.destination.value : this.destination,
+      created: data.created.present ? data.created.value : this.created,
+      completed: data.completed.present ? data.completed.value : this.completed,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('BuildOrderData(')
@@ -2610,6 +2696,15 @@ class StockAllocationData extends DataClass
         buildOrder: buildOrder ?? this.buildOrder,
         amount: amount ?? this.amount,
       );
+  StockAllocationData copyWithCompanion(StockAllocationCompanion data) {
+    return StockAllocationData(
+      stock: data.stock.present ? data.stock.value : this.stock,
+      buildOrder:
+          data.buildOrder.present ? data.buildOrder.value : this.buildOrder,
+      amount: data.amount.present ? data.amount.value : this.amount,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('StockAllocationData(')
@@ -2709,6 +2804,7 @@ class StockAllocationCompanion extends UpdateCompanion<StockAllocationData> {
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
+  $DatabaseManager get managers => $DatabaseManager(this);
   late final $CategoryTable category = $CategoryTable(this);
   late final $PartTable part = $PartTable(this);
   late final $BomPartTable bomPart = $BomPartTable(this);
@@ -2787,6 +2883,1459 @@ abstract class _$Database extends GeneratedDatabase {
   @override
   DriftDatabaseOptions get options =>
       const DriftDatabaseOptions(storeDateTimeAsText: true);
+}
+
+typedef $$CategoryTableCreateCompanionBuilder = CategoryCompanion Function({
+  Value<int> id,
+  Value<int?> parent,
+  required String name,
+  required String description,
+  Value<String?> keywords,
+});
+typedef $$CategoryTableUpdateCompanionBuilder = CategoryCompanion Function({
+  Value<int> id,
+  Value<int?> parent,
+  Value<String> name,
+  Value<String> description,
+  Value<String?> keywords,
+});
+
+class $$CategoryTableTableManager extends RootTableManager<
+    _$Database,
+    $CategoryTable,
+    CategoryData,
+    $$CategoryTableFilterComposer,
+    $$CategoryTableOrderingComposer,
+    $$CategoryTableCreateCompanionBuilder,
+    $$CategoryTableUpdateCompanionBuilder> {
+  $$CategoryTableTableManager(_$Database db, $CategoryTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CategoryTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CategoryTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> description = const Value.absent(),
+            Value<String?> keywords = const Value.absent(),
+          }) =>
+              CategoryCompanion(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+            keywords: keywords,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            required String name,
+            required String description,
+            Value<String?> keywords = const Value.absent(),
+          }) =>
+              CategoryCompanion.insert(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+            keywords: keywords,
+          ),
+        ));
+}
+
+class $$CategoryTableFilterComposer
+    extends FilterComposer<_$Database, $CategoryTable> {
+  $$CategoryTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get keywords => $state.composableBuilder(
+      column: $state.table.keywords,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$CategoryTableFilterComposer get parent {
+    final $$CategoryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.parent,
+        referencedTable: $state.db.category,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$CategoryTableFilterComposer(ComposerState(
+                $state.db, $state.db.category, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  ComposableFilter partRefs(
+      ComposableFilter Function($$PartTableFilterComposer f) f) {
+    final $$PartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.category,
+        builder: (joinBuilder, parentComposers) => $$PartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$CategoryTableOrderingComposer
+    extends OrderingComposer<_$Database, $CategoryTable> {
+  $$CategoryTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get keywords => $state.composableBuilder(
+      column: $state.table.keywords,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$CategoryTableOrderingComposer get parent {
+    final $$CategoryTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.parent,
+        referencedTable: $state.db.category,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$CategoryTableOrderingComposer(ComposerState(
+                $state.db, $state.db.category, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$PartTableCreateCompanionBuilder = PartCompanion Function({
+  Value<int> id,
+  required String name,
+  Value<String?> ipn,
+  Value<String?> description,
+  required int category,
+  Value<String?> image,
+  Value<int?> variant,
+  Value<bool> template,
+  Value<bool> assembly,
+  Value<String?> sku,
+  Value<String?> mpn,
+});
+typedef $$PartTableUpdateCompanionBuilder = PartCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<String?> ipn,
+  Value<String?> description,
+  Value<int> category,
+  Value<String?> image,
+  Value<int?> variant,
+  Value<bool> template,
+  Value<bool> assembly,
+  Value<String?> sku,
+  Value<String?> mpn,
+});
+
+class $$PartTableTableManager extends RootTableManager<
+    _$Database,
+    $PartTable,
+    PartData,
+    $$PartTableFilterComposer,
+    $$PartTableOrderingComposer,
+    $$PartTableCreateCompanionBuilder,
+    $$PartTableUpdateCompanionBuilder> {
+  $$PartTableTableManager(_$Database db, $PartTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$PartTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$PartTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> ipn = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<int> category = const Value.absent(),
+            Value<String?> image = const Value.absent(),
+            Value<int?> variant = const Value.absent(),
+            Value<bool> template = const Value.absent(),
+            Value<bool> assembly = const Value.absent(),
+            Value<String?> sku = const Value.absent(),
+            Value<String?> mpn = const Value.absent(),
+          }) =>
+              PartCompanion(
+            id: id,
+            name: name,
+            ipn: ipn,
+            description: description,
+            category: category,
+            image: image,
+            variant: variant,
+            template: template,
+            assembly: assembly,
+            sku: sku,
+            mpn: mpn,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            Value<String?> ipn = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            required int category,
+            Value<String?> image = const Value.absent(),
+            Value<int?> variant = const Value.absent(),
+            Value<bool> template = const Value.absent(),
+            Value<bool> assembly = const Value.absent(),
+            Value<String?> sku = const Value.absent(),
+            Value<String?> mpn = const Value.absent(),
+          }) =>
+              PartCompanion.insert(
+            id: id,
+            name: name,
+            ipn: ipn,
+            description: description,
+            category: category,
+            image: image,
+            variant: variant,
+            template: template,
+            assembly: assembly,
+            sku: sku,
+            mpn: mpn,
+          ),
+        ));
+}
+
+class $$PartTableFilterComposer extends FilterComposer<_$Database, $PartTable> {
+  $$PartTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get ipn => $state.composableBuilder(
+      column: $state.table.ipn,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get image => $state.composableBuilder(
+      column: $state.table.image,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get template => $state.composableBuilder(
+      column: $state.table.template,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get assembly => $state.composableBuilder(
+      column: $state.table.assembly,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get sku => $state.composableBuilder(
+      column: $state.table.sku,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get mpn => $state.composableBuilder(
+      column: $state.table.mpn,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$CategoryTableFilterComposer get category {
+    final $$CategoryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.category,
+        referencedTable: $state.db.category,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$CategoryTableFilterComposer(ComposerState(
+                $state.db, $state.db.category, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$PartTableFilterComposer get variant {
+    final $$PartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.variant,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  ComposableFilter parent(
+      ComposableFilter Function($$BomPartTableFilterComposer f) f) {
+    final $$BomPartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.bomPart,
+        getReferencedColumn: (t) => t.parent,
+        builder: (joinBuilder, parentComposers) => $$BomPartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.bomPart, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  ComposableFilter part(
+      ComposableFilter Function($$BomPartTableFilterComposer f) f) {
+    final $$BomPartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.bomPart,
+        getReferencedColumn: (t) => t.part,
+        builder: (joinBuilder, parentComposers) => $$BomPartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.bomPart, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  ComposableFilter stockRefs(
+      ComposableFilter Function($$StockTableFilterComposer f) f) {
+    final $$StockTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.stock,
+        getReferencedColumn: (t) => t.part,
+        builder: (joinBuilder, parentComposers) => $$StockTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.stock, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  ComposableFilter buildOrderRefs(
+      ComposableFilter Function($$BuildOrderTableFilterComposer f) f) {
+    final $$BuildOrderTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.buildOrder,
+        getReferencedColumn: (t) => t.part,
+        builder: (joinBuilder, parentComposers) =>
+            $$BuildOrderTableFilterComposer(ComposerState($state.db,
+                $state.db.buildOrder, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$PartTableOrderingComposer
+    extends OrderingComposer<_$Database, $PartTable> {
+  $$PartTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get ipn => $state.composableBuilder(
+      column: $state.table.ipn,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get image => $state.composableBuilder(
+      column: $state.table.image,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get template => $state.composableBuilder(
+      column: $state.table.template,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get assembly => $state.composableBuilder(
+      column: $state.table.assembly,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get sku => $state.composableBuilder(
+      column: $state.table.sku,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get mpn => $state.composableBuilder(
+      column: $state.table.mpn,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$CategoryTableOrderingComposer get category {
+    final $$CategoryTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.category,
+        referencedTable: $state.db.category,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$CategoryTableOrderingComposer(ComposerState(
+                $state.db, $state.db.category, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$PartTableOrderingComposer get variant {
+    final $$PartTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.variant,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$BomPartTableCreateCompanionBuilder = BomPartCompanion Function({
+  required int parent,
+  required int part,
+  required int amount,
+  Value<String?> reference,
+  Value<bool> optional,
+  Value<bool> variants,
+  Value<int> rowid,
+});
+typedef $$BomPartTableUpdateCompanionBuilder = BomPartCompanion Function({
+  Value<int> parent,
+  Value<int> part,
+  Value<int> amount,
+  Value<String?> reference,
+  Value<bool> optional,
+  Value<bool> variants,
+  Value<int> rowid,
+});
+
+class $$BomPartTableTableManager extends RootTableManager<
+    _$Database,
+    $BomPartTable,
+    BomPartData,
+    $$BomPartTableFilterComposer,
+    $$BomPartTableOrderingComposer,
+    $$BomPartTableCreateCompanionBuilder,
+    $$BomPartTableUpdateCompanionBuilder> {
+  $$BomPartTableTableManager(_$Database db, $BomPartTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$BomPartTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$BomPartTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> parent = const Value.absent(),
+            Value<int> part = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<String?> reference = const Value.absent(),
+            Value<bool> optional = const Value.absent(),
+            Value<bool> variants = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              BomPartCompanion(
+            parent: parent,
+            part: part,
+            amount: amount,
+            reference: reference,
+            optional: optional,
+            variants: variants,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int parent,
+            required int part,
+            required int amount,
+            Value<String?> reference = const Value.absent(),
+            Value<bool> optional = const Value.absent(),
+            Value<bool> variants = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              BomPartCompanion.insert(
+            parent: parent,
+            part: part,
+            amount: amount,
+            reference: reference,
+            optional: optional,
+            variants: variants,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$BomPartTableFilterComposer
+    extends FilterComposer<_$Database, $BomPartTable> {
+  $$BomPartTableFilterComposer(super.$state);
+  ColumnFilters<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get reference => $state.composableBuilder(
+      column: $state.table.reference,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get optional => $state.composableBuilder(
+      column: $state.table.optional,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get variants => $state.composableBuilder(
+      column: $state.table.variants,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$PartTableFilterComposer get parent {
+    final $$PartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.parent,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$PartTableFilterComposer get part {
+    final $$PartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.part,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$BomPartTableOrderingComposer
+    extends OrderingComposer<_$Database, $BomPartTable> {
+  $$BomPartTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get reference => $state.composableBuilder(
+      column: $state.table.reference,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get optional => $state.composableBuilder(
+      column: $state.table.optional,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get variants => $state.composableBuilder(
+      column: $state.table.variants,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$PartTableOrderingComposer get parent {
+    final $$PartTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.parent,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$PartTableOrderingComposer get part {
+    final $$PartTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.part,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$LocationTableCreateCompanionBuilder = LocationCompanion Function({
+  Value<int> id,
+  Value<int?> parent,
+  required String name,
+  Value<String?> description,
+});
+typedef $$LocationTableUpdateCompanionBuilder = LocationCompanion Function({
+  Value<int> id,
+  Value<int?> parent,
+  Value<String> name,
+  Value<String?> description,
+});
+
+class $$LocationTableTableManager extends RootTableManager<
+    _$Database,
+    $LocationTable,
+    LocationData,
+    $$LocationTableFilterComposer,
+    $$LocationTableOrderingComposer,
+    $$LocationTableCreateCompanionBuilder,
+    $$LocationTableUpdateCompanionBuilder> {
+  $$LocationTableTableManager(_$Database db, $LocationTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LocationTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$LocationTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+          }) =>
+              LocationCompanion(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            required String name,
+            Value<String?> description = const Value.absent(),
+          }) =>
+              LocationCompanion.insert(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+          ),
+        ));
+}
+
+class $$LocationTableFilterComposer
+    extends FilterComposer<_$Database, $LocationTable> {
+  $$LocationTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$LocationTableFilterComposer get parent {
+    final $$LocationTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.parent,
+        referencedTable: $state.db.location,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$LocationTableFilterComposer(ComposerState(
+                $state.db, $state.db.location, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  ComposableFilter stockRefs(
+      ComposableFilter Function($$StockTableFilterComposer f) f) {
+    final $$StockTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.stock,
+        getReferencedColumn: (t) => t.location,
+        builder: (joinBuilder, parentComposers) => $$StockTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.stock, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  ComposableFilter buildOrderRefs(
+      ComposableFilter Function($$BuildOrderTableFilterComposer f) f) {
+    final $$BuildOrderTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.buildOrder,
+        getReferencedColumn: (t) => t.destination,
+        builder: (joinBuilder, parentComposers) =>
+            $$BuildOrderTableFilterComposer(ComposerState($state.db,
+                $state.db.buildOrder, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$LocationTableOrderingComposer
+    extends OrderingComposer<_$Database, $LocationTable> {
+  $$LocationTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$LocationTableOrderingComposer get parent {
+    final $$LocationTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.parent,
+        referencedTable: $state.db.location,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$LocationTableOrderingComposer(ComposerState(
+                $state.db, $state.db.location, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$StockTableCreateCompanionBuilder = StockCompanion Function({
+  Value<int> id,
+  required int part,
+  required int amount,
+  Value<double?> price,
+  Value<String?> note,
+  required int location,
+  Value<DateTime> modified,
+});
+typedef $$StockTableUpdateCompanionBuilder = StockCompanion Function({
+  Value<int> id,
+  Value<int> part,
+  Value<int> amount,
+  Value<double?> price,
+  Value<String?> note,
+  Value<int> location,
+  Value<DateTime> modified,
+});
+
+class $$StockTableTableManager extends RootTableManager<
+    _$Database,
+    $StockTable,
+    StockData,
+    $$StockTableFilterComposer,
+    $$StockTableOrderingComposer,
+    $$StockTableCreateCompanionBuilder,
+    $$StockTableUpdateCompanionBuilder> {
+  $$StockTableTableManager(_$Database db, $StockTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$StockTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$StockTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> part = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<double?> price = const Value.absent(),
+            Value<String?> note = const Value.absent(),
+            Value<int> location = const Value.absent(),
+            Value<DateTime> modified = const Value.absent(),
+          }) =>
+              StockCompanion(
+            id: id,
+            part: part,
+            amount: amount,
+            price: price,
+            note: note,
+            location: location,
+            modified: modified,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int part,
+            required int amount,
+            Value<double?> price = const Value.absent(),
+            Value<String?> note = const Value.absent(),
+            required int location,
+            Value<DateTime> modified = const Value.absent(),
+          }) =>
+              StockCompanion.insert(
+            id: id,
+            part: part,
+            amount: amount,
+            price: price,
+            note: note,
+            location: location,
+            modified: modified,
+          ),
+        ));
+}
+
+class $$StockTableFilterComposer
+    extends FilterComposer<_$Database, $StockTable> {
+  $$StockTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get price => $state.composableBuilder(
+      column: $state.table.price,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get note => $state.composableBuilder(
+      column: $state.table.note,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get modified => $state.composableBuilder(
+      column: $state.table.modified,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$PartTableFilterComposer get part {
+    final $$PartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.part,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$LocationTableFilterComposer get location {
+    final $$LocationTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.location,
+        referencedTable: $state.db.location,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$LocationTableFilterComposer(ComposerState(
+                $state.db, $state.db.location, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  ComposableFilter stockTrackingRefs(
+      ComposableFilter Function($$StockTrackingTableFilterComposer f) f) {
+    final $$StockTrackingTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.stockTracking,
+        getReferencedColumn: (t) => t.stock,
+        builder: (joinBuilder, parentComposers) =>
+            $$StockTrackingTableFilterComposer(ComposerState($state.db,
+                $state.db.stockTracking, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  ComposableFilter stockAllocationRefs(
+      ComposableFilter Function($$StockAllocationTableFilterComposer f) f) {
+    final $$StockAllocationTableFilterComposer composer =
+        $state.composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $state.db.stockAllocation,
+            getReferencedColumn: (t) => t.stock,
+            builder: (joinBuilder, parentComposers) =>
+                $$StockAllocationTableFilterComposer(ComposerState($state.db,
+                    $state.db.stockAllocation, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$StockTableOrderingComposer
+    extends OrderingComposer<_$Database, $StockTable> {
+  $$StockTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get price => $state.composableBuilder(
+      column: $state.table.price,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get note => $state.composableBuilder(
+      column: $state.table.note,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get modified => $state.composableBuilder(
+      column: $state.table.modified,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$PartTableOrderingComposer get part {
+    final $$PartTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.part,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$LocationTableOrderingComposer get location {
+    final $$LocationTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.location,
+        referencedTable: $state.db.location,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$LocationTableOrderingComposer(ComposerState(
+                $state.db, $state.db.location, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$StockTrackingTableCreateCompanionBuilder = StockTrackingCompanion
+    Function({
+  Value<int> id,
+  required String notes,
+  Value<DateTime> date,
+  required int amount,
+  required int stock,
+});
+typedef $$StockTrackingTableUpdateCompanionBuilder = StockTrackingCompanion
+    Function({
+  Value<int> id,
+  Value<String> notes,
+  Value<DateTime> date,
+  Value<int> amount,
+  Value<int> stock,
+});
+
+class $$StockTrackingTableTableManager extends RootTableManager<
+    _$Database,
+    $StockTrackingTable,
+    StockTrackingData,
+    $$StockTrackingTableFilterComposer,
+    $$StockTrackingTableOrderingComposer,
+    $$StockTrackingTableCreateCompanionBuilder,
+    $$StockTrackingTableUpdateCompanionBuilder> {
+  $$StockTrackingTableTableManager(_$Database db, $StockTrackingTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$StockTrackingTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$StockTrackingTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> notes = const Value.absent(),
+            Value<DateTime> date = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<int> stock = const Value.absent(),
+          }) =>
+              StockTrackingCompanion(
+            id: id,
+            notes: notes,
+            date: date,
+            amount: amount,
+            stock: stock,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String notes,
+            Value<DateTime> date = const Value.absent(),
+            required int amount,
+            required int stock,
+          }) =>
+              StockTrackingCompanion.insert(
+            id: id,
+            notes: notes,
+            date: date,
+            amount: amount,
+            stock: stock,
+          ),
+        ));
+}
+
+class $$StockTrackingTableFilterComposer
+    extends FilterComposer<_$Database, $StockTrackingTable> {
+  $$StockTrackingTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$StockTableFilterComposer get stock {
+    final $$StockTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.stock,
+        referencedTable: $state.db.stock,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$StockTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.stock, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$StockTrackingTableOrderingComposer
+    extends OrderingComposer<_$Database, $StockTrackingTable> {
+  $$StockTrackingTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get notes => $state.composableBuilder(
+      column: $state.table.notes,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$StockTableOrderingComposer get stock {
+    final $$StockTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.stock,
+        referencedTable: $state.db.stock,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$StockTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.stock, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$BuildOrderTableCreateCompanionBuilder = BuildOrderCompanion Function({
+  Value<int> id,
+  required String reference,
+  required int part,
+  Value<String?> description,
+  required int amount,
+  Value<int?> destination,
+  Value<DateTime> created,
+  Value<DateTime?> completed,
+});
+typedef $$BuildOrderTableUpdateCompanionBuilder = BuildOrderCompanion Function({
+  Value<int> id,
+  Value<String> reference,
+  Value<int> part,
+  Value<String?> description,
+  Value<int> amount,
+  Value<int?> destination,
+  Value<DateTime> created,
+  Value<DateTime?> completed,
+});
+
+class $$BuildOrderTableTableManager extends RootTableManager<
+    _$Database,
+    $BuildOrderTable,
+    BuildOrderData,
+    $$BuildOrderTableFilterComposer,
+    $$BuildOrderTableOrderingComposer,
+    $$BuildOrderTableCreateCompanionBuilder,
+    $$BuildOrderTableUpdateCompanionBuilder> {
+  $$BuildOrderTableTableManager(_$Database db, $BuildOrderTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$BuildOrderTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$BuildOrderTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> reference = const Value.absent(),
+            Value<int> part = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<int?> destination = const Value.absent(),
+            Value<DateTime> created = const Value.absent(),
+            Value<DateTime?> completed = const Value.absent(),
+          }) =>
+              BuildOrderCompanion(
+            id: id,
+            reference: reference,
+            part: part,
+            description: description,
+            amount: amount,
+            destination: destination,
+            created: created,
+            completed: completed,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String reference,
+            required int part,
+            Value<String?> description = const Value.absent(),
+            required int amount,
+            Value<int?> destination = const Value.absent(),
+            Value<DateTime> created = const Value.absent(),
+            Value<DateTime?> completed = const Value.absent(),
+          }) =>
+              BuildOrderCompanion.insert(
+            id: id,
+            reference: reference,
+            part: part,
+            description: description,
+            amount: amount,
+            destination: destination,
+            created: created,
+            completed: completed,
+          ),
+        ));
+}
+
+class $$BuildOrderTableFilterComposer
+    extends FilterComposer<_$Database, $BuildOrderTable> {
+  $$BuildOrderTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get reference => $state.composableBuilder(
+      column: $state.table.reference,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get created => $state.composableBuilder(
+      column: $state.table.created,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get completed => $state.composableBuilder(
+      column: $state.table.completed,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$PartTableFilterComposer get part {
+    final $$PartTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.part,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$LocationTableFilterComposer get destination {
+    final $$LocationTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.destination,
+        referencedTable: $state.db.location,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$LocationTableFilterComposer(ComposerState(
+                $state.db, $state.db.location, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  ComposableFilter stockAllocationRefs(
+      ComposableFilter Function($$StockAllocationTableFilterComposer f) f) {
+    final $$StockAllocationTableFilterComposer composer =
+        $state.composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $state.db.stockAllocation,
+            getReferencedColumn: (t) => t.buildOrder,
+            builder: (joinBuilder, parentComposers) =>
+                $$StockAllocationTableFilterComposer(ComposerState($state.db,
+                    $state.db.stockAllocation, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$BuildOrderTableOrderingComposer
+    extends OrderingComposer<_$Database, $BuildOrderTable> {
+  $$BuildOrderTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get reference => $state.composableBuilder(
+      column: $state.table.reference,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get created => $state.composableBuilder(
+      column: $state.table.created,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get completed => $state.composableBuilder(
+      column: $state.table.completed,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$PartTableOrderingComposer get part {
+    final $$PartTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.part,
+        referencedTable: $state.db.part,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$PartTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.part, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$LocationTableOrderingComposer get destination {
+    final $$LocationTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.destination,
+        referencedTable: $state.db.location,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$LocationTableOrderingComposer(ComposerState(
+                $state.db, $state.db.location, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$StockAllocationTableCreateCompanionBuilder = StockAllocationCompanion
+    Function({
+  required int stock,
+  required int buildOrder,
+  required int amount,
+  Value<int> rowid,
+});
+typedef $$StockAllocationTableUpdateCompanionBuilder = StockAllocationCompanion
+    Function({
+  Value<int> stock,
+  Value<int> buildOrder,
+  Value<int> amount,
+  Value<int> rowid,
+});
+
+class $$StockAllocationTableTableManager extends RootTableManager<
+    _$Database,
+    $StockAllocationTable,
+    StockAllocationData,
+    $$StockAllocationTableFilterComposer,
+    $$StockAllocationTableOrderingComposer,
+    $$StockAllocationTableCreateCompanionBuilder,
+    $$StockAllocationTableUpdateCompanionBuilder> {
+  $$StockAllocationTableTableManager(_$Database db, $StockAllocationTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$StockAllocationTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$StockAllocationTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> stock = const Value.absent(),
+            Value<int> buildOrder = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              StockAllocationCompanion(
+            stock: stock,
+            buildOrder: buildOrder,
+            amount: amount,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int stock,
+            required int buildOrder,
+            required int amount,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              StockAllocationCompanion.insert(
+            stock: stock,
+            buildOrder: buildOrder,
+            amount: amount,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$StockAllocationTableFilterComposer
+    extends FilterComposer<_$Database, $StockAllocationTable> {
+  $$StockAllocationTableFilterComposer(super.$state);
+  ColumnFilters<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$StockTableFilterComposer get stock {
+    final $$StockTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.stock,
+        referencedTable: $state.db.stock,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$StockTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.stock, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$BuildOrderTableFilterComposer get buildOrder {
+    final $$BuildOrderTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.buildOrder,
+        referencedTable: $state.db.buildOrder,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$BuildOrderTableFilterComposer(ComposerState($state.db,
+                $state.db.buildOrder, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$StockAllocationTableOrderingComposer
+    extends OrderingComposer<_$Database, $StockAllocationTable> {
+  $$StockAllocationTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get amount => $state.composableBuilder(
+      column: $state.table.amount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$StockTableOrderingComposer get stock {
+    final $$StockTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.stock,
+        referencedTable: $state.db.stock,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) => $$StockTableOrderingComposer(
+            ComposerState(
+                $state.db, $state.db.stock, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  $$BuildOrderTableOrderingComposer get buildOrder {
+    final $$BuildOrderTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.buildOrder,
+        referencedTable: $state.db.buildOrder,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$BuildOrderTableOrderingComposer(ComposerState($state.db,
+                $state.db.buildOrder, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $DatabaseManager {
+  final _$Database _db;
+  $DatabaseManager(this._db);
+  $$CategoryTableTableManager get category =>
+      $$CategoryTableTableManager(_db, _db.category);
+  $$PartTableTableManager get part => $$PartTableTableManager(_db, _db.part);
+  $$BomPartTableTableManager get bomPart =>
+      $$BomPartTableTableManager(_db, _db.bomPart);
+  $$LocationTableTableManager get location =>
+      $$LocationTableTableManager(_db, _db.location);
+  $$StockTableTableManager get stock =>
+      $$StockTableTableManager(_db, _db.stock);
+  $$StockTrackingTableTableManager get stockTracking =>
+      $$StockTrackingTableTableManager(_db, _db.stockTracking);
+  $$BuildOrderTableTableManager get buildOrder =>
+      $$BuildOrderTableTableManager(_db, _db.buildOrder);
+  $$StockAllocationTableTableManager get stockAllocation =>
+      $$StockAllocationTableTableManager(_db, _db.stockAllocation);
 }
 
 class GetPartsOfChildCategoriesResult {
