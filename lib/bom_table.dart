@@ -78,54 +78,60 @@ class _BomTableState extends State<BomTable> {
         ),
       ],
       rows: _parts.map((part) {
-        return DataRow(cells: [
-          DataCell(
-            Wrap(
-              direction: Axis.horizontal,
-              children: [
-                if (part.part.image != null) ...[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: PartImageWidget(
-                      image: part.part.image!,
-                      height: kMinInteractiveDimension,
-                      width: kMinInteractiveDimension,
+        return DataRow(
+          cells: [
+            DataCell(
+              onTap: () => Navigator.of(context)
+                  .pushNamed('/parts/${part.part.identifier}'),
+              Wrap(
+                direction: Axis.horizontal,
+                children: [
+                  if (part.part.image != null) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: PartImageWidget(
+                        image: part.part.image!,
+                        height: kMinInteractiveDimension,
+                        width: kMinInteractiveDimension,
+                      ),
                     ),
-                  ),
-                ] else ...[
-                  const SizedBox(
-                    width: kMinInteractiveDimension,
-                    height: kMinInteractiveDimension,
-                  )
+                  ] else ...[
+                    const SizedBox(
+                      width: kMinInteractiveDimension,
+                      height: kMinInteractiveDimension,
+                    )
+                  ],
+                  const SizedBox(width: 8),
+                  Text(part.part.name),
                 ],
-                const SizedBox(width: 8),
-                Text(part.part.name),
-              ],
+              ),
             ),
-          ),
-          DataCell(Text('${part.amount}')),
-          DataCell(Text(part.reference ?? '-')),
-          DataCell(yesNoChip(part.optional)),
-          DataCell(yesNoChip(part.variants)),
-          DataCell(StreamBuilder(
-            stream: widget.dbh.watchStockCountOfPart(part.part.identifier),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final canBuild = snapshot.data! / part.amount;
-                _partHasCanBuild[part.part.identifier] = canBuild;
-                return Chip(
-                  label: Text('${canBuild.floor()}'),
-                  backgroundColor: canBuild <= 5
-                      ? canBuild <= 1
-                          ? Colors.red
-                          : Colors.orange
-                      : Colors.green,
-                );
-              }
-              return const CircularProgressIndicator();
-            },
-          )),
-        ]);
+            DataCell(Text('${part.amount}')),
+            DataCell(Text(part.reference ?? '-')),
+            DataCell(yesNoChip(part.optional)),
+            DataCell(yesNoChip(part.variants)),
+            DataCell(
+              StreamBuilder(
+                stream: widget.dbh.watchStockCountOfPart(part.part.identifier),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final canBuild = snapshot.data! / part.amount;
+                    _partHasCanBuild[part.part.identifier] = canBuild;
+                    return Chip(
+                      label: Text('${canBuild.floor()}'),
+                      backgroundColor: canBuild <= 5
+                          ? canBuild <= 1
+                              ? Colors.red
+                              : Colors.orange
+                          : Colors.green,
+                    );
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
+            ),
+          ],
+        );
       }).toList(),
     );
   }
