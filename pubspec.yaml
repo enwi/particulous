@@ -48,7 +48,7 @@ dependencies:
       url: https://github.com/yushulx/flutter_camera_windows.git
   zxing2: ^0.2.1
   fuzzywuzzy: ^1.1.6
-  ai_barcode_scanner: ^3.4.3
+  ai_barcode_scanner: ^5.1.1+2
 
 dev_dependencies:
   flutter_test:

@@ -2900,51 +2900,36 @@ typedef $$CategoryTableUpdateCompanionBuilder = CategoryCompanion Function({
   Value<String?> keywords,
 });
 
-class $$CategoryTableTableManager extends RootTableManager<
-    _$Database,
-    $CategoryTable,
-    CategoryData,
-    $$CategoryTableFilterComposer,
-    $$CategoryTableOrderingComposer,
-    $$CategoryTableCreateCompanionBuilder,
-    $$CategoryTableUpdateCompanionBuilder> {
-  $$CategoryTableTableManager(_$Database db, $CategoryTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$CategoryTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$CategoryTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> parent = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> description = const Value.absent(),
-            Value<String?> keywords = const Value.absent(),
-          }) =>
-              CategoryCompanion(
-            id: id,
-            parent: parent,
-            name: name,
-            description: description,
-            keywords: keywords,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> parent = const Value.absent(),
-            required String name,
-            required String description,
-            Value<String?> keywords = const Value.absent(),
-          }) =>
-              CategoryCompanion.insert(
-            id: id,
-            parent: parent,
-            name: name,
-            description: description,
-            keywords: keywords,
-          ),
-        ));
+final class $$CategoryTableReferences
+    extends BaseReferences<_$Database, $CategoryTable, CategoryData> {
+  $$CategoryTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $CategoryTable _parentTable(_$Database db) => db.category
+      .createAlias($_aliasNameGenerator(db.category.parent, db.category.id));
+
+  $$CategoryTableProcessedTableManager? get parent {
+    if ($_item.parent == null) return null;
+    final manager = $$CategoryTableTableManager($_db, $_db.category)
+        .filter((f) => f.id($_item.parent!));
+    final item = $_typedResult.readTableOrNull(_parentTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$PartTable, List<PartData>> _partRefsTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.part,
+          aliasName: $_aliasNameGenerator(db.category.id, db.part.category));
+
+  $$PartTableProcessedTableManager get partRefs {
+    final manager = $$PartTableTableManager($_db, $_db.part)
+        .filter((f) => f.category.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_partRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$CategoryTableFilterComposer
@@ -3032,6 +3017,116 @@ class $$CategoryTableOrderingComposer
   }
 }
 
+class $$CategoryTableTableManager extends RootTableManager<
+    _$Database,
+    $CategoryTable,
+    CategoryData,
+    $$CategoryTableFilterComposer,
+    $$CategoryTableOrderingComposer,
+    $$CategoryTableCreateCompanionBuilder,
+    $$CategoryTableUpdateCompanionBuilder,
+    (CategoryData, $$CategoryTableReferences),
+    CategoryData,
+    PrefetchHooks Function({bool parent, bool partRefs})> {
+  $$CategoryTableTableManager(_$Database db, $CategoryTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CategoryTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CategoryTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> description = const Value.absent(),
+            Value<String?> keywords = const Value.absent(),
+          }) =>
+              CategoryCompanion(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+            keywords: keywords,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            required String name,
+            required String description,
+            Value<String?> keywords = const Value.absent(),
+          }) =>
+              CategoryCompanion.insert(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+            keywords: keywords,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$CategoryTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({parent = false, partRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (partRefs) db.part],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (parent) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.parent,
+                    referencedTable: $$CategoryTableReferences._parentTable(db),
+                    referencedColumn:
+                        $$CategoryTableReferences._parentTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (partRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$CategoryTableReferences._partRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$CategoryTableReferences(db, table, p0).partRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.category == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$CategoryTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $CategoryTable,
+    CategoryData,
+    $$CategoryTableFilterComposer,
+    $$CategoryTableOrderingComposer,
+    $$CategoryTableCreateCompanionBuilder,
+    $$CategoryTableUpdateCompanionBuilder,
+    (CategoryData, $$CategoryTableReferences),
+    CategoryData,
+    PrefetchHooks Function({bool parent, bool partRefs})>;
 typedef $$PartTableCreateCompanionBuilder = PartCompanion Function({
   Value<int> id,
   required String name,
@@ -3059,75 +3154,91 @@ typedef $$PartTableUpdateCompanionBuilder = PartCompanion Function({
   Value<String?> mpn,
 });
 
-class $$PartTableTableManager extends RootTableManager<
-    _$Database,
-    $PartTable,
-    PartData,
-    $$PartTableFilterComposer,
-    $$PartTableOrderingComposer,
-    $$PartTableCreateCompanionBuilder,
-    $$PartTableUpdateCompanionBuilder> {
-  $$PartTableTableManager(_$Database db, $PartTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$PartTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$PartTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String?> ipn = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<int> category = const Value.absent(),
-            Value<String?> image = const Value.absent(),
-            Value<int?> variant = const Value.absent(),
-            Value<bool> template = const Value.absent(),
-            Value<bool> assembly = const Value.absent(),
-            Value<String?> sku = const Value.absent(),
-            Value<String?> mpn = const Value.absent(),
-          }) =>
-              PartCompanion(
-            id: id,
-            name: name,
-            ipn: ipn,
-            description: description,
-            category: category,
-            image: image,
-            variant: variant,
-            template: template,
-            assembly: assembly,
-            sku: sku,
-            mpn: mpn,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String name,
-            Value<String?> ipn = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            required int category,
-            Value<String?> image = const Value.absent(),
-            Value<int?> variant = const Value.absent(),
-            Value<bool> template = const Value.absent(),
-            Value<bool> assembly = const Value.absent(),
-            Value<String?> sku = const Value.absent(),
-            Value<String?> mpn = const Value.absent(),
-          }) =>
-              PartCompanion.insert(
-            id: id,
-            name: name,
-            ipn: ipn,
-            description: description,
-            category: category,
-            image: image,
-            variant: variant,
-            template: template,
-            assembly: assembly,
-            sku: sku,
-            mpn: mpn,
-          ),
-        ));
+final class $$PartTableReferences
+    extends BaseReferences<_$Database, $PartTable, PartData> {
+  $$PartTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $CategoryTable _categoryTable(_$Database db) => db.category
+      .createAlias($_aliasNameGenerator(db.part.category, db.category.id));
+
+  $$CategoryTableProcessedTableManager? get category {
+    if ($_item.category == null) return null;
+    final manager = $$CategoryTableTableManager($_db, $_db.category)
+        .filter((f) => f.id($_item.category!));
+    final item = $_typedResult.readTableOrNull(_categoryTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $PartTable _variantTable(_$Database db) =>
+      db.part.createAlias($_aliasNameGenerator(db.part.variant, db.part.id));
+
+  $$PartTableProcessedTableManager? get variant {
+    if ($_item.variant == null) return null;
+    final manager = $$PartTableTableManager($_db, $_db.part)
+        .filter((f) => f.id($_item.variant!));
+    final item = $_typedResult.readTableOrNull(_variantTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$BomPartTable, List<BomPartData>> _parentTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.bomPart,
+          aliasName: $_aliasNameGenerator(db.part.id, db.bomPart.parent));
+
+  $$BomPartTableProcessedTableManager get parent {
+    final manager = $$BomPartTableTableManager($_db, $_db.bomPart)
+        .filter((f) => f.parent.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_parentTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$BomPartTable, List<BomPartData>> _partTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.bomPart,
+          aliasName: $_aliasNameGenerator(db.part.id, db.bomPart.part));
+
+  $$BomPartTableProcessedTableManager get part {
+    final manager = $$BomPartTableTableManager($_db, $_db.bomPart)
+        .filter((f) => f.part.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_partTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$StockTable, List<StockData>> _stockRefsTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.stock,
+          aliasName: $_aliasNameGenerator(db.part.id, db.stock.part));
+
+  $$StockTableProcessedTableManager get stockRefs {
+    final manager = $$StockTableTableManager($_db, $_db.stock)
+        .filter((f) => f.part.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_stockRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$BuildOrderTable, List<BuildOrderData>>
+      _buildOrderRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.buildOrder,
+              aliasName: $_aliasNameGenerator(db.part.id, db.buildOrder.part));
+
+  $$BuildOrderTableProcessedTableManager get buildOrderRefs {
+    final manager = $$BuildOrderTableTableManager($_db, $_db.buildOrder)
+        .filter((f) => f.part.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_buildOrderRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$PartTableFilterComposer extends FilterComposer<_$Database, $PartTable> {
@@ -3327,6 +3438,203 @@ class $$PartTableOrderingComposer
   }
 }
 
+class $$PartTableTableManager extends RootTableManager<
+    _$Database,
+    $PartTable,
+    PartData,
+    $$PartTableFilterComposer,
+    $$PartTableOrderingComposer,
+    $$PartTableCreateCompanionBuilder,
+    $$PartTableUpdateCompanionBuilder,
+    (PartData, $$PartTableReferences),
+    PartData,
+    PrefetchHooks Function(
+        {bool category,
+        bool variant,
+        bool parent,
+        bool part,
+        bool stockRefs,
+        bool buildOrderRefs})> {
+  $$PartTableTableManager(_$Database db, $PartTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$PartTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$PartTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> ipn = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<int> category = const Value.absent(),
+            Value<String?> image = const Value.absent(),
+            Value<int?> variant = const Value.absent(),
+            Value<bool> template = const Value.absent(),
+            Value<bool> assembly = const Value.absent(),
+            Value<String?> sku = const Value.absent(),
+            Value<String?> mpn = const Value.absent(),
+          }) =>
+              PartCompanion(
+            id: id,
+            name: name,
+            ipn: ipn,
+            description: description,
+            category: category,
+            image: image,
+            variant: variant,
+            template: template,
+            assembly: assembly,
+            sku: sku,
+            mpn: mpn,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            Value<String?> ipn = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            required int category,
+            Value<String?> image = const Value.absent(),
+            Value<int?> variant = const Value.absent(),
+            Value<bool> template = const Value.absent(),
+            Value<bool> assembly = const Value.absent(),
+            Value<String?> sku = const Value.absent(),
+            Value<String?> mpn = const Value.absent(),
+          }) =>
+              PartCompanion.insert(
+            id: id,
+            name: name,
+            ipn: ipn,
+            description: description,
+            category: category,
+            image: image,
+            variant: variant,
+            template: template,
+            assembly: assembly,
+            sku: sku,
+            mpn: mpn,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$PartTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: (
+              {category = false,
+              variant = false,
+              parent = false,
+              part = false,
+              stockRefs = false,
+              buildOrderRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (parent) db.bomPart,
+                if (part) db.bomPart,
+                if (stockRefs) db.stock,
+                if (buildOrderRefs) db.buildOrder
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (category) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.category,
+                    referencedTable: $$PartTableReferences._categoryTable(db),
+                    referencedColumn:
+                        $$PartTableReferences._categoryTable(db).id,
+                  ) as T;
+                }
+                if (variant) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.variant,
+                    referencedTable: $$PartTableReferences._variantTable(db),
+                    referencedColumn:
+                        $$PartTableReferences._variantTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (parent)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable: $$PartTableReferences._parentTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PartTableReferences(db, table, p0).parent,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.parent == item.id),
+                        typedResults: items),
+                  if (part)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable: $$PartTableReferences._partTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PartTableReferences(db, table, p0).part,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) =>
+                                referencedItems.where((e) => e.part == item.id),
+                        typedResults: items),
+                  if (stockRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$PartTableReferences._stockRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PartTableReferences(db, table, p0).stockRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) =>
+                                referencedItems.where((e) => e.part == item.id),
+                        typedResults: items),
+                  if (buildOrderRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$PartTableReferences._buildOrderRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PartTableReferences(db, table, p0).buildOrderRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) =>
+                                referencedItems.where((e) => e.part == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$PartTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $PartTable,
+    PartData,
+    $$PartTableFilterComposer,
+    $$PartTableOrderingComposer,
+    $$PartTableCreateCompanionBuilder,
+    $$PartTableUpdateCompanionBuilder,
+    (PartData, $$PartTableReferences),
+    PartData,
+    PrefetchHooks Function(
+        {bool category,
+        bool variant,
+        bool parent,
+        bool part,
+        bool stockRefs,
+        bool buildOrderRefs})>;
 typedef $$BomPartTableCreateCompanionBuilder = BomPartCompanion Function({
   required int parent,
   required int part,
@@ -3346,59 +3654,35 @@ typedef $$BomPartTableUpdateCompanionBuilder = BomPartCompanion Function({
   Value<int> rowid,
 });
 
-class $$BomPartTableTableManager extends RootTableManager<
-    _$Database,
-    $BomPartTable,
-    BomPartData,
-    $$BomPartTableFilterComposer,
-    $$BomPartTableOrderingComposer,
-    $$BomPartTableCreateCompanionBuilder,
-    $$BomPartTableUpdateCompanionBuilder> {
-  $$BomPartTableTableManager(_$Database db, $BomPartTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$BomPartTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$BomPartTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> parent = const Value.absent(),
-            Value<int> part = const Value.absent(),
-            Value<int> amount = const Value.absent(),
-            Value<String?> reference = const Value.absent(),
-            Value<bool> optional = const Value.absent(),
-            Value<bool> variants = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              BomPartCompanion(
-            parent: parent,
-            part: part,
-            amount: amount,
-            reference: reference,
-            optional: optional,
-            variants: variants,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int parent,
-            required int part,
-            required int amount,
-            Value<String?> reference = const Value.absent(),
-            Value<bool> optional = const Value.absent(),
-            Value<bool> variants = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              BomPartCompanion.insert(
-            parent: parent,
-            part: part,
-            amount: amount,
-            reference: reference,
-            optional: optional,
-            variants: variants,
-            rowid: rowid,
-          ),
-        ));
+final class $$BomPartTableReferences
+    extends BaseReferences<_$Database, $BomPartTable, BomPartData> {
+  $$BomPartTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $PartTable _parentTable(_$Database db) =>
+      db.part.createAlias($_aliasNameGenerator(db.bomPart.parent, db.part.id));
+
+  $$PartTableProcessedTableManager? get parent {
+    if ($_item.parent == null) return null;
+    final manager = $$PartTableTableManager($_db, $_db.part)
+        .filter((f) => f.id($_item.parent!));
+    final item = $_typedResult.readTableOrNull(_parentTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $PartTable _partTable(_$Database db) =>
+      db.part.createAlias($_aliasNameGenerator(db.bomPart.part, db.part.id));
+
+  $$PartTableProcessedTableManager? get part {
+    if ($_item.part == null) return null;
+    final manager = $$PartTableTableManager($_db, $_db.part)
+        .filter((f) => f.id($_item.part!));
+    final item = $_typedResult.readTableOrNull(_partTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$BomPartTableFilterComposer
@@ -3497,6 +3781,121 @@ class $$BomPartTableOrderingComposer
   }
 }
 
+class $$BomPartTableTableManager extends RootTableManager<
+    _$Database,
+    $BomPartTable,
+    BomPartData,
+    $$BomPartTableFilterComposer,
+    $$BomPartTableOrderingComposer,
+    $$BomPartTableCreateCompanionBuilder,
+    $$BomPartTableUpdateCompanionBuilder,
+    (BomPartData, $$BomPartTableReferences),
+    BomPartData,
+    PrefetchHooks Function({bool parent, bool part})> {
+  $$BomPartTableTableManager(_$Database db, $BomPartTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$BomPartTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$BomPartTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> parent = const Value.absent(),
+            Value<int> part = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<String?> reference = const Value.absent(),
+            Value<bool> optional = const Value.absent(),
+            Value<bool> variants = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              BomPartCompanion(
+            parent: parent,
+            part: part,
+            amount: amount,
+            reference: reference,
+            optional: optional,
+            variants: variants,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int parent,
+            required int part,
+            required int amount,
+            Value<String?> reference = const Value.absent(),
+            Value<bool> optional = const Value.absent(),
+            Value<bool> variants = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              BomPartCompanion.insert(
+            parent: parent,
+            part: part,
+            amount: amount,
+            reference: reference,
+            optional: optional,
+            variants: variants,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$BomPartTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({parent = false, part = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (parent) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.parent,
+                    referencedTable: $$BomPartTableReferences._parentTable(db),
+                    referencedColumn:
+                        $$BomPartTableReferences._parentTable(db).id,
+                  ) as T;
+                }
+                if (part) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.part,
+                    referencedTable: $$BomPartTableReferences._partTable(db),
+                    referencedColumn:
+                        $$BomPartTableReferences._partTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$BomPartTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $BomPartTable,
+    BomPartData,
+    $$BomPartTableFilterComposer,
+    $$BomPartTableOrderingComposer,
+    $$BomPartTableCreateCompanionBuilder,
+    $$BomPartTableUpdateCompanionBuilder,
+    (BomPartData, $$BomPartTableReferences),
+    BomPartData,
+    PrefetchHooks Function({bool parent, bool part})>;
 typedef $$LocationTableCreateCompanionBuilder = LocationCompanion Function({
   Value<int> id,
   Value<int?> parent,
@@ -3510,47 +3909,51 @@ typedef $$LocationTableUpdateCompanionBuilder = LocationCompanion Function({
   Value<String?> description,
 });
 
-class $$LocationTableTableManager extends RootTableManager<
-    _$Database,
-    $LocationTable,
-    LocationData,
-    $$LocationTableFilterComposer,
-    $$LocationTableOrderingComposer,
-    $$LocationTableCreateCompanionBuilder,
-    $$LocationTableUpdateCompanionBuilder> {
-  $$LocationTableTableManager(_$Database db, $LocationTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$LocationTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$LocationTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> parent = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-          }) =>
-              LocationCompanion(
-            id: id,
-            parent: parent,
-            name: name,
-            description: description,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int?> parent = const Value.absent(),
-            required String name,
-            Value<String?> description = const Value.absent(),
-          }) =>
-              LocationCompanion.insert(
-            id: id,
-            parent: parent,
-            name: name,
-            description: description,
-          ),
-        ));
+final class $$LocationTableReferences
+    extends BaseReferences<_$Database, $LocationTable, LocationData> {
+  $$LocationTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $LocationTable _parentTable(_$Database db) => db.location
+      .createAlias($_aliasNameGenerator(db.location.parent, db.location.id));
+
+  $$LocationTableProcessedTableManager? get parent {
+    if ($_item.parent == null) return null;
+    final manager = $$LocationTableTableManager($_db, $_db.location)
+        .filter((f) => f.id($_item.parent!));
+    final item = $_typedResult.readTableOrNull(_parentTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$StockTable, List<StockData>> _stockRefsTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.stock,
+          aliasName: $_aliasNameGenerator(db.location.id, db.stock.location));
+
+  $$StockTableProcessedTableManager get stockRefs {
+    final manager = $$StockTableTableManager($_db, $_db.stock)
+        .filter((f) => f.location.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_stockRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$BuildOrderTable, List<BuildOrderData>>
+      _buildOrderRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+          db.buildOrder,
+          aliasName:
+              $_aliasNameGenerator(db.location.id, db.buildOrder.destination));
+
+  $$BuildOrderTableProcessedTableManager get buildOrderRefs {
+    final manager = $$BuildOrderTableTableManager($_db, $_db.buildOrder)
+        .filter((f) => f.destination.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_buildOrderRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$LocationTableFilterComposer
@@ -3641,6 +4044,129 @@ class $$LocationTableOrderingComposer
   }
 }
 
+class $$LocationTableTableManager extends RootTableManager<
+    _$Database,
+    $LocationTable,
+    LocationData,
+    $$LocationTableFilterComposer,
+    $$LocationTableOrderingComposer,
+    $$LocationTableCreateCompanionBuilder,
+    $$LocationTableUpdateCompanionBuilder,
+    (LocationData, $$LocationTableReferences),
+    LocationData,
+    PrefetchHooks Function(
+        {bool parent, bool stockRefs, bool buildOrderRefs})> {
+  $$LocationTableTableManager(_$Database db, $LocationTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LocationTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$LocationTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+          }) =>
+              LocationCompanion(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> parent = const Value.absent(),
+            required String name,
+            Value<String?> description = const Value.absent(),
+          }) =>
+              LocationCompanion.insert(
+            id: id,
+            parent: parent,
+            name: name,
+            description: description,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$LocationTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: (
+              {parent = false, stockRefs = false, buildOrderRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (stockRefs) db.stock,
+                if (buildOrderRefs) db.buildOrder
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (parent) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.parent,
+                    referencedTable: $$LocationTableReferences._parentTable(db),
+                    referencedColumn:
+                        $$LocationTableReferences._parentTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (stockRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$LocationTableReferences._stockRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$LocationTableReferences(db, table, p0).stockRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.location == item.id),
+                        typedResults: items),
+                  if (buildOrderRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$LocationTableReferences._buildOrderRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$LocationTableReferences(db, table, p0)
+                                .buildOrderRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.destination == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$LocationTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $LocationTable,
+    LocationData,
+    $$LocationTableFilterComposer,
+    $$LocationTableOrderingComposer,
+    $$LocationTableCreateCompanionBuilder,
+    $$LocationTableUpdateCompanionBuilder,
+    (LocationData, $$LocationTableReferences),
+    LocationData,
+    PrefetchHooks Function({bool parent, bool stockRefs, bool buildOrderRefs})>;
 typedef $$StockTableCreateCompanionBuilder = StockCompanion Function({
   Value<int> id,
   required int part,
@@ -3660,59 +4186,66 @@ typedef $$StockTableUpdateCompanionBuilder = StockCompanion Function({
   Value<DateTime> modified,
 });
 
-class $$StockTableTableManager extends RootTableManager<
-    _$Database,
-    $StockTable,
-    StockData,
-    $$StockTableFilterComposer,
-    $$StockTableOrderingComposer,
-    $$StockTableCreateCompanionBuilder,
-    $$StockTableUpdateCompanionBuilder> {
-  $$StockTableTableManager(_$Database db, $StockTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$StockTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$StockTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int> part = const Value.absent(),
-            Value<int> amount = const Value.absent(),
-            Value<double?> price = const Value.absent(),
-            Value<String?> note = const Value.absent(),
-            Value<int> location = const Value.absent(),
-            Value<DateTime> modified = const Value.absent(),
-          }) =>
-              StockCompanion(
-            id: id,
-            part: part,
-            amount: amount,
-            price: price,
-            note: note,
-            location: location,
-            modified: modified,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required int part,
-            required int amount,
-            Value<double?> price = const Value.absent(),
-            Value<String?> note = const Value.absent(),
-            required int location,
-            Value<DateTime> modified = const Value.absent(),
-          }) =>
-              StockCompanion.insert(
-            id: id,
-            part: part,
-            amount: amount,
-            price: price,
-            note: note,
-            location: location,
-            modified: modified,
-          ),
-        ));
+final class $$StockTableReferences
+    extends BaseReferences<_$Database, $StockTable, StockData> {
+  $$StockTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $PartTable _partTable(_$Database db) =>
+      db.part.createAlias($_aliasNameGenerator(db.stock.part, db.part.id));
+
+  $$PartTableProcessedTableManager? get part {
+    if ($_item.part == null) return null;
+    final manager = $$PartTableTableManager($_db, $_db.part)
+        .filter((f) => f.id($_item.part!));
+    final item = $_typedResult.readTableOrNull(_partTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $LocationTable _locationTable(_$Database db) => db.location
+      .createAlias($_aliasNameGenerator(db.stock.location, db.location.id));
+
+  $$LocationTableProcessedTableManager? get location {
+    if ($_item.location == null) return null;
+    final manager = $$LocationTableTableManager($_db, $_db.location)
+        .filter((f) => f.id($_item.location!));
+    final item = $_typedResult.readTableOrNull(_locationTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$StockTrackingTable, List<StockTrackingData>>
+      _stockTrackingRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+          db.stockTracking,
+          aliasName: $_aliasNameGenerator(db.stock.id, db.stockTracking.stock));
+
+  $$StockTrackingTableProcessedTableManager get stockTrackingRefs {
+    final manager = $$StockTrackingTableTableManager($_db, $_db.stockTracking)
+        .filter((f) => f.stock.id($_item.id));
+
+    final cache = $_typedResult.readTableOrNull(_stockTrackingRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$StockAllocationTable, List<StockAllocationData>>
+      _stockAllocationRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.stockAllocation,
+              aliasName:
+                  $_aliasNameGenerator(db.stock.id, db.stockAllocation.stock));
+
+  $$StockAllocationTableProcessedTableManager get stockAllocationRefs {
+    final manager =
+        $$StockAllocationTableTableManager($_db, $_db.stockAllocation)
+            .filter((f) => f.stock.id($_item.id));
+
+    final cache =
+        $_typedResult.readTableOrNull(_stockAllocationRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$StockTableFilterComposer
@@ -3848,6 +4381,160 @@ class $$StockTableOrderingComposer
   }
 }
 
+class $$StockTableTableManager extends RootTableManager<
+    _$Database,
+    $StockTable,
+    StockData,
+    $$StockTableFilterComposer,
+    $$StockTableOrderingComposer,
+    $$StockTableCreateCompanionBuilder,
+    $$StockTableUpdateCompanionBuilder,
+    (StockData, $$StockTableReferences),
+    StockData,
+    PrefetchHooks Function(
+        {bool part,
+        bool location,
+        bool stockTrackingRefs,
+        bool stockAllocationRefs})> {
+  $$StockTableTableManager(_$Database db, $StockTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$StockTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$StockTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> part = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<double?> price = const Value.absent(),
+            Value<String?> note = const Value.absent(),
+            Value<int> location = const Value.absent(),
+            Value<DateTime> modified = const Value.absent(),
+          }) =>
+              StockCompanion(
+            id: id,
+            part: part,
+            amount: amount,
+            price: price,
+            note: note,
+            location: location,
+            modified: modified,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int part,
+            required int amount,
+            Value<double?> price = const Value.absent(),
+            Value<String?> note = const Value.absent(),
+            required int location,
+            Value<DateTime> modified = const Value.absent(),
+          }) =>
+              StockCompanion.insert(
+            id: id,
+            part: part,
+            amount: amount,
+            price: price,
+            note: note,
+            location: location,
+            modified: modified,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$StockTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: (
+              {part = false,
+              location = false,
+              stockTrackingRefs = false,
+              stockAllocationRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (stockTrackingRefs) db.stockTracking,
+                if (stockAllocationRefs) db.stockAllocation
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (part) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.part,
+                    referencedTable: $$StockTableReferences._partTable(db),
+                    referencedColumn: $$StockTableReferences._partTable(db).id,
+                  ) as T;
+                }
+                if (location) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.location,
+                    referencedTable: $$StockTableReferences._locationTable(db),
+                    referencedColumn:
+                        $$StockTableReferences._locationTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (stockTrackingRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable:
+                            $$StockTableReferences._stockTrackingRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$StockTableReferences(db, table, p0)
+                                .stockTrackingRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.stock == item.id),
+                        typedResults: items),
+                  if (stockAllocationRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable: $$StockTableReferences
+                            ._stockAllocationRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$StockTableReferences(db, table, p0)
+                                .stockAllocationRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.stock == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$StockTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $StockTable,
+    StockData,
+    $$StockTableFilterComposer,
+    $$StockTableOrderingComposer,
+    $$StockTableCreateCompanionBuilder,
+    $$StockTableUpdateCompanionBuilder,
+    (StockData, $$StockTableReferences),
+    StockData,
+    PrefetchHooks Function(
+        {bool part,
+        bool location,
+        bool stockTrackingRefs,
+        bool stockAllocationRefs})>;
 typedef $$StockTrackingTableCreateCompanionBuilder = StockTrackingCompanion
     Function({
   Value<int> id,
@@ -3865,51 +4552,23 @@ typedef $$StockTrackingTableUpdateCompanionBuilder = StockTrackingCompanion
   Value<int> stock,
 });
 
-class $$StockTrackingTableTableManager extends RootTableManager<
-    _$Database,
-    $StockTrackingTable,
-    StockTrackingData,
-    $$StockTrackingTableFilterComposer,
-    $$StockTrackingTableOrderingComposer,
-    $$StockTrackingTableCreateCompanionBuilder,
-    $$StockTrackingTableUpdateCompanionBuilder> {
-  $$StockTrackingTableTableManager(_$Database db, $StockTrackingTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$StockTrackingTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$StockTrackingTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> notes = const Value.absent(),
-            Value<DateTime> date = const Value.absent(),
-            Value<int> amount = const Value.absent(),
-            Value<int> stock = const Value.absent(),
-          }) =>
-              StockTrackingCompanion(
-            id: id,
-            notes: notes,
-            date: date,
-            amount: amount,
-            stock: stock,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String notes,
-            Value<DateTime> date = const Value.absent(),
-            required int amount,
-            required int stock,
-          }) =>
-              StockTrackingCompanion.insert(
-            id: id,
-            notes: notes,
-            date: date,
-            amount: amount,
-            stock: stock,
-          ),
-        ));
+final class $$StockTrackingTableReferences
+    extends BaseReferences<_$Database, $StockTrackingTable, StockTrackingData> {
+  $$StockTrackingTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $StockTable _stockTable(_$Database db) => db.stock
+      .createAlias($_aliasNameGenerator(db.stockTracking.stock, db.stock.id));
+
+  $$StockTableProcessedTableManager? get stock {
+    if ($_item.stock == null) return null;
+    final manager = $$StockTableTableManager($_db, $_db.stock)
+        .filter((f) => f.id($_item.stock!));
+    final item = $_typedResult.readTableOrNull(_stockTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$StockTrackingTableFilterComposer
@@ -3984,6 +4643,107 @@ class $$StockTrackingTableOrderingComposer
   }
 }
 
+class $$StockTrackingTableTableManager extends RootTableManager<
+    _$Database,
+    $StockTrackingTable,
+    StockTrackingData,
+    $$StockTrackingTableFilterComposer,
+    $$StockTrackingTableOrderingComposer,
+    $$StockTrackingTableCreateCompanionBuilder,
+    $$StockTrackingTableUpdateCompanionBuilder,
+    (StockTrackingData, $$StockTrackingTableReferences),
+    StockTrackingData,
+    PrefetchHooks Function({bool stock})> {
+  $$StockTrackingTableTableManager(_$Database db, $StockTrackingTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$StockTrackingTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$StockTrackingTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> notes = const Value.absent(),
+            Value<DateTime> date = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<int> stock = const Value.absent(),
+          }) =>
+              StockTrackingCompanion(
+            id: id,
+            notes: notes,
+            date: date,
+            amount: amount,
+            stock: stock,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String notes,
+            Value<DateTime> date = const Value.absent(),
+            required int amount,
+            required int stock,
+          }) =>
+              StockTrackingCompanion.insert(
+            id: id,
+            notes: notes,
+            date: date,
+            amount: amount,
+            stock: stock,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$StockTrackingTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({stock = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (stock) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.stock,
+                    referencedTable:
+                        $$StockTrackingTableReferences._stockTable(db),
+                    referencedColumn:
+                        $$StockTrackingTableReferences._stockTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$StockTrackingTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $StockTrackingTable,
+    StockTrackingData,
+    $$StockTrackingTableFilterComposer,
+    $$StockTrackingTableOrderingComposer,
+    $$StockTrackingTableCreateCompanionBuilder,
+    $$StockTrackingTableUpdateCompanionBuilder,
+    (StockTrackingData, $$StockTrackingTableReferences),
+    StockTrackingData,
+    PrefetchHooks Function({bool stock})>;
 typedef $$BuildOrderTableCreateCompanionBuilder = BuildOrderCompanion Function({
   Value<int> id,
   required String reference,
@@ -4005,63 +4765,53 @@ typedef $$BuildOrderTableUpdateCompanionBuilder = BuildOrderCompanion Function({
   Value<DateTime?> completed,
 });
 
-class $$BuildOrderTableTableManager extends RootTableManager<
-    _$Database,
-    $BuildOrderTable,
-    BuildOrderData,
-    $$BuildOrderTableFilterComposer,
-    $$BuildOrderTableOrderingComposer,
-    $$BuildOrderTableCreateCompanionBuilder,
-    $$BuildOrderTableUpdateCompanionBuilder> {
-  $$BuildOrderTableTableManager(_$Database db, $BuildOrderTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$BuildOrderTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$BuildOrderTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> reference = const Value.absent(),
-            Value<int> part = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<int> amount = const Value.absent(),
-            Value<int?> destination = const Value.absent(),
-            Value<DateTime> created = const Value.absent(),
-            Value<DateTime?> completed = const Value.absent(),
-          }) =>
-              BuildOrderCompanion(
-            id: id,
-            reference: reference,
-            part: part,
-            description: description,
-            amount: amount,
-            destination: destination,
-            created: created,
-            completed: completed,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String reference,
-            required int part,
-            Value<String?> description = const Value.absent(),
-            required int amount,
-            Value<int?> destination = const Value.absent(),
-            Value<DateTime> created = const Value.absent(),
-            Value<DateTime?> completed = const Value.absent(),
-          }) =>
-              BuildOrderCompanion.insert(
-            id: id,
-            reference: reference,
-            part: part,
-            description: description,
-            amount: amount,
-            destination: destination,
-            created: created,
-            completed: completed,
-          ),
-        ));
+final class $$BuildOrderTableReferences
+    extends BaseReferences<_$Database, $BuildOrderTable, BuildOrderData> {
+  $$BuildOrderTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $PartTable _partTable(_$Database db) =>
+      db.part.createAlias($_aliasNameGenerator(db.buildOrder.part, db.part.id));
+
+  $$PartTableProcessedTableManager? get part {
+    if ($_item.part == null) return null;
+    final manager = $$PartTableTableManager($_db, $_db.part)
+        .filter((f) => f.id($_item.part!));
+    final item = $_typedResult.readTableOrNull(_partTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $LocationTable _destinationTable(_$Database db) =>
+      db.location.createAlias(
+          $_aliasNameGenerator(db.buildOrder.destination, db.location.id));
+
+  $$LocationTableProcessedTableManager? get destination {
+    if ($_item.destination == null) return null;
+    final manager = $$LocationTableTableManager($_db, $_db.location)
+        .filter((f) => f.id($_item.destination!));
+    final item = $_typedResult.readTableOrNull(_destinationTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$StockAllocationTable, List<StockAllocationData>>
+      _stockAllocationRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.stockAllocation,
+              aliasName: $_aliasNameGenerator(
+                  db.buildOrder.id, db.stockAllocation.buildOrder));
+
+  $$StockAllocationTableProcessedTableManager get stockAllocationRefs {
+    final manager =
+        $$StockAllocationTableTableManager($_db, $_db.stockAllocation)
+            .filter((f) => f.buildOrder.id($_item.id));
+
+    final cache =
+        $_typedResult.readTableOrNull(_stockAllocationRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$BuildOrderTableFilterComposer
@@ -4194,6 +4944,148 @@ class $$BuildOrderTableOrderingComposer
   }
 }
 
+class $$BuildOrderTableTableManager extends RootTableManager<
+    _$Database,
+    $BuildOrderTable,
+    BuildOrderData,
+    $$BuildOrderTableFilterComposer,
+    $$BuildOrderTableOrderingComposer,
+    $$BuildOrderTableCreateCompanionBuilder,
+    $$BuildOrderTableUpdateCompanionBuilder,
+    (BuildOrderData, $$BuildOrderTableReferences),
+    BuildOrderData,
+    PrefetchHooks Function(
+        {bool part, bool destination, bool stockAllocationRefs})> {
+  $$BuildOrderTableTableManager(_$Database db, $BuildOrderTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$BuildOrderTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$BuildOrderTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> reference = const Value.absent(),
+            Value<int> part = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<int?> destination = const Value.absent(),
+            Value<DateTime> created = const Value.absent(),
+            Value<DateTime?> completed = const Value.absent(),
+          }) =>
+              BuildOrderCompanion(
+            id: id,
+            reference: reference,
+            part: part,
+            description: description,
+            amount: amount,
+            destination: destination,
+            created: created,
+            completed: completed,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String reference,
+            required int part,
+            Value<String?> description = const Value.absent(),
+            required int amount,
+            Value<int?> destination = const Value.absent(),
+            Value<DateTime> created = const Value.absent(),
+            Value<DateTime?> completed = const Value.absent(),
+          }) =>
+              BuildOrderCompanion.insert(
+            id: id,
+            reference: reference,
+            part: part,
+            description: description,
+            amount: amount,
+            destination: destination,
+            created: created,
+            completed: completed,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$BuildOrderTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {part = false,
+              destination = false,
+              stockAllocationRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (stockAllocationRefs) db.stockAllocation
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (part) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.part,
+                    referencedTable: $$BuildOrderTableReferences._partTable(db),
+                    referencedColumn:
+                        $$BuildOrderTableReferences._partTable(db).id,
+                  ) as T;
+                }
+                if (destination) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.destination,
+                    referencedTable:
+                        $$BuildOrderTableReferences._destinationTable(db),
+                    referencedColumn:
+                        $$BuildOrderTableReferences._destinationTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (stockAllocationRefs)
+                    await $_getPrefetchedData(
+                        currentTable: table,
+                        referencedTable: $$BuildOrderTableReferences
+                            ._stockAllocationRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$BuildOrderTableReferences(db, table, p0)
+                                .stockAllocationRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.buildOrder == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$BuildOrderTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $BuildOrderTable,
+    BuildOrderData,
+    $$BuildOrderTableFilterComposer,
+    $$BuildOrderTableOrderingComposer,
+    $$BuildOrderTableCreateCompanionBuilder,
+    $$BuildOrderTableUpdateCompanionBuilder,
+    (BuildOrderData, $$BuildOrderTableReferences),
+    BuildOrderData,
+    PrefetchHooks Function(
+        {bool part, bool destination, bool stockAllocationRefs})>;
 typedef $$StockAllocationTableCreateCompanionBuilder = StockAllocationCompanion
     Function({
   required int stock,
@@ -4209,47 +5101,37 @@ typedef $$StockAllocationTableUpdateCompanionBuilder = StockAllocationCompanion
   Value<int> rowid,
 });
 
-class $$StockAllocationTableTableManager extends RootTableManager<
-    _$Database,
-    $StockAllocationTable,
-    StockAllocationData,
-    $$StockAllocationTableFilterComposer,
-    $$StockAllocationTableOrderingComposer,
-    $$StockAllocationTableCreateCompanionBuilder,
-    $$StockAllocationTableUpdateCompanionBuilder> {
-  $$StockAllocationTableTableManager(_$Database db, $StockAllocationTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$StockAllocationTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$StockAllocationTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> stock = const Value.absent(),
-            Value<int> buildOrder = const Value.absent(),
-            Value<int> amount = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              StockAllocationCompanion(
-            stock: stock,
-            buildOrder: buildOrder,
-            amount: amount,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int stock,
-            required int buildOrder,
-            required int amount,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              StockAllocationCompanion.insert(
-            stock: stock,
-            buildOrder: buildOrder,
-            amount: amount,
-            rowid: rowid,
-          ),
-        ));
+final class $$StockAllocationTableReferences extends BaseReferences<_$Database,
+    $StockAllocationTable, StockAllocationData> {
+  $$StockAllocationTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $StockTable _stockTable(_$Database db) => db.stock
+      .createAlias($_aliasNameGenerator(db.stockAllocation.stock, db.stock.id));
+
+  $$StockTableProcessedTableManager? get stock {
+    if ($_item.stock == null) return null;
+    final manager = $$StockTableTableManager($_db, $_db.stock)
+        .filter((f) => f.id($_item.stock!));
+    final item = $_typedResult.readTableOrNull(_stockTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $BuildOrderTable _buildOrderTable(_$Database db) =>
+      db.buildOrder.createAlias($_aliasNameGenerator(
+          db.stockAllocation.buildOrder, db.buildOrder.id));
+
+  $$BuildOrderTableProcessedTableManager? get buildOrder {
+    if ($_item.buildOrder == null) return null;
+    final manager = $$BuildOrderTableTableManager($_db, $_db.buildOrder)
+        .filter((f) => f.id($_item.buildOrder!));
+    final item = $_typedResult.readTableOrNull(_buildOrderTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$StockAllocationTableFilterComposer
@@ -4317,6 +5199,115 @@ class $$StockAllocationTableOrderingComposer
     return composer;
   }
 }
+
+class $$StockAllocationTableTableManager extends RootTableManager<
+    _$Database,
+    $StockAllocationTable,
+    StockAllocationData,
+    $$StockAllocationTableFilterComposer,
+    $$StockAllocationTableOrderingComposer,
+    $$StockAllocationTableCreateCompanionBuilder,
+    $$StockAllocationTableUpdateCompanionBuilder,
+    (StockAllocationData, $$StockAllocationTableReferences),
+    StockAllocationData,
+    PrefetchHooks Function({bool stock, bool buildOrder})> {
+  $$StockAllocationTableTableManager(_$Database db, $StockAllocationTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$StockAllocationTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$StockAllocationTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> stock = const Value.absent(),
+            Value<int> buildOrder = const Value.absent(),
+            Value<int> amount = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              StockAllocationCompanion(
+            stock: stock,
+            buildOrder: buildOrder,
+            amount: amount,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int stock,
+            required int buildOrder,
+            required int amount,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              StockAllocationCompanion.insert(
+            stock: stock,
+            buildOrder: buildOrder,
+            amount: amount,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$StockAllocationTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({stock = false, buildOrder = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (stock) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.stock,
+                    referencedTable:
+                        $$StockAllocationTableReferences._stockTable(db),
+                    referencedColumn:
+                        $$StockAllocationTableReferences._stockTable(db).id,
+                  ) as T;
+                }
+                if (buildOrder) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.buildOrder,
+                    referencedTable:
+                        $$StockAllocationTableReferences._buildOrderTable(db),
+                    referencedColumn: $$StockAllocationTableReferences
+                        ._buildOrderTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$StockAllocationTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $StockAllocationTable,
+    StockAllocationData,
+    $$StockAllocationTableFilterComposer,
+    $$StockAllocationTableOrderingComposer,
+    $$StockAllocationTableCreateCompanionBuilder,
+    $$StockAllocationTableUpdateCompanionBuilder,
+    (StockAllocationData, $$StockAllocationTableReferences),
+    StockAllocationData,
+    PrefetchHooks Function({bool stock, bool buildOrder})>;
 
 class $DatabaseManager {
   final _$Database _db;

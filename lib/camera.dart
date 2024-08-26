@@ -247,21 +247,37 @@ class _QRScannerState extends State<QRScanner> {
   }
 }
 
+class BarcodeScanner extends StatefulWidget {
+  const BarcodeScanner({super.key});
+
+  @override
+  State<BarcodeScanner> createState() => _BarcodeScannerState();
+}
+
+class _BarcodeScannerState extends State<BarcodeScanner> {
+  bool _popOnce = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return AiBarcodeScanner(
+      onDetect: (BarcodeCapture barcodeCapture) {
+        for (final code in barcodeCapture.barcodes) {
+          final rawValue = code.rawValue ?? '';
+          if (rawValue.contains('pc') && rawValue.contains('mc') && _popOnce) {
+            _popOnce = false;
+            return Navigator.of(context).pop(rawValue);
+          }
+        }
+      },
+    );
+  }
+}
+
 Future<String?> scanQR(BuildContext context) {
   if (Platform.isMacOS) {
-    return Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AiBarcodeScanner(
-              canPop: false,
-              onScan: (String value) {},
-              onDetect: (BarcodeCapture barcodeCapture) {
-                for (final code in barcodeCapture.barcodes) {
-                  if ((code.rawValue?.contains('pc') ?? false) &&
-                      (code.rawValue?.contains('mc') ?? false)) {
-                    return Navigator.of(context).pop(code.rawValue!);
-                  }
-                }
-              },
-            )));
+    return Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const BarcodeScanner()),
+    );
   }
   return Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => const QRScanner()));

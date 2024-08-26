@@ -18,6 +18,6 @@ The easiest way is to use Visual Studio Code plus some Extensions for it:
 
 ### Building code
 
-To build database classes run `flutter pub run build_runner build`
+To build database classes run `dart run build_runner build`
 
 To build the project for windows run `flutter build windows`
