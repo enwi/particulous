@@ -116,7 +116,8 @@ abstract class AddUtils {
                     path: 'ftps/wm/product/detail',
                     queryParameters: {'productCode': part},
                   ))
-                  .then((response) => jsonDecode(response.body))
+                  .then(
+                      (response) => jsonDecode(utf8.decode(response.bodyBytes)))
                   .then((json) {
                 final images = json['result']?['productImages'];
                 return Future.wait([
