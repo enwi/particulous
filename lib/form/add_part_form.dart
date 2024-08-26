@@ -174,7 +174,8 @@ class _AddPartFormState extends State<AddPartForm> {
             initialValue: false,
             onSaved: (newValue) => _partAssembly = newValue,
           ),
-          ButtonBar(
+          OverflowBar(
+            alignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
                 onPressed: () {

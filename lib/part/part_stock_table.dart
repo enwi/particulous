@@ -127,117 +127,119 @@ class _StockTableState extends State<StockTable> {
       rows: _stocks.map((stock) {
         final date = stock.modified.toLocal();
         return DataRow(cells: [
-          DataCell(ButtonBar(
-            alignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                padding: const EdgeInsets.all(0),
-                splashRadius: 24,
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                  final notesFieldController = TextEditingController();
-                  var amount = 1;
-                  showDialog<AlterStock>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Add stock'),
-                      content: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 600),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SpinBox(
-                              min: min(1, stock.amount).toDouble(),
-                              max: double.maxFinite,
-                              value: amount.toDouble(),
-                              onChanged: (value) => amount = value.toInt(),
-                            ),
-                            TextField(
-                              onChanged: (value) {},
-                              controller: notesFieldController,
-                              decoration:
-                                  const InputDecoration(labelText: "Notes"),
-                            ),
-                          ],
+          DataCell(
+            OverflowBar(
+              alignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  padding: const EdgeInsets.all(0),
+                  splashRadius: 24,
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    final notesFieldController = TextEditingController();
+                    var amount = 1;
+                    showDialog<AlterStock>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Add stock'),
+                        content: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 600),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SpinBox(
+                                min: min(1, stock.amount).toDouble(),
+                                max: double.maxFinite,
+                                value: amount.toDouble(),
+                                onChanged: (value) => amount = value.toInt(),
+                              ),
+                              TextField(
+                                onChanged: (value) {},
+                                controller: notesFieldController,
+                                decoration:
+                                    const InputDecoration(labelText: "Notes"),
+                              ),
+                            ],
+                          ),
                         ),
+                        actions: [
+                          TextButton(
+                            child: const Text('Abort'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(
+                                context,
+                                AlterStock(
+                                  stock: stock.id,
+                                  amount: amount,
+                                  notes: notesFieldController.text,
+                                )),
+                          ),
+                        ],
                       ),
-                      actions: [
-                        TextButton(
-                          child: const Text('Abort'),
-                          onPressed: () => Navigator.pop(context),
+                    )
+                        .then(widget.dbh.alterStock)
+                        .onError<Exception>((error, stackTrace) => 0);
+                  },
+                ),
+                IconButton(
+                  padding: const EdgeInsets.all(0),
+                  splashRadius: 24,
+                  icon: const Icon(Icons.remove),
+                  onPressed: () {
+                    final notesFieldController = TextEditingController();
+                    var amount = 1;
+                    showDialog<AlterStock>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Remove stock'),
+                        content: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 600),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SpinBox(
+                                min: min(1, stock.amount).toDouble(),
+                                max: stock.amount.toDouble(),
+                                value: amount.toDouble(),
+                                onChanged: (value) => amount = value.toInt(),
+                              ),
+                              TextField(
+                                onChanged: (value) {},
+                                controller: notesFieldController,
+                                decoration:
+                                    const InputDecoration(hintText: "Notes"),
+                              ),
+                            ],
+                          ),
                         ),
-                        TextButton(
-                          child: const Text('OK'),
-                          onPressed: () => Navigator.pop(
-                              context,
-                              AlterStock(
-                                stock: stock.id,
-                                amount: amount,
-                                notes: notesFieldController.text,
-                              )),
-                        ),
-                      ],
-                    ),
-                  )
-                      .then(widget.dbh.alterStock)
-                      .onError<Exception>((error, stackTrace) => 0);
-                },
-              ),
-              IconButton(
-                padding: const EdgeInsets.all(0),
-                splashRadius: 24,
-                icon: const Icon(Icons.remove),
-                onPressed: () {
-                  final notesFieldController = TextEditingController();
-                  var amount = 1;
-                  showDialog<AlterStock>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Remove stock'),
-                      content: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 600),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SpinBox(
-                              min: min(1, stock.amount).toDouble(),
-                              max: stock.amount.toDouble(),
-                              value: amount.toDouble(),
-                              onChanged: (value) => amount = value.toInt(),
-                            ),
-                            TextField(
-                              onChanged: (value) {},
-                              controller: notesFieldController,
-                              decoration:
-                                  const InputDecoration(hintText: "Notes"),
-                            ),
-                          ],
-                        ),
+                        actions: [
+                          TextButton(
+                            child: const Text('Abort'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(
+                                context,
+                                AlterStock(
+                                  stock: stock.id,
+                                  amount: -amount,
+                                  notes: notesFieldController.text,
+                                )),
+                          ),
+                        ],
                       ),
-                      actions: [
-                        TextButton(
-                          child: const Text('Abort'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        TextButton(
-                          child: const Text('OK'),
-                          onPressed: () => Navigator.pop(
-                              context,
-                              AlterStock(
-                                stock: stock.id,
-                                amount: -amount,
-                                notes: notesFieldController.text,
-                              )),
-                        ),
-                      ],
-                    ),
-                  )
-                      .then(widget.dbh.alterStock)
-                      .onError<Exception>((error, stackTrace) => 0);
-                },
-              ),
-            ],
-          )),
+                    )
+                        .then(widget.dbh.alterStock)
+                        .onError<Exception>((error, stackTrace) => 0);
+                  },
+                ),
+              ],
+            ),
+          ),
           DataCell(Text('${stock.amount}')),
           DataCell(Text('${stock.price ?? 0.0}')),
           DataCell(Text(stock.location.name)),

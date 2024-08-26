@@ -43,6 +43,7 @@ class DropdownWidget<T> extends StatelessWidget {
           showSelectedItems: true,
           showSearchBox: true,
           searchFieldProps: const TextFieldProps(
+            autofocus: true,
             decoration: InputDecoration(
               label: Text('Search categories'),
             ),
@@ -50,8 +51,8 @@ class DropdownWidget<T> extends StatelessWidget {
           containerBuilder: (ctx, popupWidget) {
             return Column(
               children: [
-                ButtonBar(
-                  mainAxisSize: MainAxisSize.min,
+                OverflowBar(
+                  alignment: MainAxisAlignment.end,
                   children: [
                     OutlinedButton(
                       onPressed: () {
