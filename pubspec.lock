@@ -18,10 +18,10 @@ packages:
     dependency: "direct main"
     description:
       name: ai_barcode_scanner
-      sha256: fe9f1091513a330e3eebf2f69d6e834119c5453db035160d9ee4a663b8056958
+      sha256: "53f16604e9407d0079dd7536254fa2552c980ccbb29defb4c051bc105b4be7bc"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.1+2"
+    version: "5.2.1"
   analyzer:
     dependency: transitive
     description:
@@ -674,10 +674,10 @@ packages:
     dependency: transitive
     description:
       name: mobile_scanner
-      sha256: "6ac2913ad98c83f558d2c8a55bc8f511bdcf28b86639701c04b04c16da1e9ee1"
+      sha256: "82c9beb863705831a779e02e80398e61a86a48d1fcfdf4241ebd4292605acd9b"
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.1"
+    version: "5.2.2"
   multiple_stream_builder:
     dependency: "direct main"
     description:
